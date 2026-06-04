@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
+logs/
+
+# Scripts de desarrollo local (no van a producción)
+scratch/
+
+# Secretos y credenciales
+backend/firebase-key.json
+.env
+.env.*
+
+# Editores
+.vscode/
+.idea/
+
+# Base de datos SQLite (se regenera en producción con seed_db.py)
+backend/database/bicitodo.db
+
+# Archivos temporales de extracción
+extracted_*.json
+recovered_*.txt
+recovered_*.js
+app_js_writes.txt
+original_app_js_clean.txt
+*.out.log
+*.err.log
+fronted/netlify.toml
+
+# Archivos de diagnóstico / análisis local
+check_*.py
+inspect_*.py
+find_*.py
+run_phase*.py
+decode_*.py
+extract_*.py
+update_*.py
+list_all_*.py
+clean_extracted.py
+run_scraper.bat

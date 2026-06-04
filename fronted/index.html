@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiciTodo | Compara Precios de Bicicletas en Chile — Mercado Completo</title>
+    <meta name="description"
+        content="Compara precios de bicicletas en +13 tiendas chilenas. Falabella, Ripley, Paris, Decathlon, Trek, Specialized, Oxford, Topmega, Benotto y más. El comparador de ciclismo más completo de Chile.">
+    <meta name="keywords"
+        content="bicicletas chile, comparador bicicletas, falabella bicicletas, oxford bicicletas, trek chile, specialized chile, precio bicicleta">
+    <meta name="referrer" content="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=discount_badge_fix_v1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Ambient Glow Orbs -->
+    <div class="ambient-glow orb-1"></div>
+    <div class="ambient-glow orb-2"></div>
+    <div class="ambient-glow orb-3"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="activateExplorar(event)">
+                <img src="assets/logo.png" alt="BiciTodo Logo" class="logo-img">
+                Bici<span>Todo</span>
+            </div>
+            <button class="btn-navbar-filters" onclick="toggleMobileFilters()" aria-label="Abrir filtros">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="main-search" placeholder="Buscar">
+            </div>
+            <div class="nav-actions">
+                <a href="#catalog" class="nav-link active" id="nav-catalogo"
+                    onclick="activateExplorar(event)">Explorar</a>
+                <a href="#catalog" class="nav-link" id="nav-ofertas" onclick="activateDeals(event)">Ofertas</a>
+                <a href="#catalog" class="nav-link" id="nav-internacional" onclick="activateInternationalMode(event)"
+                    style="color: #fb923c; font-weight: 700; text-shadow: 0 0 10px rgba(251,146,60,0.15);"><i
+                        class="fa-solid fa-plane-up"></i> Internacional</a>
+                <a href="#catalog" class="nav-link" id="nav-cyber" onclick="activateCyberMode(event)"
+                    style="color: #ec4899; font-weight: 800; display: none; text-shadow: 0 0 10px rgba(236,72,153,0.3);"><i
+                        class="fa-solid fa-bolt-lightning" style="animation: pulse 1.5s infinite;"></i> CYBER DAYS</a>
+                <a href="#catalog" class="nav-link" id="nav-novedades" onclick="openNovedadesModal(event)">Novedades</a>
+                <div class="user-menu-wrapper" id="user-menu-container"
+                    style="display: inline-block; position: relative;">
+                    <a href="#catalog" class="nav-link" id="nav-cuenta" onclick="openAuthModal(event)"
+                        style="display: flex; align-items: center; gap: 0.35rem;">
+                        <i class="fa-solid fa-user-lock" style="font-size: 0.95rem; color: var(--primary);"></i>
+                        Ingresar
+                    </a>
+                </div>
+                <button id="theme-toggle" class="btn-theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <div class="country-badge" onclick="openCountryModal()" style="cursor: pointer;">
+                    <span class="flag-icon">🇨🇱</span> CHILE
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cyber Countdown Banner -->
+    <div id="cyber-countdown-banner" class="cyber-countdown-banner"
+        style="display: none; background: linear-gradient(90deg, #ec4899, #8b5cf6); color: #fff; text-align: center; padding: 0.65rem 1rem; font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 15px rgba(236, 72, 153, 0.25); position: relative; z-index: 999;">
+        <div
+            style="max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+            <span>⚡ Tiempo restante para que finalice el Cyber de las Tiendas de Ciclismo:</span>
+            <div id="cyber-banner-clock"
+                style="background: rgba(0,0,0,0.3); padding: 0.25rem 0.75rem; border-radius: 6px; font-weight: 900; letter-spacing: 0.5px;">
+                --:--:--</div>
+            <button onclick="activateCyberMode(event)"
+                style="background: #fff; color: #ec4899; border: none; padding: 0.25rem 0.85rem; border-radius: 99px; font-size: 0.75rem; font-weight: 800; cursor: pointer; transition: transform 0.2s;"
+                onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">Ver
+                Ofertas Cyber Days</button>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <header class="hero-premium">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="badge-promo">⚡ TEMPORADA 2026 — MERCADO NACIONAL COMPLETO</span>
+            <h1>Encuentra tu ruta<br>al <em>mejor precio</em></h1>
+            <p>Comparamos más de 13 tiendas de ciclismo en Chile para que encuentres tu bicicleta ideal, componentes y
+                accesorios al mejor precio. ¡Que nada te detenga en tu pedaleo!</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <i class="fa-solid fa-bicycle stat-icon"
+                        style="color: var(--primary); font-size: 1.3rem; margin-bottom: 0.35rem; display: block; opacity: 0.85;"></i>
+                    <strong class="stat-bicis">0</strong>
+                    <span>Bicicletas</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fa-solid fa-helmet-safety stat-icon"
+                        style="color: var(--warning); font-size: 1.3rem; margin-bottom: 0.35rem; display: block; opacity: 0.85;"></i>
+                    <strong class="stat-accesorios">0</strong>
+                    <span>Accesorios</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fa-solid fa-gear stat-icon"
+                        style="color: var(--accent); font-size: 1.3rem; margin-bottom: 0.35rem; display: block; opacity: 0.85;"></i>
+                    <strong class="stat-repuestos">0</strong>
+                    <span>Repuestos</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fa-solid fa-store stat-icon"
+                        style="color: var(--text-white); font-size: 1.3rem; margin-bottom: 0.35rem; display: block; opacity: 0.70;"></i>
+                    <strong class="stat-tiendas">0</strong>
+                    <span>Tiendas</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Tiendas Section -->
+    <section class="stores-section" id="tiendas">
+        <div class="stores-marquee-container">
+            <h2 class="stores-title">Tiendas integradas</h2>
+            <div class="stores-marquee-wrapper">
+                <div class="stores-track">
+                    <div class="store-chip" style="--sc:#e73c3c"><i class="fa-solid fa-tag"></i> Falabella</div>
+                    <div class="store-chip" style="--sc:#6b2fa0"><i class="fa-solid fa-tag"></i> Ripley</div>
+                    <div class="store-chip" style="--sc:#003da5"><i class="fa-solid fa-tag"></i> Paris</div>
+                    <div class="store-chip" style="--sc:#00853e"><i class="fa-solid fa-tag"></i> Lider</div>
+                    <div class="store-chip" style="--sc:#003DB6"><i class="fa-solid fa-tag"></i> Decathlon</div>
+                    <div class="store-chip" style="--sc:#f05500"><i class="fa-solid fa-bicycle"></i> Trek Chile</div>
+                    <div class="store-chip" style="--sc:#e81c15"><i class="fa-solid fa-bicycle"></i> Specialized</div>
+                    <div class="store-chip" style="--sc:#1a56db"><i class="fa-solid fa-bicycle"></i> Oxford Store</div>
+                    <div class="store-chip" style="--sc:#ff6900"><i class="fa-solid fa-bicycle"></i> Sparta</div>
+                    <div class="store-chip" style="--sc:#0ea5e9"><i class="fa-solid fa-bicycle"></i> Faucon Bikes</div>
+                    <div class="store-chip" style="--sc:#6d28d9"><i class="fa-solid fa-bicycle"></i> Sátiro Bikes</div>
+                    <div class="store-chip" style="--sc:#059669"><i class="fa-solid fa-bicycle"></i> Totem Chile</div>
+                    <div class="store-chip" style="--sc:#14b8a6"><i class="fa-solid fa-bicycle"></i> Copenhague</div>
+                    <div class="store-chip" style="--sc:#06b6d4"><i class="fa-solid fa-bicycle"></i> DS Bikes</div>
+                    <div class="store-chip" style="--sc:#16a34a"><i class="fa-solid fa-bicycle"></i> CrossMountain</div>
+                    <div class="store-chip" style="--sc:#dc2626"><i class="fa-solid fa-bicycle"></i> Full Bike</div>
+                    <div class="store-chip" style="--sc:#7c3aed"><i class="fa-solid fa-bicycle"></i> Vidaurre Bikes
+                    </div>
+                    <div class="store-chip" style="--sc:#f58220"><i class="fa-solid fa-bicycle"></i> iBikes</div>
+                    <!-- Duplicate for seamless infinite loop -->
+                    <div class="store-chip" style="--sc:#e73c3c"><i class="fa-solid fa-tag"></i> Falabella</div>
+                    <div class="store-chip" style="--sc:#6b2fa0"><i class="fa-solid fa-tag"></i> Ripley</div>
+                    <div class="store-chip" style="--sc:#003da5"><i class="fa-solid fa-tag"></i> Paris</div>
+                    <div class="store-chip" style="--sc:#00853e"><i class="fa-solid fa-tag"></i> Lider</div>
+                    <div class="store-chip" style="--sc:#003DB6"><i class="fa-solid fa-tag"></i> Decathlon</div>
+                    <div class="store-chip" style="--sc:#f05500"><i class="fa-solid fa-bicycle"></i> Trek Chile</div>
+                    <div class="store-chip" style="--sc:#e81c15"><i class="fa-solid fa-bicycle"></i> Specialized</div>
+                    <div class="store-chip" style="--sc:#1a56db"><i class="fa-solid fa-bicycle"></i> Oxford Store</div>
+                    <div class="store-chip" style="--sc:#ff6900"><i class="fa-solid fa-bicycle"></i> Sparta</div>
+                    <div class="store-chip" style="--sc:#0ea5e9"><i class="fa-solid fa-bicycle"></i> Faucon Bikes</div>
+                    <div class="store-chip" style="--sc:#6d28d9"><i class="fa-solid fa-bicycle"></i> Sátiro Bikes</div>
+                    <div class="store-chip" style="--sc:#059669"><i class="fa-solid fa-bicycle"></i> Totem Chile</div>
+                    <div class="store-chip" style="--sc:#14b8a6"><i class="fa-solid fa-bicycle"></i> Copenhague</div>
+                    <div class="store-chip" style="--sc:#06b6d4"><i class="fa-solid fa-bicycle"></i> DS Bikes</div>
+                    <div class="store-chip" style="--sc:#16a34a"><i class="fa-solid fa-bicycle"></i> CrossMountain</div>
+                    <div class="store-chip" style="--sc:#dc2626"><i class="fa-solid fa-bicycle"></i> Full Bike</div>
+                    <div class="store-chip" style="--sc:#7c3aed"><i class="fa-solid fa-bicycle"></i> Vidaurre Bikes
+                    </div>
+                    <div class="store-chip" style="--sc:#f58220"><i class="fa-solid fa-bicycle"></i> iBikes</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Layout -->
+    <div class="main-container" id="catalog">
+        <aside class="sidebar-filters glass">
+            <div class="filter-header">
+                <h3><i class="fa-solid fa-sliders"></i> Filtros</h3>
+                <button class="btn-close-filters" onclick="toggleMobileFilters()" aria-label="Cerrar filtros"><i
+                        class="fa-solid fa-xmark"></i></button>
+                <button class="btn-clear" onclick="clearFilters()">Limpiar todo</button>
+            </div>
+
+            <!-- Categoría -->
+            <div class="filter-group">
+                <label>Categoría</label>
+                <div class="category-pills">
+                    <button class="pill active" onclick="setCategory('bicicletas')" id="pill-bicis">
+                        <i class="fa-solid fa-bicycle"
+                            style="font-size: 1.1rem; width: 22px; color: var(--primary);"></i> Bicicletas
+                    </button>
+                    <button class="pill" onclick="setCategory('accesorios')" id="pill-acc">
+                        <i class="fa-solid fa-helmet-safety"
+                            style="font-size: 1.1rem; width: 22px; color: var(--warning);"></i> Accesorios
+                    </button>
+                    <button class="pill" onclick="setCategory('repuestos')" id="pill-rep">
+                        <i class="fa-solid fa-gear" style="font-size: 1.1rem; width: 22px; color: var(--accent);"></i>
+                        Repuestos
+                    </button>
+                </div>
+            </div>
+
+            <div id="dynamic-filters">
+
+                <!-- Presupuesto predefinido -->
+                <div class="filter-group">
+                    <label>Presupuesto</label>
+                    <div class="budget-grid">
+                        <button class="budget-pill" data-range="sub100">Hasta $100k</button>
+                        <button class="budget-pill" data-range="100-200">$100k – $200k</button>
+                        <button class="budget-pill" data-range="200-400">$200k – $400k</button>
+                        <button class="budget-pill" data-range="400-800">$400k – $800k</button>
+                        <button class="budget-pill" data-range="800plus">$800k+</button>
+                    </div>
+                </div>
+
+                <!-- Precio manual -->
+                <div class="filter-group">
+                    <label>Rango de Precio Personalizado</label>
+                    <div class="price-inputs">
+                        <input type="number" placeholder="Mín" id="price-min" step="10000">
+                        <span>—</span>
+                        <input type="number" placeholder="Máx" id="price-max" step="10000">
+                    </div>
+                </div>
+
+                <!-- Aro -->
+                <div class="filter-group bike-only-filter">
+                    <label>Tamaño de Aro</label>
+                    <div class="wheel-pills">
+                        <button class="wheel-pill" data-size="16">16"</button>
+                        <button class="wheel-pill" data-size="20">20"</button>
+                        <button class="wheel-pill" data-size="24">24"</button>
+                        <button class="wheel-pill" data-size="26">26"</button>
+                        <button class="wheel-pill" data-size="27.5">27.5"</button>
+                        <button class="wheel-pill" data-size="29">29"</button>
+                        <button class="wheel-pill" data-size="700c">700c</button>
+                    </div>
+                </div>
+
+                <!-- Tipo de Bicicleta -->
+                <div class="filter-group bike-only-filter">
+                    <label>Tipo de Bicicleta</label>
+                    <div class="checkbox-list" id="type-filter-list">
+                        <label><input type="checkbox" value="mtb"> <i class="fa-solid fa-mountain-sun"
+                                style="color:#22c55e;width:14px"></i> Montaña (MTB)</label>
+                        <label><input type="checkbox" value="ruta"> <i class="fa-solid fa-road"
+                                style="color:#3b82f6;width:14px"></i> Ruta (Road)</label>
+                        <label><input type="checkbox" value="gravel"> <i class="fa-solid fa-compass"
+                                style="color:#0d9488;width:14px"></i> Gravel</label>
+                        <label><input type="checkbox" value="fixie"> <i class="fa-solid fa-circle-dot"
+                                style="color:#0ea5e9;width:14px"></i> Fixie / Single-speed</label>
+                        <label><input type="checkbox" value="urbana"> <i class="fa-solid fa-city"
+                                style="color:#eab308;width:14px"></i> Urbana (City)</label>
+                        <label><input type="checkbox" value="hibrida"> <i class="fa-solid fa-shuffle"
+                                style="color:#f97316;width:14px"></i> Híbrida (Hybrid)</label>
+                        <label><input type="checkbox" value="infantil"> <i class="fa-solid fa-child"
+                                style="color:#ec4899;width:14px"></i> Infantil</label>
+                        <label><input type="checkbox" value="electrica"> <i class="fa-solid fa-bolt"
+                                style="color:#8b5cf6;width:14px"></i> Eléctrica</label>
+                    </div>
+                </div>
+
+
+                <!-- Tipo dinámico (accesorios/repuestos) -->
+                <div class="filter-group" id="dynamic-type-filter-group" style="display:none;">
+                    <!-- Generado por JS según categoría -->
+                </div>
+
+                <!-- Marcas -->
+                <div class="filter-group">
+                    <label>Marca</label>
+                    <div class="checkbox-list brand-list-scroll" id="brand-filter-list">
+                        <!-- Generado por JS -->
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+        <main class="results-area">
+            <div class="results-toolbar">
+                <h2 id="section-title">Catálogo de Bicicletas</h2>
+                <div class="toolbar-actions">
+                    <button class="btn-mobile-filters" onclick="toggleMobileFilters()" id="mobile-filter-trigger">
+                        <i class="fa-solid fa-sliders"></i> Filtros
+                    </button>
+                    <span id="results-count" class="results-badge">Cargando...</span>
+                    <select class="sort-dropdown" id="sort-select">
+                        <option value="relevant">Más relevante</option>
+                        <option value="sales">Más vendidos</option>
+                        <option value="rating">Mejor calificados</option>
+                        <option value="price-asc">Precio: Menor a Mayor</option>
+                        <option value="price-desc">Precio: Mayor a Menor</option>
+                        <option value="discount">Mayor Descuento</option>
+                        <option value="stores">Más tiendas</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- AliExpress Quick Filters (visible only in international mode) -->
+            <div id="aliexpress-quick-filters" class="aliexpress-quick-filters glass"
+                style="display: none; padding: 0.85rem 1.25rem; border-radius: 12px; margin-bottom: 1.25rem; align-items: center; gap: 0.75rem; flex-wrap: wrap; border: 1px solid rgba(251, 146, 60, 0.25);">
+                <span
+                    style="font-family: 'Poppins', sans-serif; font-size: 0.75rem; font-weight: 800; color: #fb923c; text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 0.35rem;"><i
+                        class="fa-solid fa-bolt-lightning"></i> Filtros Rápidos:</span>
+                <div class="quick-filter-pills" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button class="quick-pill active" data-filter="all">📦 Todos</button>
+                    <button class="quick-pill" data-filter="bestseller"><i class="fa-solid fa-fire"
+                            style="color: #ef4444;"></i> Más Vendidos (+1k)</button>
+                    <button class="quick-pill" data-filter="toprated"><i class="fa-solid fa-star"
+                            style="color: #eab308;"></i> Recomendados (★4.8+)</button>
+                    <button class="quick-pill" data-filter="trends"><i class="fa-solid fa-bolt"
+                            style="color: #fb923c;"></i> Tendencias</button>
+                    <button class="quick-pill" data-filter="value"><i class="fa-solid fa-gem"
+                            style="color: #60a5fa;"></i> Excelente Calidad-Precio</button>
+                </div>
+            </div>
+
+            <div class="product-grid" id="catalog-grid">
+                <!-- Products rendered by JS -->
+            </div>
+
+            <div class="pagination">
+                <button class="btn-page prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                <span class="page-info">Página 1 de 1</span>
+                <button class="btn-page next" disabled><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div id="modal-content" class="modal-content">
+            <!-- Rendered by JS -->
+        </div>
+    </div>
+
+    <!-- Compare Modal -->
+    <div id="compare-modal-overlay" class="modal-overlay compare-overlay">
+        <!-- Rendered by JS -->
+    </div>
+
+    <!-- Compare Bar (flotante) -->
+    <div class="compare-bar" id="compare-bar">
+        <div class="compare-bar-info">
+            <i class="fa-solid fa-scale-balanced"></i>
+            <span><strong id="compare-count">0</strong> productos seleccionados para comparar</span>
+        </div>
+        <div class="compare-bar-actions">
+            <button class="btn-compare-clear" id="compare-clear">
+                <i class="fa-solid fa-xmark"></i> Limpiar
+            </button>
+            <button class="btn-compare-go" id="compare-now">
+                Comparar ahora <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast"></div>
+
+    <footer>
+        <p>© 2026 <strong>BiciTodo</strong> — El comparador de ciclismo más completo de Chile.</p>
+        <p style="margin-top:0.5rem; font-size:0.75rem; color: var(--text-dim);">Los precios pueden variar. Siempre
+            verifica en la tienda oficial antes de comprar. Actualizado diariamente.</p>
+        <div class="footer-stores">
+            <span>Tiendas integradas:</span>
+            <strong>Falabella • Ripley • Paris • Lider • Decathlon • Oxford • Trek • Specialized • Sparta • Faucon •
+                Sátiro • Totem • Copenhague • DS Bikes • CrossMountain • Full Bike • Vidaurre • iBikes</strong>
+        </div>
+    </footer>
+
+    <!-- Auth Modal (Glassmorphic) -->
+    <div id="auth-modal-overlay" class="modal-overlay">
+        <div id="auth-modal-content" class="auth-modal-content glass">
+            <!-- Rendered by JS -->
+        </div>
+    </div>
+
+    <!-- Firebase Compat SDKs (Zero cost) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js" defer></script>
+
+    <script src="app.js?v=cyber_date_fix_20260602" defer></script>
+</body>
+
+</html>
