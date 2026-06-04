@@ -1,0 +1,12 @@
+# Render build ignore for backend
+# Evita compilar o copiar archivos innecesarios al contenedor de producción
+
+database/*.db
+__pycache__/
+*.pyc
+*.pyo
+*.log
+logs/
+bicitodo_scraper/
+test_*.json
+requirements.txt.bak

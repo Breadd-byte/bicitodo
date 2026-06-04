@@ -1,0 +1,13 @@
+{
+  "marca": "Oxford",
+  "modelo": "Everest",
+  "aro": 29,
+  "frenos": "Disco Hidráulico",
+  "transmision": "Shimano Tourney 3x7",
+  "material_cuadro": "Aluminio",
+  "mejor_precio": 250000,
+  "tiendas": [
+    {"nombre": "Oxford Store", "precio": 280000, "link": "..."},
+    {"nombre": "Falabella", "precio": 250000, "link": "..."}
+  ]
+}
