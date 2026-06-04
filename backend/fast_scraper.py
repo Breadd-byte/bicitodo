@@ -20,7 +20,7 @@ except ImportError:
     import cloudscraper
     from bs4 import BeautifulSoup
 
-BASE_DIR = r"c:\Users\basti\Desktop\bicitodo"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTED_DIR = os.path.join(BASE_DIR, "fronted")
 ASSETS_DIR = os.path.join(FRONTED_DIR, "assets", "bikes")
 os.makedirs(ASSETS_DIR, exist_ok=True)

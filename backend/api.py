@@ -1,6 +1,7 @@
 # api.py - Dynamic High-Performance FastAPI Backend for BiciTodo
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from supabase import create_client, Client
 import sqlite3
@@ -458,6 +459,11 @@ async def crear_alerta(alerta: AlertaSchema):
         return {"status": "success", "message": "Alerta registrada correctamente", "data": response.data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al registrar alerta en Supabase: {str(e)}")
+
+# Montar los archivos estáticos del Frontend
+frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fronted")
+if os.path.exists(frontend_dir):
+    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
 
 if __name__ == "__main__":
     import uvicorn
