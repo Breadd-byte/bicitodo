@@ -46,3 +46,9 @@ update_*.py
 list_all_*.py
 clean_extracted.py
 run_scraper.bat
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
