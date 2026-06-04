@@ -612,8 +612,32 @@ function getProductImage(product = {}) {
     return preferred || candidates[0] || getProductFallbackImage(product);
 }
 
+function getImageFallbacks(product = {}) {
+    const offers = Array.isArray(product.offers) ? product.offers : [];
+    const candidates = [
+        product.original_img_url,
+        ...offers.map(offer => offer && offer.imageUrl)
+    ].filter(Boolean);
+    // Filter out duplicates and placeholders
+    const cleanCandidates = [...new Set(candidates)].filter(src => src && typeof src === 'string' && !isPlaceholderImage(src));
+    cleanCandidates.push(FALLBACK_PRODUCT_IMAGE);
+    return cleanCandidates;
+}
+
 handleProductImageError = window.handleProductImageError = function(img, fallbackSrc = FALLBACK_PRODUCT_IMAGE) {
     if (!img) return;
+    
+    const fallbacksAttr = img.getAttribute('data-fallbacks');
+    if (fallbacksAttr) {
+        const fallbacks = fallbacksAttr.split('|').filter(Boolean);
+        if (fallbacks.length > 0) {
+            const nextSrc = fallbacks.shift();
+            img.setAttribute('data-fallbacks', fallbacks.join('|'));
+            img.src = nextSrc;
+            return;
+        }
+    }
+    
     img.onerror = null;
     img.src = fallbackSrc || FALLBACK_PRODUCT_IMAGE;
 };
@@ -1283,7 +1307,7 @@ openCompareModal = window.openCompareModal = function() {
         return `
             <div class="compare-col" style="position: relative;">
                 ${isCheapest ? `<span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #000; font-size: 0.65rem; font-weight: 900; padding: 0.15rem 0.5rem; border-radius: 99px; text-transform: uppercase; white-space: nowrap; letter-spacing: 0.5px; box-shadow: 0 2px 8px var(--primary-glow);">Mejor Precio</span>` : ''}
-                <div class="compare-img-wrap" style="border: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.5rem;"><img src="${getProductImage(p)}" alt="${p.model}" onerror="handleProductImageError(this)" style="object-fit: contain;"></div>
+                <div class="compare-img-wrap" style="border: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.5rem;"><img src="${getProductImage(p)}" alt="${p.model}" data-fallbacks="${getImageFallbacks(p).join('|')}" onerror="handleProductImageError(this)" style="object-fit: contain;"></div>
                 <div class="compare-brand" style="margin-top: 0.75rem;">${p.brand}</div>
                 <div class="compare-model">${p.model}</div>
                 ${valScore ? `
@@ -1675,6 +1699,7 @@ openProductDetail = window.openProductDetail = function(productId) {
             <div class="modal-img-side">
                 <div class="modal-img-wrapper">
                     <img src="${imgSrc}" alt="${product.model}"
+                         data-fallbacks="${getImageFallbacks(product).join('|')}"
                          onerror="handleProductImageError(this, '${fallbackImg}')">
                 </div>
                 ${discount > 0 ? `<div class="modal-discount-badge">-${discount}% OFF</div>` : ''}
@@ -2042,7 +2067,7 @@ openProfileModal = window.openProfileModal = function(event) {
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; width: 100%; gap: 1rem;">
             <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <div style="width: 50px; height: 38px; background: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 0.2rem;">
-                    <img src="${getProductImage(p)}" alt="${p.model}" onerror="handleProductImageError(this)" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                    <img src="${getProductImage(p)}" alt="${p.model}" data-fallbacks="${getImageFallbacks(p).join('|')}" onerror="handleProductImageError(this)" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                 </div>
                 <div style="text-align: left;">
                     <span style="font-size: 0.68rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; display: block;">${p.brand}</span>
@@ -2468,6 +2493,7 @@ async function render(forceFetch = true) {
                     ${intlBadgeHtml}
                     ${discount > 0 && !isCyberMode ? `<div class="card-discount-badge">-${discount}%</div>` : ''}
                     <img src="${getProductImage(product)}" alt="${product.model}"
+                         data-fallbacks="${getImageFallbacks(product).join('|')}"
                          onerror="handleProductImageError(this, '${cardFallback}')"
                          loading="lazy"
                          style="object-fit: contain;">
