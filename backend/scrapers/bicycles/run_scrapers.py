@@ -12,7 +12,8 @@ import cloudscraper
 from bs4 import BeautifulSoup
 
 # Setup paths
-scrapers_dir = os.path.dirname(os.path.abspath(__file__))
+bicycles_dir = os.path.dirname(os.path.abspath(__file__))
+scrapers_dir = os.path.dirname(bicycles_dir)
 backend_dir = os.path.dirname(scrapers_dir)
 project_root = os.path.dirname(backend_dir)
 db_path = os.path.join(backend_dir, "database", "bicitodo.db")
@@ -440,33 +441,8 @@ def scrape_sparta():
         })
     return items
 
-# Totem Chile Scraper
 def scrape_totem():
-    domain = "https://totem.cl"
-    soup = fetch_html(f"{domain}/bicicletas")
-    items = []
-    if not soup: return items
-    
-    cards = soup.select(".product-item-info, .product-item, li.product")
-    for p in cards:
-        name_el = p.select_one(".product-item-link, h2 a, h3 a")
-        price_el = p.select_one(".price")
-        img_el = p.select_one("img")
-        
-        if not name_el or not price_el: continue
-        name = clean_text(name_el.get_text())
-        price = clean_price(price_el.get_text())
-        img = (img_el.get("src") or img_el.get("data-src") or "").split("?")[0]
-        if img.startswith("/"): img = domain + img
-        href = name_el.get("href", "")
-        prod_url = domain + href if href.startswith("/") else href
-        
-        items.append({
-            "name": name, "brand": "Totem", "price_normal": price,
-            "url": prod_url, "image_url": img, "store": "Totem Chile",
-            "store_key": "totem", "category": "bicicletas"
-        })
-    return items
+    return scrape_shopify("Totem Chile", "totem", "https://totem.cl", ["bicicletas"])
 
 # Trek Chile Scraper
 def scrape_trek():
