@@ -1762,6 +1762,8 @@ footer strong { color: var(--primary); }
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 0.55rem;
     }
 
     .navbar { padding: 0.6rem 0; }
