@@ -7,7 +7,11 @@ from supabase import create_client, Client
 import sqlite3
 import json
 import os
+import mimetypes
 from collections import defaultdict
+
+# Register WebP mime type for consistent serving headers across operating systems
+mimetypes.add_type('image/webp', '.webp')
 
 app = FastAPI(
     title="BiciTodo API",
@@ -437,6 +441,97 @@ async def get_productos(
     finally:
         conn.close()
 
+def check_and_update_news():
+    try:
+        # Check if table exists and has recent entries
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        # Check if news table exists
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='news'")
+        table_exists = cursor.fetchone()
+        
+        should_update = False
+        if not table_exists:
+            should_update = True
+        else:
+            # Check how many items we have
+            cursor.execute("SELECT COUNT(*) FROM news")
+            count = cursor.fetchone()[0]
+            if count == 0:
+                should_update = True
+            else:
+                # Check when it was last updated
+                cursor.execute("SELECT MAX(last_updated) FROM news")
+                last_updated_str = cursor.fetchone()[0]
+                if last_updated_str:
+                    from datetime import datetime, timezone
+                    try:
+                        # SQLite CURRENT_TIMESTAMP is in UTC
+                        last_updated = datetime.strptime(last_updated_str.split(".")[0], "%Y-%m-%d %H:%M:%S")
+                        now = datetime.utcnow()
+                        delta = now - last_updated
+                        # Update if older than 12 hours
+                        if delta.total_seconds() > 12 * 3600:
+                            should_update = True
+                    except Exception:
+                        should_update = True
+                else:
+                    should_update = True
+        conn.close()
+        
+        if should_update:
+            print("[News] Triggering automatic background news update...")
+            from update_news import update_news
+            import asyncio
+            # Run in a background thread to avoid blocking the API request
+            loop = asyncio.get_event_loop()
+            loop.run_in_executor(None, update_news)
+    except Exception as e:
+        print(f"[News] Error checking/updating news in background: {e}")
+
+@app.get("/api/novedades")
+async def get_novedades():
+    # Trigger background check/update
+    check_and_update_news()
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        # Ensure table exists
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS news (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            category TEXT,
+            summary TEXT,
+            url TEXT UNIQUE,
+            published_date TEXT,
+            image_url TEXT,
+            last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        """)
+        conn.commit()
+        
+        cursor.execute("SELECT id, title, category, summary, url, published_date, image_url FROM news ORDER BY published_date DESC LIMIT 20")
+        rows = cursor.fetchall()
+        news_list = []
+        for r in rows:
+            news_list.append({
+                "id": r["id"],
+                "title": r["title"],
+                "category": r["category"],
+                "summary": r["summary"],
+                "url": r["url"],
+                "published_date": r["published_date"],
+                "image_url": r["image_url"]
+            })
+        return news_list
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al obtener novedades: {str(e)}")
+    finally:
+        conn.close()
+
 class AlertaSchema(BaseModel):
     email_usuario: str
     id_producto: int
@@ -459,6 +554,11 @@ async def crear_alerta(alerta: AlertaSchema):
         return {"status": "success", "message": "Alerta registrada correctamente", "data": response.data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al registrar alerta en Supabase: {str(e)}")
+
+# Montar los archivos estáticos del servidor (Imágenes locales)
+static_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static")
+os.makedirs(os.path.join(static_dir, "images"), exist_ok=True)
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # Montar los archivos estáticos del Frontend
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fronted")

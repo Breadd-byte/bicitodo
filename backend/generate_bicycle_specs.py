@@ -17,7 +17,7 @@ try:
 except Exception:
     pass
 
-BASE_DIR = r"c:\Users\basti\Desktop\bicitodo"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE_DIR, "fronted", "data.json")
 
 def correct_bike_type_and_wheel(model, current_type, current_wheel):

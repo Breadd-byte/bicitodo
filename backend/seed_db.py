@@ -158,7 +158,11 @@ def main():
                 price = offer.get("price")
                 old_price = offer.get("oldPrice")
                 url = offer.get("url")
-                image_url = offer.get("imageUrl") or canonical_image
+                
+                # Prefer local static path if available in data.json
+                image_url = offer.get("imageUrl")
+                if not image_url:
+                    image_url = canonical_image
                 
                 cursor.execute("""
                 INSERT INTO store_products (product_id, store_id, url, image_url, price_normal, price_card)

@@ -22,8 +22,14 @@ except ImportError:
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTED_DIR = os.path.join(BASE_DIR, "fronted")
-ASSETS_DIR = os.path.join(FRONTED_DIR, "assets", "bikes")
+ASSETS_DIR = os.path.join(BASE_DIR, "static", "images")
 os.makedirs(ASSETS_DIR, exist_ok=True)
+
+# Import image downloader
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+if backend_dir not in sys.path:
+    sys.path.append(backend_dir)
+import image_downloader
 
 scraper = cloudscraper.create_scraper(
     browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False}
@@ -145,20 +151,9 @@ def is_accessory(name, price):
     # Para tiendas mixtas (Sparta, Faucon): si no tiene palabra clave de bici, descartar
     return False
 
-def download_image(img_url, filename):
+def download_image(img_url, filename=None):
     if not img_url: return None
-    path = os.path.join(ASSETS_DIR, filename)
-    if os.path.exists(path) and os.path.getsize(path) > 1000:
-        return f"assets/bikes/{filename}"
-    try:
-        r = scraper.get(img_url, headers=HEADERS, timeout=12)
-        if r.status_code == 200 and len(r.content) > 1000:
-            with open(path, "wb") as f:
-                f.write(r.content)
-            return f"assets/bikes/{filename}"
-    except Exception:
-        pass
-    return None
+    return image_downloader.download_image(img_url, ASSETS_DIR)
 
 def get_ext(url):
     if not url: return "jpg"
@@ -689,15 +684,13 @@ def main():
     print(f"BICICLETAS (despues de filtro estricto): {len(bikes_clean)}")
 
     # Construir objetos finales con imagen local
-    FALLBACK_BIKE = "https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=600&h=400&q=80"
+    FALLBACK_BIKE = "/static/images/placeholder-bike.png"
     final_bikes = []
 
     for idx, item in enumerate(bikes_clean):
         b_id = idx + 1
         img_url = item.get("image_url")
-        ext = get_ext(img_url)
-        filename = f"bike_{b_id}.{ext}"
-        local_img = download_image(img_url, filename) or FALLBACK_BIKE
+        local_img = download_image(img_url) or FALLBACK_BIKE
 
         price = item.get("price_normal") or 150000
 
@@ -710,6 +703,7 @@ def main():
             "frameType": extract_frame(item["name"]),
             "specs": f"{clean_text(item.get('brand') or 'Generica').title()} - {item['name']}",
             "image": local_img,
+            "original_img_url": img_url,
             "history": [int(price * 1.08), int(price * 1.04), price],
             "fullSpecs": {},
             "offers": [{
@@ -717,7 +711,8 @@ def main():
                 "storeKey": item["store_key"],
                 "price": price,
                 "oldPrice": None,
-                "url": item.get("url", "#")
+                "url": item.get("url", "#"),
+                "imageUrl": local_img
             }]
         }
         final_bikes.append(bike_obj)

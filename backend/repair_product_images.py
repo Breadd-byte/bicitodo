@@ -18,11 +18,17 @@ except ImportError as exc:
 BASE_DIR = Path(__file__).resolve().parents[1]
 FRONTEND_DIR = BASE_DIR / "fronted"
 DATA_PATH = FRONTEND_DIR / "data.json"
-ASSETS_DIR = FRONTEND_DIR / "assets" / "bikes"
+ASSETS_DIR = BASE_DIR / "static" / "images"
 REPORT_PATH = BASE_DIR / "scratch" / "image_repair_report.json"
 
 ASSETS_DIR.mkdir(parents=True, exist_ok=True)
 REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+# Import image downloader
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+if backend_dir not in sys.path:
+    sys.path.append(backend_dir)
+import image_downloader
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -76,10 +82,17 @@ def is_untrusted_image_url(url):
 
 
 def local_file_ok(image_path):
-    if not image_path or not str(image_path).startswith("assets/"):
+    if not image_path:
         return False
-    full_path = FRONTEND_DIR / image_path
-    return full_path.exists() and full_path.stat().st_size > 1000
+    image_path = str(image_path)
+    if image_path.startswith("/static/images/"):
+        filename = os.path.basename(image_path)
+        full_path = ASSETS_DIR / filename
+        return full_path.exists() and full_path.stat().st_size > 1000
+    if image_path.startswith("assets/"):
+        full_path = FRONTEND_DIR / image_path
+        return full_path.exists() and full_path.stat().st_size > 1000
+    return False
 
 
 def needs_repair(category, product, force=False):
@@ -101,13 +114,15 @@ def needs_repair(category, product, force=False):
         return True
     if image.startswith("assets/") and not local_file_ok(image):
         return True
+    if image.startswith("/static/images/") and not local_file_ok(image):
+        return True
     if image.startswith("http"):
         return True
     if image.startswith("http") and is_untrusted_image_url(image):
         return True
 
     # Mismatched hash verification (re-download if filename doesn't contain expected hash)
-    if image.startswith("assets/"):
+    if image.startswith("assets/") or image.startswith("/static/images/"):
         import os
         basename = os.path.basename(image)
         name_no_ext = os.path.splitext(basename)[0]
@@ -237,17 +252,13 @@ def image_candidates(product):
 
 
 def download_image(url, category, product):
-    try:
-        response = scraper.get(url, headers=HEADERS, timeout=16)
-        if response.status_code != 200 or not is_valid_image(response.content):
-            return "", 0
-        ext = image_ext_from_url(url, response.headers.get("content-type", ""))
-        filename = f"{category_prefix(category)}_real_{product.get('id')}_{product_hash(product)}.{ext}"
-        file_path = ASSETS_DIR / filename
-        file_path.write_bytes(response.content)
-        return f"assets/bikes/{filename}", len(response.content)
-    except Exception:
-        return "", 0
+    custom_filename = f"{category_prefix(category)}_real_{product.get('id')}_{product_hash(product)}"
+    local_url = image_downloader.download_image(url, str(ASSETS_DIR), custom_filename=custom_filename)
+    if local_url:
+        dest_path = ASSETS_DIR / f"{custom_filename}.webp"
+        size = dest_path.stat().st_size if dest_path.exists() else 0
+        return local_url, size
+    return "", 0
 
 
 def repair_one(category, product, force=False):

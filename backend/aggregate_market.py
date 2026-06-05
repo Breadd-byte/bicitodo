@@ -51,7 +51,7 @@ def run_scrapy_spider(spider_name, backend_dir, base_dir):
 def main():
     print("🚀 INICIANDO ORQUESTRACIÓN DEL MERCADO DE BICICLETAS CHILENO 2026 🚀")
     
-    base_dir = r"c:\Users\basti\Desktop\bicitodo"
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     backend_dir = os.path.join(base_dir, "backend")
     fronted_dir = os.path.join(base_dir, "fronted")
     assets_dir = os.path.join(fronted_dir, "assets", "bikes")
@@ -161,7 +161,8 @@ def main():
                         "storeKey": store_key,
                         "price": price,
                         "oldPrice": item.get("price_card"),
-                        "url": url
+                        "url": url,
+                        "imageUrl": image_url
                     })
                 
                 # Fusión incremental de especificaciones técnicas
@@ -208,7 +209,8 @@ def main():
                         "storeKey": store_key,
                         "price": price,
                         "oldPrice": item.get("price_card"),
-                        "url": url
+                        "url": url,
+                        "imageUrl": image_url
                     }
                 ]
             }
@@ -248,7 +250,8 @@ def main():
                         "storeKey": store_key,
                         "price": price,
                         "oldPrice": item.get("price_card"),
-                        "url": url
+                        "url": url,
+                        "imageUrl": image_url
                     })
                 found_match = True
                 break
@@ -269,7 +272,8 @@ def main():
                         "storeKey": store_key,
                         "price": price,
                         "oldPrice": item.get("price_card"),
-                        "url": url
+                        "url": url,
+                        "imageUrl": image_url
                     }
                 ]
             }
@@ -321,6 +325,7 @@ def main():
             "frameType": bike["frameType"],
             "specs": bike["specs"],
             "image": local_img,
+            "original_img_url": bike.get("original_image_url"),
             "history": bike_history,
             "fullSpecs": bike["fullSpecs"],
             "offers": sorted(bike["offers"], key=lambda o: o["price"])
@@ -363,6 +368,7 @@ def main():
             "frameType": rep["frameType"],
             "specs": rep["specs"],
             "image": local_img,
+            "original_img_url": rep.get("original_image_url"),
             "history": rep_history,
             "fullSpecs": rep["fullSpecs"],
             "offers": sorted(rep["offers"], key=lambda o: o["price"])

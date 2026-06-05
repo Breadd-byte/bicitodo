@@ -47,3 +47,7 @@ run_scraper.bat
 
 # Ignorar imágenes locales pesadas en producción
 fronted/assets/bikes/*
+static/images/products/*
+backups/*
+imports/bicicletas.csv
+imports/bicicletas.xlsx

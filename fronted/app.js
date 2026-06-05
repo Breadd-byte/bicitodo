@@ -585,7 +585,7 @@ function calculateValueScore(product) {
     return finalValueScore;
 }
 
-const FALLBACK_PRODUCT_IMAGE = 'assets/bikes/bike_0.jpg';
+const FALLBACK_PRODUCT_IMAGE = '/static/images/placeholder-bike.webp';
 
 function isPlaceholderImage(src) {
     if (!src || typeof src !== 'string') return true;
@@ -593,6 +593,8 @@ function isPlaceholderImage(src) {
     return clean.endsWith('/bike_0.jpg') ||
         clean.endsWith('/acc_0.jpg') ||
         clean.endsWith('/part_0.jpg') ||
+        clean.endsWith('/placeholder-bike.png') ||
+        clean.endsWith('/placeholder-bike.webp') ||
         /_[0]\.(jpg|jpeg|png|webp)$/.test(clean);
 }
 
@@ -618,8 +620,14 @@ function getImageFallbacks(product = {}) {
         product.original_img_url,
         ...offers.map(offer => offer && offer.imageUrl)
     ].filter(Boolean);
-    // Filter out duplicates and placeholders
-    const cleanCandidates = [...new Set(candidates)].filter(src => src && typeof src === 'string' && !isPlaceholderImage(src));
+    // Filter out duplicates, placeholders, and local paths (to prevent redundant local 404 retries)
+    const cleanCandidates = [...new Set(candidates)].filter(src => 
+        src && 
+        typeof src === 'string' && 
+        !isPlaceholderImage(src) &&
+        !src.startsWith('assets/') &&
+        !src.startsWith('/static/')
+    );
     cleanCandidates.push(FALLBACK_PRODUCT_IMAGE);
     return cleanCandidates;
 }
@@ -638,7 +646,10 @@ handleProductImageError = window.handleProductImageError = function(img, fallbac
         }
     }
     
-    img.onerror = null;
+    img.onerror = () => {
+        img.onerror = null;
+        img.src = "/static/images/placeholder-bike.webp";
+    };
     img.src = fallbackSrc || FALLBACK_PRODUCT_IMAGE;
 };
 
@@ -1715,6 +1726,35 @@ openProductDetail = window.openProductDetail = function(productId) {
                         <span class="stores-count">en ${product.offers.length} tienda${product.offers.length > 1 ? 's' : ''}</span>
                     </div>
                     ${modalValueScoreHtml}
+                    ${(function() {
+                        let headerSpecsHtml = '';
+                        if (product.fullSpecs && Object.keys(product.fullSpecs).length > 0) {
+                            const keySpecs = ['Cuadro', 'Frenos', 'Transmisión', 'Material', 'Capacidad', 'Medida', 'Uso', 'Tipo', 'Peso Aproximado'];
+                            const foundSpecs = [];
+                            for (const key of keySpecs) {
+                                const actualKey = Object.keys(product.fullSpecs).find(k => k.toLowerCase() === key.toLowerCase());
+                                if (actualKey && product.fullSpecs[actualKey]) {
+                                    let val = product.fullSpecs[actualKey];
+                                    if (val.length > 40) val = val.substring(0, 37) + '...';
+                                    foundSpecs.push(`
+                                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 0.45rem 0.75rem; border-radius: 8px; font-size: 0.75rem; min-width: 100px; flex: 1; text-align: left;">
+                                            <span style="display: block; font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">${key}</span>
+                                            <span style="font-weight: 700; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: block;">${val}</span>
+                                        </div>
+                                    `);
+                                }
+                                if (foundSpecs.length >= 3) break;
+                            }
+                            if (foundSpecs.length > 0) {
+                                headerSpecsHtml = `
+                                    <div class="modal-header-specs" style="display: flex; gap: 0.5rem; width: 100%; margin-top: 0.75rem; flex-wrap: wrap;">
+                                        ${foundSpecs.join('')}
+                                    </div>
+                                `;
+                            }
+                        }
+                        return headerSpecsHtml;
+                    })()}
                 </div>
 
                 <div class="modal-tabs">
@@ -1934,7 +1974,7 @@ activateInternationalMode = window.activateInternationalMode = function(event) {
     showToast('✈️ Catálogo Internacional Activado. Mostrando productos importados de AliExpress.');
 };
 
-openNovedadesModal = window.openNovedadesModal = function(event) {
+openNovedadesModal = window.openNovedadesModal = async function(event) {
     if (event) event.preventDefault();
     
     // Update active link
@@ -1946,6 +1986,35 @@ openNovedadesModal = window.openNovedadesModal = function(event) {
     const content = document.getElementById('modal-content');
     if (!modal || !content) return;
     
+    const defaultArticlesHtml = `
+        <!-- Article 1 -->
+        <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #60a5fa; background: rgba(59, 130, 246, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; text-transform: uppercase;">Tendencias</span>
+            <h4 style="font-family:'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.3; color: var(--text-white);">Gravel en Chile: La aventura de invierno</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.4;">
+                El gravel sigue creciendo exponencialmente. Conoce las mejores bicicletas de aventura y cómo equipar tu transmisión para terrenos de barro y ripio este invierno.
+            </p>
+        </div>
+        
+        <!-- Article 2 -->
+        <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
+            <span style="font-size: 0.65rem; font-weight: 800; color: var(--primary); background: rgba(34, 197, 94, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; text-transform: uppercase;">Consejos</span>
+            <h4 style="font-family:'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.3; color: var(--text-white);">Mantenimiento de cadena contra la humedad</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.4;">
+                La humedad y la salinidad desgastan los eslabones rápidamente. Te dejamos un tutorial simple para limpiar, secar y lubricar con cera húmeda después de pedalear bajo la lluvia.
+            </p>
+        </div>
+        
+        <!-- Article 3 -->
+        <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
+            <span style="font-size: 0.65rem; font-weight: 800; color: var(--warning); background: rgba(245, 158, 11, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; text-transform: uppercase;">Rutas</span>
+            <h4 style="font-family:'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.3; color: var(--text-white);">Ascenso a Farellones: Preparación segura</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.4;">
+                Subir a la cordillera es el sueño de todo ciclista de ruta. Te recomendamos verificar el estado de tus frenos, llevar luces traseras de alta potencia y ropa térmica de alta visibilidad.
+            </p>
+        </div>
+    `;
+
     content.innerHTML = `
         <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
         <div style="padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; background: var(--nav-bg); backdrop-filter: blur(20px); border-radius: var(--radius-lg); max-width: 800px; margin: 0 auto; color: var(--text-white);">
@@ -1978,35 +2047,11 @@ openNovedadesModal = window.openNovedadesModal = function(event) {
                     <i class="fa-solid fa-newspaper" style="color: var(--accent);"></i> Artículos y Noticias Recientes
                 </h3>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
-                    
-                    <!-- Article 1 -->
-                    <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
-                        <span style="font-size: 0.65rem; font-weight: 800; color: #60a5fa; background: rgba(59, 130, 246, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; text-transform: uppercase;">Tendencias</span>
-                        <h4 style="font-family:'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.3; color: var(--text-white);">Gravel en Chile: La aventura de invierno</h4>
-                        <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.4;">
-                            El gravel sigue creciendo exponencialmente. Conoce las mejores bicicletas de aventura y cómo equipar tu transmisión para terrenos de barro y ripio este invierno.
-                        </p>
+                <div id="news-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                    <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+                        <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem;"></i>
+                        <p style="margin: 0; font-size: 0.85rem;">Cargando últimas noticias desde el pedal...</p>
                     </div>
-                    
-                    <!-- Article 2 -->
-                    <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
-                        <span style="font-size: 0.65rem; font-weight: 800; color: var(--primary); background: rgba(34, 197, 94, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; text-transform: uppercase;">Consejos</span>
-                        <h4 style="font-family:'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.3; color: var(--text-white);">Mantenimiento de cadena contra la humedad</h4>
-                        <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.4;">
-                            La humedad y la salinidad desgastan los eslabones rápidamente. Te dejamos un tutorial simple para limpiar, secar y lubricar con cera húmeda después de pedalear bajo la lluvia.
-                        </p>
-                    </div>
-                    
-                    <!-- Article 3 -->
-                    <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
-                        <span style="font-size: 0.65rem; font-weight: 800; color: var(--warning); background: rgba(245, 158, 11, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; text-transform: uppercase;">Rutas</span>
-                        <h4 style="font-family:'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.3; color: var(--text-white);">Ascenso a Farellones: Preparación segura</h4>
-                        <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.4;">
-                            Subir a la cordillera es el sueño de todo ciclista de ruta. Te recomendamos verificar el estado de tus frenos, llevar luces traseras de alta potencia y ropa térmica de alta visibilidad.
-                        </p>
-                    </div>
-                    
                 </div>
             </div>
             
@@ -2016,8 +2061,77 @@ openNovedadesModal = window.openNovedadesModal = function(event) {
             </button>
         </div>
     `;
+    
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    const newsContainer = document.getElementById('news-container');
+    if (!newsContainer) return;
+
+    try {
+        const resp = await fetch(`${API_BASE_URL}/api/novedades`, { cache: 'no-store' });
+        if (!resp.ok) throw new Error("HTTP error " + resp.status);
+        const articles = await resp.json();
+        
+        if (articles && articles.length > 0) {
+            const categoryColors = {
+                'MTB': '#22c55e',       // green
+                'Ruta': '#3b82f6',      // blue
+                'Entrevistas': '#ec4899', // pink
+                'Artículos': '#8b5cf6',  // purple
+                'Consejos': '#f59e0b',   // yellow
+                'Noticias': '#60a5fa'   // light blue
+            };
+            
+            const categoryBgColors = {
+                'MTB': 'rgba(34, 197, 94, 0.1)',
+                'Ruta': 'rgba(59, 130, 246, 0.1)',
+                'Entrevistas': 'rgba(236, 72, 153, 0.1)',
+                'Artículos': 'rgba(139, 92, 246, 0.1)',
+                'Consejos': 'rgba(245, 158, 11, 0.1)',
+                'Noticias': 'rgba(96, 165, 250, 0.1)'
+            };
+
+            const categoryIcons = {
+                'MTB': 'fa-mountain-sun',
+                'Ruta': 'fa-road',
+                'Entrevistas': 'fa-microphone',
+                'Artículos': 'fa-newspaper',
+                'Consejos': 'fa-screwdriver-wrench',
+                'Noticias': 'fa-circle-info'
+            };
+
+            newsContainer.innerHTML = articles.map(article => {
+                const cat = article.category || 'Noticias';
+                const color = categoryColors[cat] || '#60a5fa';
+                const bg = categoryBgColors[cat] || 'rgba(96, 165, 250, 0.1)';
+                const icon = categoryIcons[cat] || 'fa-newspaper';
+
+                return `
+                    <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left; transition: var(--transition); cursor: pointer;" 
+                         onmouseenter="this.style.borderColor='${color}'; this.style.transform='translateY(-2px)';" 
+                         onmouseleave="this.style.borderColor='var(--glass-border)'; this.style.transform='none';"
+                         onclick="window.open('${article.url}', '_blank', 'noopener,noreferrer')">
+                        <span style="font-size: 0.65rem; font-weight: 800; color: ${color}; background: ${bg}; padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; text-transform: uppercase; display: flex; align-items: center; gap: 0.3rem;">
+                            <i class="fa-solid ${icon}"></i> ${cat}
+                        </span>
+                        <h4 style="font-family:'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.35; color: var(--text-white);">${article.title}</h4>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.45;">
+                            ${article.summary}
+                        </p>
+                        <span style="font-size: 0.68rem; color: var(--primary); font-weight: 700; margin-top: auto; display: flex; align-items: center; gap: 0.25rem; justify-content: flex-end;">
+                            Leer más <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </span>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            newsContainer.innerHTML = defaultArticlesHtml;
+        }
+    } catch (e) {
+        console.warn("Failed to fetch news from API, falling back to static news:", e);
+        newsContainer.innerHTML = defaultArticlesHtml;
+    }
 };
 
 window.submitNewsletter = function(event) {
@@ -2512,6 +2626,30 @@ async function render(forceFetch = true) {
                         ${specsBadgesHtml}
                         ${shippingBadge}
                     </div>
+                    ${(function() {
+                        let specsListHtml = '';
+                        if (product.fullSpecs && Object.keys(product.fullSpecs).length > 0) {
+                            const keySpecs = ['Cuadro', 'Frenos', 'Transmisión', 'Material', 'Capacidad', 'Medida', 'Uso', 'Tipo'];
+                            const foundSpecs = [];
+                            for (const key of keySpecs) {
+                                const actualKey = Object.keys(product.fullSpecs).find(k => k.toLowerCase() === key.toLowerCase());
+                                if (actualKey && product.fullSpecs[actualKey]) {
+                                    let val = product.fullSpecs[actualKey];
+                                    if (val.length > 32) val = val.substring(0, 29) + '...';
+                                    foundSpecs.push(`<strong>${key}:</strong> ${val}`);
+                                }
+                                if (foundSpecs.length >= 2) break;
+                            }
+                            if (foundSpecs.length > 0) {
+                                specsListHtml = `
+                                    <div class="card-specs-list" style="font-size: 0.72rem; color: var(--text-muted); margin: 0.35rem 0; line-height: 1.35; display: flex; flex-direction: column; gap: 0.15rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.35rem;">
+                                        ${foundSpecs.map(s => `<div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${s}</div>`).join('')}
+                                    </div>
+                                `;
+                            }
+                        }
+                        return specsListHtml;
+                    })()}
                     
                     ${(function() {
                         const valScore = calculateValueScore(product);
