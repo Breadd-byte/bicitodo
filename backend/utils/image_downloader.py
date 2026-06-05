@@ -6,6 +6,18 @@ import io
 import urllib.parse
 import unicodedata
 import cloudscraper
+import threading
+
+# Domain locks to prevent hitting the same site concurrently
+DOMAIN_LOCKS = {}
+DOMAIN_LOCKS_MUTEX = threading.Lock()
+
+def get_domain_lock(domain):
+    with DOMAIN_LOCKS_MUTEX:
+        if domain not in DOMAIN_LOCKS:
+            DOMAIN_LOCKS[domain] = threading.Lock()
+        return DOMAIN_LOCKS[domain]
+
 
 try:
     from PIL import Image
@@ -123,39 +135,46 @@ def download_image(url, brand=None, model=None, base_url=None, max_size_bytes=5 
 
     # Set referer header from the image URL domain
     custom_headers = HEADERS.copy()
+    domain = "generic"
     try:
         parsed_uri = urllib.parse.urlparse(absolute_url)
         custom_headers["Referer"] = f"{parsed_uri.scheme}://{parsed_uri.netloc}/"
+        domain = parsed_uri.netloc
     except Exception:
         pass
 
     # 3 Retries with exponential backoff
     response_bytes = None
-    for attempt in range(3):
-        try:
-            # We fetch in stream mode to verify Content-Length before downloading the full payload
-            r = scraper.get(absolute_url, headers=custom_headers, timeout=15, stream=True)
-            if r.status_code == 200:
-                content_length = r.headers.get('Content-Length')
-                if content_length and int(content_length) > max_size_bytes:
-                    return placeholder_fallback
-                
-                # Download chunks
-                content = bytearray()
-                for chunk in r.iter_content(chunk_size=8192):
-                    content.extend(chunk)
-                    if len(content) > max_size_bytes:
+    domain_lock = get_domain_lock(domain)
+    
+    with domain_lock:
+        # Avoid flooding the server by sleeping briefly between sequential requests
+        time.sleep(0.3)
+        for attempt in range(3):
+            try:
+                # We fetch in stream mode to verify Content-Length before downloading the full payload
+                r = scraper.get(absolute_url, headers=custom_headers, timeout=15, stream=True)
+                if r.status_code == 200:
+                    content_length = r.headers.get('Content-Length')
+                    if content_length and int(content_length) > max_size_bytes:
                         return placeholder_fallback
-                
-                downloaded_data = bytes(content)
-                if validate_image_bytes(downloaded_data):
-                    response_bytes = downloaded_data
-                    break
-        except Exception:
-            pass
-        
-        if attempt < 2:
-            time.sleep(2 ** attempt) # Backoff: 1s, 2s
+                    
+                    # Download chunks
+                    content = bytearray()
+                    for chunk in r.iter_content(chunk_size=8192):
+                        content.extend(chunk)
+                        if len(content) > max_size_bytes:
+                            return placeholder_fallback
+                    
+                    downloaded_data = bytes(content)
+                    if validate_image_bytes(downloaded_data):
+                        response_bytes = downloaded_data
+                        break
+            except Exception:
+                pass
+            
+            if attempt < 2:
+                time.sleep(2 ** attempt) # Backoff: 1s, 2s
             
     if not response_bytes:
         print(f"  [WARN] Failed to download image: {absolute_url}")
