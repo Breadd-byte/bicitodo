@@ -19,7 +19,6 @@ scraper = cloudscraper.create_scraper(
 )
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Accept": "image/webp,image/apng,image/*,*/*;q=0.8",
     "Accept-Language": "es-CL,es;q=0.9,en-US;q=0.8,en;q=0.7",
 }
@@ -126,7 +125,7 @@ def download_image(url, brand=None, model=None, base_url=None, max_size_bytes=5 
     custom_headers = HEADERS.copy()
     try:
         parsed_uri = urllib.parse.urlparse(absolute_url)
-        custom_headers["Referer"] = f"{parsed_uri.scheme}://{parsed_uri.netloc}"
+        custom_headers["Referer"] = f"{parsed_uri.scheme}://{parsed_uri.netloc}/"
     except Exception:
         pass
 
@@ -139,7 +138,6 @@ def download_image(url, brand=None, model=None, base_url=None, max_size_bytes=5 
             if r.status_code == 200:
                 content_length = r.headers.get('Content-Length')
                 if content_length and int(content_length) > max_size_bytes:
-                    print(f"  [WARN] Image too large ({content_length} bytes): {absolute_url}")
                     return placeholder_fallback
                 
                 # Download chunks
@@ -147,24 +145,20 @@ def download_image(url, brand=None, model=None, base_url=None, max_size_bytes=5 
                 for chunk in r.iter_content(chunk_size=8192):
                     content.extend(chunk)
                     if len(content) > max_size_bytes:
-                        print(f"  [WARN] Image exceeded maximum size during download: {absolute_url}")
                         return placeholder_fallback
                 
                 downloaded_data = bytes(content)
                 if validate_image_bytes(downloaded_data):
                     response_bytes = downloaded_data
                     break
-                else:
-                    print(f"  [WARN] Downloaded data for {absolute_url} failed Magic Bytes validation.")
-            else:
-                print(f"  [WARN] Attempt {attempt + 1} failed for {absolute_url} (HTTP {r.status_code})")
-        except Exception as e:
-            print(f"  [WARN] Attempt {attempt + 1} exception for {absolute_url}: {e}")
+        except Exception:
+            pass
         
         if attempt < 2:
             time.sleep(2 ** attempt) # Backoff: 1s, 2s
             
     if not response_bytes:
+        print(f"  [WARN] Failed to download image: {absolute_url}")
         return placeholder_fallback
 
     # Optimize and save as WebP
