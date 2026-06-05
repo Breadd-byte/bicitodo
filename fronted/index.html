@@ -15,7 +15,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=discount_badge_fix_v1">
+    <link rel="stylesheet" href="style.css?v=responsive_filters_v2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -329,6 +329,9 @@
         </main>
     </div>
 
+    <!-- Filters Overlay for mobile click-outside dismiss -->
+    <div id="filters-overlay" class="filters-overlay" onclick="toggleMobileFilters()"></div>
+
     <!-- Product Detail Modal -->
     <div id="modal-overlay" class="modal-overlay">
         <div id="modal-content" class="modal-content">
@@ -384,7 +387,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js" defer></script>
 
     <script src="config.js" defer></script>
-    <script src="app.js?v=cyber_date_fix_20260602" defer></script>
+    <script src="app.js?v=responsive_filters_v2" defer></script>
 </body>
 
 </html>

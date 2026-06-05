@@ -2814,6 +2814,10 @@ toggleMobileFilters = window.toggleMobileFilters = function() {
     const sidebar = document.querySelector('.sidebar-filters');
     if (sidebar) {
         sidebar.classList.toggle('mobile-open');
+        const overlay = document.getElementById('filters-overlay');
+        if (overlay) {
+            overlay.classList.toggle('active');
+        }
     }
 };
 
