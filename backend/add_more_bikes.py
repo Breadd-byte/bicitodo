@@ -5,7 +5,7 @@ add_more_bikes.py - Agrega 50+ bicicletas nuevas a Falabella, Oxford Store, Ripl
 import sqlite3
 import os
 
-DB_PATH = r"c:\Users\basti\Desktop\bicitodo\backend\database\bicitodo.db"
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "database", "bicitodo.db")
 
 # Imágenes reutilizables del catálogo actual
 IMG = {

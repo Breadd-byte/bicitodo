@@ -513,7 +513,7 @@ async def get_novedades():
         """)
         conn.commit()
         
-        cursor.execute("SELECT id, title, category, summary, url, published_date, image_url FROM news ORDER BY published_date DESC LIMIT 20")
+        cursor.execute("SELECT id, title, category, summary, url, published_date, image_url FROM news ORDER BY published_date DESC LIMIT 30")
         rows = cursor.fetchall()
         news_list = []
         for r in rows:
@@ -526,7 +526,15 @@ async def get_novedades():
                 "published_date": r["published_date"],
                 "image_url": r["image_url"]
             })
-        return news_list
+        
+        # Shuffle/rotate to keep the section interesting for the user
+        import random
+        scraped = [n for n in news_list if "ridechile" in str(n["url"]).lower()]
+        evergreen = [n for n in news_list if "ridechile" not in str(n["url"]).lower()]
+        random.shuffle(evergreen)
+        
+        # Combined list: scraped news first, followed by shuffled evergreen guides
+        return scraped + evergreen
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al obtener novedades: {str(e)}")
     finally:

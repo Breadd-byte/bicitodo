@@ -2263,28 +2263,24 @@ openCountryModal = window.openCountryModal = function() {
     content.innerHTML = `
         <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
         <div style="padding: 2.5rem; text-align: center; display: flex; flex-direction: column; gap: 1.5rem; align-items: center; background: rgba(15,23,42,0.9); backdrop-filter: blur(20px);">
-            <div style="font-size: 3rem; color: var(--accent);"><i class="fa-solid fa-earth-americas" style="filter: drop-shadow(0 0 10px var(--accent-glow));"></i></div>
+            <div style="font-size: 3.5rem; color: var(--primary);"><i class="fa-solid fa-location-dot" style="filter: drop-shadow(0 0 12px var(--primary-glow));"></i></div>
             <div>
                 <h2 style="font-family:'Poppins', sans-serif; font-weight:800; font-size:1.4rem; color:#fff; margin-bottom:0.15rem;">Región: Chile 🇨🇱</h2>
                 <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px;">Mercado Activo Completo</span>
             </div>
             
             <p style="color:var(--text-muted); max-width: 500px; font-size: 0.88rem; line-height: 1.5; margin: 0;">
-                Estás buscando en el mercado chileno. Comparamos los catálogos en tiempo real de más de 13 tiendas nacionales para darte el mejor precio de ciclismo del país.
+                Estás buscando en el mercado chileno. Comparamos los catálogos en tiempo real de las tiendas integradas para darte el mejor precio de ciclismo del país.
             </p>
             
             <div style="width: 100%; max-width: 500px; text-align: left; background: rgba(15,23,42,0.5); padding: 1.25rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.04);">
-                <h4 style="font-family:'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;"><i class="fa-solid fa-store" style="color:var(--accent); margin-right: 0.4rem;"></i> Tiendas Nacionales Integradas:</h4>
+                <h4 style="font-family:'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;"><i class="fa-solid fa-store" style="color:var(--primary); margin-right: 0.4rem;"></i> Tiendas Integradas:</h4>
                 <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.7; margin: 0;">
-                    Falabella • Ripley • Paris • Lider • Decathlon • Oxford Store • Trek Chile • Specialized Chile • Sparta • Faucon Bikes • Sátiro Bikes • Totem Chile • BikePlus • Bikeshop • Copenhague.cl • DS Bikes • CrossMountain • Full Bike • Vidaurre Bikes.
+                    AliExpress • Copenhague • CrossMountain • Decathlon • DS Bikes • Falabella • Faucon Bikes • Full Bike • iBikes • Oxford Store • Paris • Ripley • Satiro Bikes • Sparta • Specialized Chile • Vidaurre Bikes.
                 </p>
             </div>
             
-            <div style="font-size: 0.76rem; color: var(--text-dim); border-top: 1px solid rgba(255,255,255,0.05); width: 100%; padding-top: 0.75rem;">
-                Próximamente: 🇦🇷 Argentina, 🇵🇪 Perú, y 🇨🇴 Colombia (Fase de Pruebas).
-            </div>
-            
-            <button onclick="closeModal()" style="background: var(--accent); color: #fff; font-weight: 800; border: none; padding: 0.7rem 1.8rem; border-radius: 99px; font-size: 0.85rem; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);">
+            <button onclick="closeModal()" style="background: var(--primary); color: #020617; font-weight: 800; border: none; padding: 0.7rem 1.8rem; border-radius: 99px; font-size: 0.85rem; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 12px var(--primary-glow);">
                 Aceptar
             </button>
         </div>
