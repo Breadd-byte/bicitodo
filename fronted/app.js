@@ -100,6 +100,9 @@ try {
         firebase.initializeApp(FIREBASE_CONFIG);
         cloudDb = firebase.firestore();
         cloudAuth = firebase.auth();
+        cloudDb.enablePersistence?.({ synchronizeTabs: true }).catch((error) => {
+            console.warn("Firestore offline persistence not enabled:", error);
+        });
         useFirebase = true;
         console.log("Firebase initialized successfully in Cloud Mode!");
     } else {
@@ -3253,7 +3256,17 @@ handleGoogleLogin = window.handleGoogleLogin = async function(event) {
             const provider = new firebase.auth.GoogleAuthProvider();
             const result = await cloudAuth.signInWithPopup(provider);
             const user = result.user;
+            const fallbackAvatar = user.photoURL || 'ðŸ¦Š';
+
+            state.user = {
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName || (user.email ? user.email.split('@')[0] : 'Usuario'),
+                avatar: fallbackAvatar
+            };
+            localStorage.setItem('bicitodo_mock_user', JSON.stringify(state.user));
             
+            try {
             // Check if profile exists, otherwise save
             const userDoc = await cloudDb.collection('bicitodo_users').doc(user.uid).get();
             if (!userDoc.exists) {
@@ -3264,6 +3277,13 @@ handleGoogleLogin = window.handleGoogleLogin = async function(event) {
                     favorites: []
                 }, { merge: true });
             }
+            } catch (firestoreError) {
+                console.warn("Google login ok, Firestore sync skipped:", firestoreError);
+                showToast('Google conectado. Sincronizacion en la nube pendiente.');
+            }
+            await loadFavorites();
+            updateUserMenu();
+            render();
             showToast('¡Sesión iniciada con Google!');
             closeAuthModal();
         } catch (error) {
