@@ -490,6 +490,63 @@ def check_and_update_news():
     except Exception as e:
         print(f"[News] Error checking/updating news in background: {e}")
 
+FALLBACK_NEWS = [
+    {
+        "id": "fallback-ridechile-puro-ultra",
+        "title": "RidechileTV con Puro Ultra",
+        "category": "Entrevistas",
+        "summary": "Conversacion con Puro Ultra sobre comunidad, eventos y cultura outdoor para quienes viven el deporte sobre dos ruedas.",
+        "url": "https://www.ridechile.cl/2026/06/ridechiletv-con-puro-ultra/",
+        "published_date": "Thu, 04 Jun 2026 13:18:49 +0000",
+        "image_url": None
+    },
+    {
+        "id": "fallback-dia-bicicleta",
+        "title": "Día Mundial de la Bicicleta",
+        "category": "Artículos",
+        "summary": "Beneficios de la bicicleta en salud, transporte y medioambiente, junto con antecedentes sobre su historia y rol urbano.",
+        "url": "https://www.ridechile.cl/2026/06/dia-mundial-de-la-bicicleta-2/",
+        "published_date": "Wed, 03 Jun 2026 16:27:40 +0000",
+        "image_url": None
+    },
+    {
+        "id": "fallback-paola-munoz",
+        "title": "Chilena Paola Muñoz terminó 4ª en la Armed Forces Cycling Classic 2026",
+        "category": "Noticias",
+        "summary": "La ciclista chilena logró un destacado resultado internacional compitiendo con Fearless Femmes en Estados Unidos.",
+        "url": "https://www.ridechile.cl/2026/06/la-chilena-paola-munoz-fue-4a-a-nivel-general-en-la-armed-forces-cycling-classic-2026/",
+        "published_date": "Tue, 02 Jun 2026 19:36:54 +0000",
+        "image_url": None
+    },
+    {
+        "id": "fallback-mtb-araxa",
+        "title": "Chile dijo presente en la Copa Internacional de MTB de Araxá",
+        "category": "MTB",
+        "summary": "Resumen de la participación chilena en una nueva fecha internacional de mountain bike realizada en Brasil.",
+        "url": "https://www.ridechile.cl/2026/06/chile-dijo-presente-en-la-copa-internacional-de-mtb-de-araxa/",
+        "published_date": "Tue, 02 Jun 2026 19:16:41 +0000",
+        "image_url": None
+    },
+    {
+        "id": "fallback-cata-vidaurre",
+        "title": "Chilena Cata Vidaurre fue 2ª en la Copa de Francia de MTB - XCO 2026",
+        "category": "MTB",
+        "summary": "Catalina Vidaurre subió al segundo lugar elite femenina en Francia y sumó puntos importantes de cara a sus próximos desafíos.",
+        "url": "https://www.ridechile.cl/2026/06/chilena-cata-vidaurre-fue-2a-en-la-copa-de-francia-de-mtb-xco-2026/",
+        "published_date": "Tue, 02 Jun 2026 17:44:38 +0000",
+        "image_url": None
+    },
+    {
+        "id": "fallback-factor-aluto",
+        "title": "Diseñada para rendir al máximo: Conoce la nueva Factor ALUTO",
+        "category": "Noticias",
+        "summary": "Presentación de la nueva propuesta de Factor para carreras y aventuras largas con foco en rendimiento.",
+        "url": "https://www.ridechile.cl/2026/06/disenada-para-rendir-al-maximo-conoce-la-nueva-factor-aluto/",
+        "published_date": "Mon, 01 Jun 2026 21:24:25 +0000",
+        "image_url": None
+    }
+]
+
 @app.get("/api/novedades")
 async def get_novedades():
     # Trigger background check/update
@@ -513,7 +570,15 @@ async def get_novedades():
         """)
         conn.commit()
         
-        cursor.execute("SELECT id, title, category, summary, url, published_date, image_url FROM news ORDER BY published_date DESC LIMIT 30")
+        cursor.execute("""
+            SELECT id, title, category, summary, url, published_date, image_url
+            FROM news
+            WHERE url IS NOT NULL
+              AND url != ''
+              AND url NOT LIKE 'https://bicitodo.cl/novedades/%'
+            ORDER BY last_updated DESC, id DESC
+            LIMIT 30
+        """)
         rows = cursor.fetchall()
         news_list = []
         for r in rows:
@@ -526,15 +591,21 @@ async def get_novedades():
                 "published_date": r["published_date"],
                 "image_url": r["image_url"]
             })
-        
-        # Shuffle/rotate to keep the section interesting for the user
-        import random
-        scraped = [n for n in news_list if "ridechile" in str(n["url"]).lower()]
-        evergreen = [n for n in news_list if "ridechile" not in str(n["url"]).lower()]
-        random.shuffle(evergreen)
-        
-        # Combined list: scraped news first, followed by shuffled evergreen guides
-        return scraped + evergreen
+
+        def news_timestamp(article):
+            value = article.get("published_date") or ""
+            try:
+                from email.utils import parsedate_to_datetime
+                return parsedate_to_datetime(value).timestamp()
+            except Exception:
+                try:
+                    from datetime import datetime
+                    return datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp()
+                except Exception:
+                    return 0
+
+        news_list.sort(key=news_timestamp, reverse=True)
+        return news_list or FALLBACK_NEWS
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al obtener novedades: {str(e)}")
     finally:

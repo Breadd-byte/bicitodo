@@ -168,7 +168,44 @@ const state = {
 // =============================================
 // HELPERS
 // =============================================
+const GOOGLE_AUTH_LOGO = `
+    <svg class="google-auth-logo" viewBox="0 0 48 48" aria-hidden="true">
+        <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z" />
+        <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 16.3 4 9.6 8.3 6.3 14.7z" />
+        <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.3C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.6 5.1C9.4 39.6 16.1 44 24 44z" />
+        <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.1 5.5l6.2 5.3C36.9 39.3 44 34 44 24c0-1.3-.1-2.4-.4-3.5z" />
+    </svg>
+`;
+
 const formatCLP = (num) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(num);
+
+function escapeHtml(value = '') {
+    return String(value).replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    }[char]));
+}
+
+function getStoreInitials(offer = {}) {
+    const rawName = String(offer.store || offer.storeKey || 'Tienda');
+    const cleanedName = rawName
+        .replace(/\b(chile|store|bikes?|bike|cl)\b/gi, '')
+        .replace(/[^a-z0-9]+/gi, ' ')
+        .trim();
+    const source = cleanedName || rawName;
+    const initials = source
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(word => word.charAt(0))
+        .join('')
+        .toUpperCase();
+
+    return initials || String(offer.storeKey || 'T').slice(0, 2).toUpperCase();
+}
 
 const CYBER_END_TIME = new Date("2026-06-03T23:59:59-04:00");
 let isCyberMode = false;
@@ -2516,7 +2553,9 @@ async function render(forceFetch = true) {
             aliexpress: '#ff4747'
         };
 
-        pageItems.forEach(product => {
+        const fragment = document.createDocumentFragment();
+
+        pageItems.forEach((product, index) => {
             const bestOffer = [...product.offers].sort((a, b) => a.price - b.price)[0];
             const discount = bestOffer.oldPrice ? Math.round((1 - bestOffer.price / bestOffer.oldPrice) * 100) : 0;
             const isComparing = state.compare.includes(product.id);
@@ -2555,14 +2594,14 @@ async function render(forceFetch = true) {
             const isFavorite = state.favorites.some(f => f.id === product.id);
             const favIcon = isFavorite ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
             
-            // Build store dots (Favicon badge with FontAwesome fallback)
+            // Store dots with store favicon badge.
             const storeDotsHtml = product.offers.map(offer => {
                 const color = STORE_COLORS[offer.storeKey] || '#64748b';
                 const domain = STORE_DOMAINS[offer.storeKey] || 'copenhague.cl';
                 const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
                 return `
-                    <span class="store-dot-mini" style="background: #ffffff; border: 1.5px solid ${color}; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0;" title="${offer.store}">
-                        <img src="${faviconUrl}" alt="${offer.store}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" style="width: 12px; height: 12px; object-fit: contain;">
+                    <span class="store-dot-mini" style="background: #ffffff; border: 1.5px solid ${color}; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0;" title="${escapeHtml(offer.store || offer.storeKey || 'Tienda')}">
+                        <img src="${faviconUrl}" alt="${escapeHtml(offer.store || 'Tienda')}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" style="width: 12px; height: 12px; object-fit: contain;">
                         <i class="fa-solid fa-store" style="font-size: 0.6rem; color: ${color}; display: none;"></i>
                     </span>
                 `;
@@ -2605,7 +2644,10 @@ async function render(forceFetch = true) {
                     <img src="${getProductImage(product)}" alt="${product.model}"
                          data-fallbacks="${getImageFallbacks(product).join('|')}"
                          onerror="handleProductImageError(this, '${cardFallback}')"
-                         loading="lazy"
+                         loading="${index < 2 ? 'eager' : 'lazy'}"
+                         decoding="async"
+                         fetchpriority="${index < 2 ? 'high' : 'low'}"
+                         draggable="false"
                          style="object-fit: contain;">
                     <button class="btn-compare-toggle ${isComparing ? 'active' : ''}" onclick="toggleCompare(${product.id}, event)" title="${isComparing ? 'Quitar del comparador' : 'Agregar al comparador'}">
                         <i class="fa-solid ${isComparing ? 'fa-check' : 'fa-scale-balanced'}"></i>
@@ -2686,8 +2728,9 @@ async function render(forceFetch = true) {
                     openProductAction(product.id, e);
                 }
             });
-            grid.appendChild(card);
+            fragment.appendChild(card);
         });
+        grid.appendChild(fragment);
     } catch (e) {
         console.error("Error rendering from API:", e);
         grid.innerHTML = `
@@ -2964,7 +3007,8 @@ function updateUserMenu() {
         // Guest
         container.innerHTML = `
             <a href="#catalog" class="nav-link" id="nav-cuenta" onclick="openAuthModal(event)" style="display: flex; align-items: center; gap: 0.35rem;">
-                <i class="fa-solid fa-user-lock" style="font-size: 0.95rem; color: var(--primary);"></i> Ingresar
+                ${GOOGLE_AUTH_LOGO}
+                <span>Ingresar</span>
             </a>
         `;
     }
@@ -3032,7 +3076,7 @@ function renderAuthModalContent() {
                 </div>
 
                 <button type="button" class="btn-auth-google" onclick="handleGoogleLogin(event)" style="display:flex; align-items:center; justify-content:center; gap:0.5rem; width:100%; padding:0.65rem; border-radius:99px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.03); color:#fff; font-family:'Poppins',sans-serif; font-weight:700; font-size:0.8rem; cursor:pointer; transition:all 0.2s;" onmouseenter="this.style.background='rgba(255,255,255,0.08)'" onmouseleave="this.style.background='rgba(255,255,255,0.03)'">
-                    <img src="https://lh3.googleusercontent.com/COxitJW1SG1lHmQFTxFiw5dB2Ja1EtAOH3qrsR49AMx71BH1yi4RNJLIg4jaR94wscIPIE5FJH4gWzTy4849adh85HM3q0gfn37V" alt="Google Logo" style="width:16px; height:16px;"> Iniciar sesión con Google
+                    ${GOOGLE_AUTH_LOGO} Iniciar sesión con Google
                 </button>
                 
                 <div class="auth-switch-text">

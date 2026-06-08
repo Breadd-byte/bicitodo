@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BiciTodo | Compara Precios de Bicicletas en Chile — Mercado Completo</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
     <meta name="description"
         content="Compara precios de bicicletas en +13 tiendas chilenas. Falabella, Ripley, Paris, Decathlon, Trek, Specialized, Oxford, Topmega, Benotto y más. El comparador de ciclismo más completo de Chile.">
     <meta name="keywords"
@@ -15,7 +16,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=responsive_filters_v2">
+    <link rel="stylesheet" href="style.css?v=store_logos_restore_v1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -54,8 +55,17 @@
                     style="display: inline-block; position: relative;">
                     <a href="#catalog" class="nav-link" id="nav-cuenta" onclick="openAuthModal(event)"
                         style="display: flex; align-items: center; gap: 0.35rem;">
-                        <i class="fa-solid fa-user-lock" style="font-size: 0.95rem; color: var(--primary);"></i>
-                        Ingresar
+                        <svg class="google-auth-logo" viewBox="0 0 48 48" aria-hidden="true">
+                            <path fill="#FFC107"
+                                d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z" />
+                            <path fill="#FF3D00"
+                                d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 16.3 4 9.6 8.3 6.3 14.7z" />
+                            <path fill="#4CAF50"
+                                d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.3C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.6 5.1C9.4 39.6 16.1 44 24 44z" />
+                            <path fill="#1976D2"
+                                d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.1 5.5l6.2 5.3C36.9 39.3 44 34 44 24c0-1.3-.1-2.4-.4-3.5z" />
+                        </svg>
+                        <span>Ingresar</span>
                     </a>
                 </div>
                 <button id="theme-toggle" class="btn-theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
@@ -365,8 +375,14 @@
 
     <footer>
         <p>© 2026 <strong>BiciTodo</strong> — El comparador de ciclismo más completo de Chile.</p>
-        <p style="margin-top:0.5rem; font-size:0.75rem; color: var(--text-dim);">Los precios pueden variar. Siempre
-            verifica en la tienda oficial antes de comprar. Actualizado diariamente.</p>
+        <p style="margin-top:0.5rem; font-size:0.75rem; color: var(--text-dim);">
+            Los precios pueden variar. Siempre verifica en la tienda oficial antes de comprar. Actualizado diariamente.
+            Al hacer clic en los enlaces de las tiendas, podrías estar utilizando enlaces de afiliados.
+        </p>
+        <p style="margin-top:0.5rem; font-size:0.75rem; color: var(--text-dim);">
+            <a href="privacidad.html" style="color:var(--primary); text-decoration:none; margin-right: 0.5rem;">Política de Privacidad</a> ·
+            <a href="terminos.html" style="color:var(--primary); text-decoration:none; margin-left: 0.5rem;">Términos de Uso</a>
+        </p>
         <div class="footer-stores">
             <span>Tiendas integradas:</span>
             <strong>Falabella • Ripley • Paris • Lider • Decathlon • Oxford • Trek • Specialized • Sparta • Faucon •
@@ -381,13 +397,26 @@
         </div>
     </div>
 
+    <!-- Cookie Consent Banner (Glassmorphic) -->
+    <div id="cookie-banner" class="cookie-banner glass" style="display: none;">
+        <div class="cookie-content">
+            <i class="fa-solid fa-cookie-bite cookie-icon"></i>
+            <p>Usamos cookies para mejorar tu experiencia de navegación, mostrar contenido personalizado y analizar nuestro tráfico. Al continuar navegando, aceptas su uso conforme a nuestra <a href="privacidad.html" style="color: var(--primary); font-weight: bold;">Política de Privacidad</a>.</p>
+        </div>
+        <div class="cookie-buttons">
+            <button class="cookie-btn cookie-btn-secondary" onclick="rejectCookies()">Solo esenciales</button>
+            <button class="cookie-btn cookie-btn-primary" onclick="acceptCookies()">Aceptar todas</button>
+        </div>
+    </div>
+
     <!-- Firebase Compat SDKs (Zero cost) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js" defer></script>
 
     <script src="config.js" defer></script>
-    <script src="app.js?v=responsive_filters_v2" defer></script>
+    <script src="app.js?v=store_logos_restore_v1" defer></script>
 </body>
+
 
 </html>
