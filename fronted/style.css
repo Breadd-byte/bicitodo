@@ -1119,18 +1119,17 @@ html.perf-lite .stores-marquee-wrapper::after {
 }
 
 html.perf-lite .stores-track {
-    animation: none !important;
-    transform: none !important;
-    will-change: auto;
-    flex-wrap: wrap;
+    animation: marquee-scroll 42s linear infinite !important;
+    will-change: transform;
+    flex-wrap: nowrap;
 }
 
 html.perf-lite .stores-marquee-wrapper {
-    overflow: visible;
+    overflow: hidden;
 }
 
 html.perf-lite .stores-marquee-container {
-    align-items: flex-start;
+    align-items: center;
 }
 
 html.perf-lite .glass,
