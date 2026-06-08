@@ -2313,7 +2313,7 @@ openCountryModal = window.openCountryModal = function() {
             <div style="width: 100%; max-width: 500px; text-align: left; background: rgba(15,23,42,0.5); padding: 1.25rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.04);">
                 <h4 style="font-family:'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;"><i class="fa-solid fa-store" style="color:var(--primary); margin-right: 0.4rem;"></i> Tiendas Integradas:</h4>
                 <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.7; margin: 0;">
-                    AliExpress • Copenhague • CrossMountain • Decathlon • DS Bikes • Falabella • Faucon Bikes • Full Bike • iBikes • Oxford Store • Paris • Ripley • Sátiro Bikes • Sparta • Specialized Chile • Vidaurre Bikes.
+                    AliExpress • Copenhague • CrossMountain • Decathlon • DS Bikes • Falabella • Faucon Bikes • Full Bike • iBikes • Oxford Store • Paris • Ripley • Sátiro Bikes • Totem Chile • Sparta • Specialized Chile • Vidaurre Bikes.
                 </p>
             </div>
             
