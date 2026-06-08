@@ -407,7 +407,7 @@ h1, h2, h3, .logo { font-family: 'Poppins', sans-serif; letter-spacing: -0.02em;
 }
 .stores-track:hover,
 .stores-section:hover .stores-track {
-    animation-play-state: paused;
+    animation-play-state: running;
 }
 
 @keyframes marquee-scroll {
@@ -1225,6 +1225,14 @@ html.perf-lite .cookie-icon {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+
+    .stores-track,
+    html.perf-lite .stores-track {
+        animation: marquee-scroll 42s linear infinite !important;
+        animation-duration: 42s !important;
+        animation-iteration-count: infinite !important;
+        animation-play-state: running !important;
     }
 }
 
