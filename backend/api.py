@@ -94,6 +94,28 @@ def normalize_store_key(store_name):
     }
     return aliases.get(key, key)
 
+STORE_FILTER_ALIASES = {
+    "oxford": ["oxfordstore"],
+    "trek": ["trekchile"],
+    "specialized": ["specializedchile"],
+    "totem": ["totemchile"],
+    "faucon": ["fauconbikes"],
+    "satiro": ["satirobikes"],
+    "dsbikes": ["dsbikes"],
+    "vidaurre": ["vidaurrebikes"],
+    "fullbike": ["fullbike"],
+}
+
+def expand_store_filter_keys(store_keys):
+    expanded = []
+    for key in store_keys:
+        if key and key not in expanded:
+            expanded.append(key)
+        for alias in STORE_FILTER_ALIASES.get(key, []):
+            if alias not in expanded:
+                expanded.append(alias)
+    return expanded
+
 @app.get("/api/stats")
 async def get_stats():
     conn = get_db_connection()
@@ -147,10 +169,14 @@ async def get_productos(
             
         # Filtro de tiendas (soporta múltiples separadas por coma)
         if tienda:
-            stores_list = [t.strip().lower().replace(" ", "").replace("_", "") for t in tienda.split(",")]
+            stores_list = [
+                t.strip().lower().replace(" ", "").replace("_", "").replace("-", "")
+                for t in tienda.split(",")
+            ]
+            stores_list = expand_store_filter_keys(stores_list)
             placeholders = ",".join("?" for _ in stores_list)
             # En la base de datos limpiamos el nombre para comparar con storeKey
-            where_clauses.append(f"LOWER(REPLACE(REPLACE(s.name, ' ', ''), '_', '')) IN ({placeholders})")
+            where_clauses.append(f"LOWER(REPLACE(REPLACE(REPLACE(s.name, ' ', ''), '_', ''), '-', '')) IN ({placeholders})")
             where_params.extend(stores_list)
             
         # Filtro de marcas (soporta múltiples separadas por coma)
