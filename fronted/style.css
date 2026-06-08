@@ -1,6 +1,4 @@
 /* ===== BiciTodo Elite CSS v3.0 — Mercado Nacional ===== */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap');
-
 :root {
     --primary: #22c55e;
     --primary-dark: #16a34a;
@@ -1114,6 +1112,69 @@ h1, h2, h3, .logo { font-family: 'Poppins', sans-serif; letter-spacing: -0.02em;
 }
 
 /* ===== PERFORMANCE TUNING ===== */
+html.perf-lite .ambient-glow,
+html.perf-lite .stores-marquee-wrapper::before,
+html.perf-lite .stores-marquee-wrapper::after {
+    display: none !important;
+}
+
+html.perf-lite .stores-track {
+    animation: none !important;
+    transform: none !important;
+    will-change: auto;
+    flex-wrap: wrap;
+}
+
+html.perf-lite .stores-marquee-wrapper {
+    overflow: visible;
+}
+
+html.perf-lite .stores-marquee-container {
+    align-items: flex-start;
+}
+
+html.perf-lite .glass,
+html.perf-lite .navbar,
+html.perf-lite .search-wrapper input,
+html.perf-lite .sidebar-filters,
+html.perf-lite .filters-overlay,
+html.perf-lite .modal-overlay,
+html.perf-lite .modal-content,
+html.perf-lite .auth-modal-content,
+html.perf-lite .compare-modal-content,
+html.perf-lite .user-menu-dropdown,
+html.perf-lite .compare-bar,
+html.perf-lite .cookie-banner,
+html.perf-lite .aliexpress-quick-filters,
+html.perf-lite .stat-item {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html.perf-lite .product-card.elite,
+html.perf-lite .sidebar-filters,
+html.perf-lite .modal-content,
+html.perf-lite .compare-modal-content,
+html.perf-lite .cookie-banner {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22) !important;
+}
+
+html.perf-lite .product-card.elite:hover,
+html.perf-lite .product-card.elite:hover .product-img,
+html.perf-lite .product-card.elite:hover .product-img img,
+html.perf-lite .product-card.elite:hover .neon-price-pill,
+html.perf-lite .store-dot-mini:hover,
+html.perf-lite .store-chip:hover,
+html.perf-lite .btn-fav:hover,
+html.perf-lite .btn-ver-ofertas:hover {
+    transform: none !important;
+}
+
+html.perf-lite .cyber-flash-badge,
+html.perf-lite .cookie-icon {
+    animation: none !important;
+}
+
 @media (max-width: 768px) {
     .ambient-glow {
         display: none;
@@ -1162,7 +1223,29 @@ h1, h2, h3, .logo { font-family: 'Poppins', sans-serif; letter-spacing: -0.02em;
     *::before,
     *::after {
         scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .glass,
+    .navbar,
+    .search-wrapper input,
+    .sidebar-filters,
+    .filters-overlay,
+    .modal-overlay,
+    .modal-content,
+    .auth-modal-content,
+    .compare-modal-content,
+    .user-menu-dropdown,
+    .compare-bar,
+    .cookie-banner,
+    .aliexpress-quick-filters,
+    .stat-item {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
     }
 }
 

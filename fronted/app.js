@@ -133,6 +133,19 @@ const AFFILIATE_CONFIG = {
     subid: "bicitodo"                  // ID de rastreo para saber que la venta vino de esta web
 };
 
+const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false;
+const prefersReducedTransparency = window.matchMedia?.('(prefers-reduced-transparency: reduce)').matches || false;
+const lowPowerDevice = (
+    (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+    (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+    prefersReducedMotion ||
+    prefersReducedTransparency
+);
+
+if (lowPowerDevice) {
+    document.documentElement.classList.add('perf-lite');
+}
+
 const state = {
     category: 'bicicletas',
     sortBy: 'relevant',
@@ -153,7 +166,7 @@ const state = {
     compare: [],       // IDs de productos en comparador (max 3)
     currentPage: 1,
     totalPages: 1,
-    itemsPerPage: 12,
+    itemsPerPage: lowPowerDevice ? 8 : 12,
     data: {
         bicicletas: [],
         accesorios: [],
@@ -2644,9 +2657,9 @@ async function render(forceFetch = true) {
                     <img src="${getProductImage(product)}" alt="${product.model}"
                          data-fallbacks="${getImageFallbacks(product).join('|')}"
                          onerror="handleProductImageError(this, '${cardFallback}')"
-                         loading="${index < 2 ? 'eager' : 'lazy'}"
+                         loading="${index < (lowPowerDevice ? 1 : 2) ? 'eager' : 'lazy'}"
                          decoding="async"
-                         fetchpriority="${index < 2 ? 'high' : 'low'}"
+                         fetchpriority="${index < (lowPowerDevice ? 1 : 2) ? 'high' : 'low'}"
                          draggable="false"
                          style="object-fit: contain;">
                     <button class="btn-compare-toggle ${isComparing ? 'active' : ''}" onclick="toggleCompare(${product.id}, event)" title="${isComparing ? 'Quitar del comparador' : 'Agregar al comparador'}">
