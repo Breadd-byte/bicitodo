@@ -3010,10 +3010,10 @@ function updateUserMenu() {
         const avatarHtml = renderAvatarHTML(state.user.avatar || '🦊', '22px', '1.5px');
         
         container.innerHTML = `
-            <a href="#catalog" class="nav-link" id="nav-cuenta" onclick="toggleUserDropdown(event)" style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer;">
+            <button type="button" class="nav-link user-menu-trigger" id="nav-cuenta" onclick="toggleUserDropdown(event)" aria-haspopup="menu" aria-expanded="false" style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer;">
                 ${displayName} ${avatarHtml}
-            </a>
-            <div class="user-menu-dropdown" id="user-menu-dropdown">
+            </button>
+            <div class="user-menu-dropdown" id="user-menu-dropdown" role="menu">
                 <button class="dropdown-item" onclick="openProfileModal(event)"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> Mis Favoritos</button>
                 <button class="dropdown-item" onclick="openAuthAlerts(event)"><i class="fa-solid fa-bell" style="color:var(--warning);"></i> Alertas de Precios</button>
                 <button class="dropdown-item logout" onclick="handleLogout(event)"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</button>
@@ -3031,10 +3031,17 @@ function updateUserMenu() {
 }
 
 toggleUserDropdown = window.toggleUserDropdown = function(event) {
-    if (event) event.stopPropagation();
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
     const dropdown = document.getElementById('user-menu-dropdown');
+    const trigger = document.getElementById('nav-cuenta');
     if (dropdown) {
         dropdown.classList.toggle('show');
+        if (trigger) {
+            trigger.setAttribute('aria-expanded', dropdown.classList.contains('show') ? 'true' : 'false');
+        }
     }
 };
 
@@ -3202,6 +3209,12 @@ handleAuthSubmit = window.handleAuthSubmit = async function(event) {
                 };
             }
             closeAuthModal();
+            loadFavorites().then(() => {
+                updateUserMenu();
+                render(false);
+            }).catch((favoritesError) => {
+                console.warn("Favorites sync skipped after Google login:", favoritesError);
+            });
         } catch (error) {
             console.error("Auth error:", error);
             showToast('Error de autenticación: ' + error.message);
@@ -3281,7 +3294,6 @@ handleGoogleLogin = window.handleGoogleLogin = async function(event) {
                 console.warn("Google login ok, Firestore sync skipped:", firestoreError);
                 showToast('Google conectado. Sincronizacion en la nube pendiente.');
             }
-            await loadFavorites();
             updateUserMenu();
             render();
             showToast('¡Sesión iniciada con Google!');
@@ -3342,7 +3354,18 @@ crearAlertaSupabase = window.crearAlertaSupabase = async function(productId) {
 };
 
 handleLogout = window.handleLogout = async function(event) {
-    if (event) event.preventDefault();
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    const dropdown = document.getElementById('user-menu-dropdown');
+    if (dropdown) dropdown.classList.remove('show');
+    state.user = null;
+    state.favorites = [];
+    localStorage.removeItem('bicitodo_mock_user');
+    localStorage.removeItem('bicitodo_favorites');
+    updateUserMenu();
+    render();
     if (useFirebase && cloudAuth) {
         try {
             await cloudAuth.signOut();
@@ -3418,6 +3441,8 @@ document.addEventListener('click', (e) => {
     if (!e.target.closest('#user-menu-container')) {
         const dropdown = document.getElementById('user-menu-dropdown');
         if (dropdown) dropdown.classList.remove('show');
+        const trigger = document.getElementById('nav-cuenta');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
     }
 });
 

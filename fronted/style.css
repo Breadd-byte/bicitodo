@@ -2284,6 +2284,13 @@ footer strong { color: var(--primary); }
     height: 17px;
 }
 
+.user-menu-trigger {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    font: inherit;
+}
+
 .btn-auth-google .google-auth-logo {
     width: 18px;
     height: 18px;
@@ -2340,6 +2347,26 @@ footer strong { color: var(--primary); }
 .dropdown-item.logout:hover {
     background: rgba(239, 68, 68, 0.08);
     color: #f87171;
+}
+
+@media (max-width: 768px) {
+    .user-menu-wrapper {
+        position: static !important;
+    }
+
+    .user-menu-dropdown {
+        position: fixed;
+        top: 112px;
+        right: 0.85rem;
+        width: min(260px, calc(100vw - 1.7rem));
+        margin-top: 0;
+        z-index: 10050;
+        transform: translateY(-6px);
+    }
+
+    .user-menu-dropdown.show {
+        transform: translateY(0);
+    }
 }
 
 /* ===== GLASSMORPHIC AUTH FORM ===== */
