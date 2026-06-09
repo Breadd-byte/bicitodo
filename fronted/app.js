@@ -2601,8 +2601,9 @@ async function render(forceFetch = true) {
             const rating = product.rating ? product.rating.toFixed(1) : (4.3 + ((product.id * 7) % 7) * 0.1).toFixed(1);
             const reviews = product.review_count || (12 + ((product.id * 13) % 45));
             
+            const isIntlProduct = isInternationalProduct(product);
             const card = document.createElement('div');
-            card.className = `product-card elite${isComparing ? ' comparing' : ''}`;
+            card.className = `product-card elite${isComparing ? ' comparing' : ''}${isIntlProduct ? ' international' : ''}`;
             card.setAttribute('role', 'button');
             card.setAttribute('tabindex', '0');
             card.setAttribute('aria-label', `Ver detalles de ${product.brand} ${product.model}`);
@@ -2632,9 +2633,8 @@ async function render(forceFetch = true) {
                 ? `<div class="cyber-flash-badge" style="position: absolute; top: 12px; left: 12px; background: #ec4899; color: #fff; font-size: 0.65rem; font-weight: 900; padding: 0.25rem 0.6rem; border-radius: 99px; text-transform: uppercase; z-index: 10; box-shadow: 0 0 10px rgba(236,72,153,0.6); animation: pulse 1.5s infinite;"><i class="fa-solid fa-bolt"></i> Cyber Days</div>`
                 : '';
                 
-            const isIntlProduct = isInternationalProduct(product);
             const intlBadgeHtml = isIntlProduct 
-                ? `<div class="intl-flash-badge" style="position: absolute; top: 12px; left: 12px; background: linear-gradient(135deg, #ff4747, #f97316); color: #fff; font-size: 0.65rem; font-weight: 800; padding: 0.25rem 0.6rem; border-radius: 99px; text-transform: uppercase; z-index: 10; box-shadow: 0 0 10px rgba(255,71,71,0.5);"><i class="fa-solid fa-plane-up"></i> AliExpress</div>`
+                ? `<div class="intl-flash-badge"><i class="fa-solid fa-plane-up"></i> AliExpress</div>`
                 : '';
             const actionLabel = isIntlProduct
                 ? 'AliExpress <i class="fa-solid fa-arrow-up-right-from-square"></i>'
