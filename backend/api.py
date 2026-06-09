@@ -31,12 +31,16 @@ app.add_middleware(
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "database", "bicitodo.db")
 
 # Configuración de Supabase
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "TU_SUPABASE_URL_AQUÍ")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "TU_SUPABASE_KEY_AQUÍ")
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "").strip()
+SUPABASE_KEY = (
+    os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+    or os.environ.get("SUPABASE_KEY")
+    or ""
+).strip()
 
 # Cliente Supabase
 supabase_client: Client = None
-if SUPABASE_URL != "TU_SUPABASE_URL_AQUÍ" and SUPABASE_KEY != "TU_SUPABASE_KEY_AQUÍ":
+if SUPABASE_URL and SUPABASE_KEY:
     try:
         supabase_client = create_client(SUPABASE_URL, SUPABASE_KEY)
         print("[Supabase] Conectado exitosamente en la API.")
@@ -642,6 +646,45 @@ class AlertaSchema(BaseModel):
     id_producto: int
     precio_actual: int
 
+def get_product_alert_snapshot(product_id: int):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            """
+            SELECT
+                p.brand,
+                p.model,
+                p.category,
+                p.canonical_image,
+                sp.price_normal,
+                sp.url,
+                sp.image_url,
+                s.name AS store_name
+            FROM products p
+            JOIN store_products sp ON sp.product_id = p.id
+            JOIN stores s ON s.id = sp.store_id
+            WHERE p.id = ?
+            ORDER BY sp.price_normal ASC
+            LIMIT 1
+            """,
+            (product_id,),
+        )
+        row = cursor.fetchone()
+        if not row:
+            return None
+        return {
+            "producto_nombre": f"{row['brand']} {row['model']}".strip(),
+            "marca": row["brand"],
+            "categoria": row["category"],
+            "precio_actual": row["price_normal"],
+            "tienda_mejor_precio": row["store_name"],
+            "url_producto": row["url"],
+            "image_url": row["image_url"] or row["canonical_image"],
+        }
+    finally:
+        conn.close()
+
 @app.post("/api/crear-alerta")
 async def crear_alerta(alerta: AlertaSchema):
     if not supabase_client:
@@ -649,15 +692,58 @@ async def crear_alerta(alerta: AlertaSchema):
             status_code=503, 
             detail="El servicio de alertas en la nube (Supabase) no está configurado."
         )
+    email = (alerta.email_usuario or "").strip().lower()
+    if "@" not in email or "." not in email:
+        raise HTTPException(status_code=400, detail="Correo de usuario invalido.")
+    if alerta.id_producto <= 0:
+        raise HTTPException(status_code=400, detail="Producto invalido.")
+    if alerta.precio_actual <= 0:
+        raise HTTPException(status_code=400, detail="Ingresa un precio objetivo valido.")
+
     try:
+        product = get_product_alert_snapshot(alerta.id_producto)
+        if not product:
+            raise HTTPException(status_code=404, detail="Producto no encontrado.")
+
         data = {
-            "email_usuario": alerta.email_usuario,
+            "email_usuario": email,
             "id_producto": alerta.id_producto,
-            "precio_actual": alerta.precio_actual
+            "precio_objetivo": alerta.precio_actual,
+            "precio_actual": product["precio_actual"],
+            "producto_nombre": product["producto_nombre"],
+            "marca": product["marca"],
+            "categoria": product["categoria"],
+            "tienda_mejor_precio": product["tienda_mejor_precio"],
+            "url_producto": product["url_producto"],
+            "image_url": product["image_url"],
+            "activa": True,
+            "notificado": False,
         }
-        response = supabase_client.table("alertas").insert(data).execute()
-        return {"status": "success", "message": "Alerta registrada correctamente", "data": response.data}
+        existing = (
+            supabase_client
+            .table("alertas")
+            .select("id")
+            .eq("email_usuario", email)
+            .eq("id_producto", alerta.id_producto)
+            .limit(1)
+            .execute()
+        )
+        if existing.data:
+            response = (
+                supabase_client
+                .table("alertas")
+                .update(data)
+                .eq("id", existing.data[0]["id"])
+                .execute()
+            )
+            message = "Alerta actualizada correctamente"
+        else:
+            response = supabase_client.table("alertas").insert(data).execute()
+            message = "Alerta registrada correctamente"
+        return {"status": "success", "message": message, "data": response.data}
     except Exception as e:
+        if isinstance(e, HTTPException):
+            raise e
         raise HTTPException(status_code=500, detail=f"Error al registrar alerta en Supabase: {str(e)}")
 
 # Montar los archivos estáticos del servidor (Imágenes locales)

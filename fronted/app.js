@@ -3316,6 +3316,11 @@ crearAlertaSupabase = window.crearAlertaSupabase = async function(productId) {
     const input = document.getElementById('alert-price-input');
     const targetPrice = input ? parseInt(input.value) : 0;
     const email = state.user.email;
+    if (!targetPrice || targetPrice <= 0) {
+        showToast('Ingresa un precio objetivo valido.');
+        if (input) input.focus();
+        return;
+    }
     
     try {
         showToast('Creando alerta en la nube...');
