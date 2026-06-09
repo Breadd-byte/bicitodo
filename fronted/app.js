@@ -50,6 +50,7 @@ changeAvatar = async function(emoji) {
     if (!state.user) return;
     
     state.user.avatar = emoji;
+    cacheAuthUserProfile(state.user);
     showToast(`¡Avatar actualizado a ${emoji}!`);
     
     // Save to local storage
@@ -60,6 +61,7 @@ changeAvatar = async function(emoji) {
     // Save to Firebase/Firestore if enabled
     if (useFirebase && cloudAuth && cloudAuth.currentUser) {
         try {
+            await firebasePersistenceReady;
             const uid = cloudAuth.currentUser.uid;
             await cloudAuth.currentUser.updateProfile({ photoURL: emoji });
             await cloudDb.collection('bicitodo_users').doc(uid).set({ avatar: emoji }, { merge: true });
@@ -94,12 +96,16 @@ const FIREBASE_CONFIG = {
 let cloudDb = null;
 let cloudAuth = null;
 let useFirebase = false;
+let firebasePersistenceReady = Promise.resolve();
 
 try {
     if (typeof firebase !== 'undefined' && FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY") {
         firebase.initializeApp(FIREBASE_CONFIG);
         cloudDb = firebase.firestore();
         cloudAuth = firebase.auth();
+        firebasePersistenceReady = cloudAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch((error) => {
+            console.warn("Firebase auth local persistence not enabled:", error);
+        });
         cloudDb.enablePersistence?.({ synchronizeTabs: true }).catch((error) => {
             console.warn("Firestore offline persistence not enabled:", error);
         });
@@ -192,6 +198,31 @@ const GOOGLE_AUTH_LOGO = `
         <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.1 5.5l6.2 5.3C36.9 39.3 44 34 44 24c0-1.3-.1-2.4-.4-3.5z" />
     </svg>
 `;
+
+const AUTH_USER_CACHE_KEY = 'bicitodo_auth_user';
+
+function cacheAuthUserProfile(user) {
+    if (!user || !user.email) return;
+    localStorage.setItem(AUTH_USER_CACHE_KEY, JSON.stringify({
+        uid: user.uid || null,
+        email: user.email,
+        displayName: user.displayName || user.email.split('@')[0],
+        avatar: user.avatar || user.photoURL || '🦊'
+    }));
+}
+
+function getCachedAuthUserProfile() {
+    try {
+        const raw = localStorage.getItem(AUTH_USER_CACHE_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+function clearAuthUserProfileCache() {
+    localStorage.removeItem(AUTH_USER_CACHE_KEY);
+}
 
 const formatCLP = (num) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(num);
 
@@ -3179,9 +3210,16 @@ handleAuthSubmit = window.handleAuthSubmit = async function(event) {
     
     if (useFirebase && cloudAuth) {
         try {
+            await firebasePersistenceReady;
             showToast('Conectando con la nube...');
             if (state.activeAuthTab === 'login') {
-                await cloudAuth.signInWithEmailAndPassword(email, password);
+                const userCred = await cloudAuth.signInWithEmailAndPassword(email, password);
+                cacheAuthUserProfile({
+                    uid: userCred.user.uid,
+                    email: userCred.user.email,
+                    displayName: userCred.user.displayName || email.split('@')[0],
+                    avatar: userCred.user.photoURL || 'ðŸ¦Š'
+                });
                 showToast('¡Sesión iniciada con éxito!');
             } else {
                 const name = document.getElementById('auth-name').value;
@@ -3207,6 +3245,7 @@ handleAuthSubmit = window.handleAuthSubmit = async function(event) {
                     displayName: name,
                     avatar: avatar
                 };
+                cacheAuthUserProfile(state.user);
             }
             closeAuthModal();
             loadFavorites().then(() => {
@@ -3265,6 +3304,7 @@ handleGoogleLogin = window.handleGoogleLogin = async function(event) {
     if (event) event.preventDefault();
     if (useFirebase && cloudAuth) {
         try {
+            await firebasePersistenceReady;
             showToast('Conectando con Google...');
             const provider = new firebase.auth.GoogleAuthProvider();
             const result = await cloudAuth.signInWithPopup(provider);
@@ -3277,7 +3317,7 @@ handleGoogleLogin = window.handleGoogleLogin = async function(event) {
                 displayName: user.displayName || (user.email ? user.email.split('@')[0] : 'Usuario'),
                 avatar: fallbackAvatar
             };
-            localStorage.setItem('bicitodo_mock_user', JSON.stringify(state.user));
+            cacheAuthUserProfile(state.user);
             
             try {
             // Check if profile exists, otherwise save
@@ -3367,6 +3407,7 @@ handleLogout = window.handleLogout = async function(event) {
     if (dropdown) dropdown.classList.remove('show');
     state.user = null;
     state.favorites = [];
+    clearAuthUserProfileCache();
     localStorage.removeItem('bicitodo_mock_user');
     localStorage.removeItem('bicitodo_favorites');
     updateUserMenu();
@@ -3381,6 +3422,7 @@ handleLogout = window.handleLogout = async function(event) {
     } else {
         state.user = null;
         localStorage.removeItem('bicitodo_mock_user');
+        clearAuthUserProfileCache();
         localStorage.removeItem('bicitodo_favorites');
         state.favorites = [];
         showToast('Sesión local cerrada.');
@@ -3399,13 +3441,22 @@ function setupFirebaseAuthListener() {
     }
 
     if (useFirebase && cloudAuth) {
+        const cachedUser = getCachedAuthUserProfile();
+        if (cachedUser) {
+            state.user = cachedUser;
+            updateUserMenu();
+        }
         cloudAuth.onAuthStateChanged(async (user) => {
             if (user) {
-                let userAvatar = user.photoURL || '🦊';
+                let userAvatar = user.photoURL || cachedUser?.avatar || '🦊';
+                let userDisplayName = user.displayName || cachedUser?.displayName || (user.email ? user.email.split('@')[0] : 'Usuario');
                 try {
                     const doc = await cloudDb.collection('bicitodo_users').doc(user.uid).get();
                     if (doc.exists && doc.data().avatar) {
                         userAvatar = doc.data().avatar;
+                    }
+                    if (doc.exists && doc.data().displayName) {
+                        userDisplayName = doc.data().displayName;
                     }
                 } catch(e) {
                     console.log("Could not fetch avatar from Firestore, using photoURL.");
@@ -3414,11 +3465,13 @@ function setupFirebaseAuthListener() {
                 state.user = {
                     uid: user.uid,
                     email: user.email,
-                    displayName: user.displayName,
+                    displayName: userDisplayName,
                     avatar: userAvatar
                 };
+                cacheAuthUserProfile(state.user);
             } else {
                 state.user = null;
+                clearAuthUserProfileCache();
             }
             await loadFavorites();
             updateUserMenu();
