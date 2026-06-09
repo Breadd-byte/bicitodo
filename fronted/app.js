@@ -57,6 +57,11 @@ changeAvatar = async function(emoji) {
     if (localStorage.getItem('bicitodo_mock_user')) {
         localStorage.setItem('bicitodo_mock_user', JSON.stringify(state.user));
     }
+
+    // Repaint immediately; Firebase sync can take a moment on mobile.
+    updateUserMenu();
+    openProfileModal();
+    render(false);
     
     // Save to Firebase/Firestore if enabled
     if (useFirebase && cloudAuth && cloudAuth.currentUser) {
@@ -70,10 +75,6 @@ changeAvatar = async function(emoji) {
         }
     }
     
-    // Update navbar and reopen profile modal to show changes
-    updateUserMenu();
-    openProfileModal();
-    render();
 };
 
 
