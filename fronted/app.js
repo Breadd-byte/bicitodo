@@ -1,5 +1,5 @@
 // Lexical declarations for window functions to prevent ReferenceErrors
-let setCategory, clearFilters, toggleCompare, clearCompare, openCompareModal, closeCompareModal, openProductDetail, openProductStore, openProductAction, closeModal, switchTab, activateExplorar, activateDeals, activateInternationalMode, openNovedadesModal, openProfileModal, openCountryModal, toggleMobileFilters, toggleFavorite, toggleFavoriteDetail, togglePriceAlert, toggleUserDropdown, openAuthModal, closeAuthModal, switchAuthTab, openAuthAlerts, handleAuthSubmit, handleLogout, renderAvatarHTML, selectSignupAvatar, changeAvatar, handleProductImageError, handleGoogleLogin, crearAlertaSupabase, toggleTheme;
+let setCategory, clearFilters, toggleCompare, clearCompare, openCompareModal, closeCompareModal, openProductDetail, openProductStore, openProductAction, closeModal, switchTab, activateExplorar, activateDeals, activateInternationalMode, openNovedadesModal, openProfileModal, openCountryModal, toggleMobileFilters, toggleFavorite, toggleFavoriteDetail, togglePriceAlert, toggleUserDropdown, openAuthModal, closeAuthModal, switchAuthTab, openAuthAlerts, handleAuthSubmit, handleLogout, renderAvatarHTML, selectSignupAvatar, changeAvatar, handleProductImageError, handleGoogleLogin, crearAlertaSupabase, toggleTheme, copyProductLink;
 
 // =============================================
 // ANIMAL AVATARS & STYLING SYSTEM
@@ -185,7 +185,9 @@ const state = {
     user: null,
     favorites: [],
     activeAuthTab: 'login',
-    selectedSignupAvatar: '🦊'
+    selectedSignupAvatar: '🦊',
+    pendingProductId: null,
+    pendingProductOpened: false
 };
 
 // =============================================
@@ -235,6 +237,63 @@ function escapeHtml(value = '') {
         '"': '&quot;',
         "'": '&#039;'
     }[char]));
+}
+
+function slugifyProduct(value = '') {
+    return String(value)
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 90);
+}
+
+function getProductSharePath(product = {}) {
+    const slug = slugifyProduct(`${product.brand || ''} ${product.model || ''}`);
+    return `?producto=${product.id}${slug ? `-${slug}` : ''}`;
+}
+
+function getProductShareUrl(product = {}) {
+    return `${window.location.origin}${window.location.pathname}${getProductSharePath(product)}`;
+}
+
+function getProductIdFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const raw = params.get('producto') || params.get('product') || '';
+    const match = String(raw).match(/^(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+}
+
+function ensureMetaTag(name, content, attr = 'name') {
+    if (!content) return;
+    let tag = document.head.querySelector(`meta[${attr}="${name}"]`);
+    if (!tag) {
+        tag = document.createElement('meta');
+        tag.setAttribute(attr, name);
+        document.head.appendChild(tag);
+    }
+    tag.setAttribute('content', content);
+}
+
+function updateProductSeo(product) {
+    if (!product) return;
+    const bestOffer = getBestProductOffer(product);
+    const priceText = bestOffer?.price ? formatCLP(bestOffer.price) : 'mejor precio';
+    const title = `${product.brand} ${product.model} desde ${priceText} | BiciTodo`;
+    const description = `Compara precios de ${product.brand} ${product.model} en BiciTodo Chile. Revisa tiendas disponibles, historial de precio y enlace directo a la tienda.`;
+    const url = getProductShareUrl(product);
+    document.title = title;
+    ensureMetaTag('description', description);
+    ensureMetaTag('og:title', title, 'property');
+    ensureMetaTag('og:description', description, 'property');
+    ensureMetaTag('og:url', url, 'property');
+    if (product.image) ensureMetaTag('og:image', new URL(product.image, window.location.origin).href, 'property');
+}
+
+function resetDefaultSeo() {
+    document.title = 'BiciTodo | Compara Precios de Bicicletas en Chile — Mercado Completo';
+    ensureMetaTag('description', 'Compara precios de bicicletas, accesorios y repuestos de ciclismo en tiendas chilenas. Encuentra el mejor precio y revisa ofertas disponibles por tienda.');
 }
 
 function getStoreInitials(offer = {}) {
@@ -923,6 +982,7 @@ function init() {
     setupEventListeners();
     injectCyberCSS();
     checkCyberStatus();
+    state.pendingProductId = getProductIdFromUrl();
     applyInitialModeFromUrl();
     loadRealData();
     setupFirebaseAuthListener();
@@ -1589,6 +1649,79 @@ function getBestProductOffer(product = {}) {
     return [...offers].sort((a, b) => (a.price || 0) - (b.price || 0))[0];
 }
 
+function getOfferHistoryPoints(offer = {}) {
+    const history = Array.isArray(offer.history) ? offer.history : [];
+    const points = history
+        .map(item => ({
+            price: Number(item?.price || item),
+            timestamp: item?.timestamp || offer.lastUpdated || null
+        }))
+        .filter(item => Number.isFinite(item.price) && item.price > 0);
+
+    if (!points.length && offer.price) {
+        points.push({ price: Number(offer.price), timestamp: offer.lastUpdated || null });
+    }
+    return points.slice(-8);
+}
+
+function formatHistoryDate(value) {
+    if (!value) return 'Actual';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return 'Actual';
+    return date.toLocaleDateString('es-CL', { day: '2-digit', month: 'short' });
+}
+
+function renderStoreHistory(product = {}) {
+    const offers = Array.isArray(product.offers) ? product.offers : [];
+    if (!offers.length) return '';
+
+    return `
+        <div class="store-history-list">
+            ${[...offers].sort((a, b) => (a.price || 0) - (b.price || 0)).map(offer => {
+                const points = getOfferHistoryPoints(offer);
+                const first = points[0]?.price || offer.price || 0;
+                const last = points[points.length - 1]?.price || offer.price || 0;
+                const diff = last - first;
+                const trendClass = diff < 0 ? 'down' : diff > 0 ? 'up' : 'flat';
+                const trendLabel = diff < 0 ? `Bajo ${formatCLP(Math.abs(diff))}` : diff > 0 ? `Subio ${formatCLP(diff)}` : 'Sin cambios';
+                const min = Math.min(...points.map(p => p.price), last);
+                const max = Math.max(...points.map(p => p.price), last);
+                const range = max - min || 1;
+                const bars = points.map(point => {
+                    const height = 26 + Math.round(((point.price - min) / range) * 34);
+                    return `<span class="store-history-bar" style="height:${height}px" title="${formatCLP(point.price)} - ${formatHistoryDate(point.timestamp)}"></span>`;
+                }).join('');
+
+                return `
+                    <div class="store-history-card">
+                        <div class="store-history-head">
+                            <span class="store-history-name">${getStoreDot(offer.storeKey)} ${escapeHtml(offer.store || 'Tienda')}</span>
+                            <span class="store-history-price">${formatCLP(last)}</span>
+                        </div>
+                        <div class="store-history-bars">${bars}</div>
+                        <div class="store-history-foot">
+                            <span>${points.length} registro${points.length === 1 ? '' : 's'}</span>
+                            <span class="store-history-trend ${trendClass}">${trendLabel}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+}
+
+copyProductLink = window.copyProductLink = async function(productId) {
+    const product = findProductById(productId);
+    if (!product) return;
+    const url = getProductShareUrl(product);
+    try {
+        await navigator.clipboard.writeText(url);
+        showToast('Enlace del producto copiado.');
+    } catch (e) {
+        window.prompt('Copia el enlace del producto:', url);
+    }
+};
+
 openProductStore = window.openProductStore = function(productId, event) {
     if (event) {
         event.preventDefault();
@@ -1652,6 +1785,11 @@ openProductDetail = window.openProductDetail = function(productId) {
     if (!product) return;
 
     const bestOffer = getBestProductOffer(product);
+    updateProductSeo(product);
+    const sharePath = getProductSharePath(product);
+    if (window.location.search !== sharePath) {
+        window.history.replaceState({ productId }, '', sharePath);
+    }
     const discount = bestOffer.oldPrice ? Math.round((1 - bestOffer.price / bestOffer.oldPrice) * 100) : 0;
 
     const activeFav = state.favorites.find(f => f.id === productId);
@@ -1717,6 +1855,8 @@ openProductDetail = window.openProductDetail = function(productId) {
             <span class="btn-goto">Ver en tienda <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
         </a>`;
         }).join('');
+
+    const storeHistoryHtml = renderStoreHistory(product);
 
     // Price history interactive chart markup
     const histMax = Math.max(...product.history);
@@ -1805,6 +1945,9 @@ openProductDetail = window.openProductDetail = function(productId) {
                     <span class="modal-brand-badge">${product.brand}</span>
                     <h2 class="modal-title">${product.model}</h2>
                     <p class="modal-specs-summary">${getProductSummary(product)}</p>
+                    <button type="button" class="modal-share-link" onclick="copyProductLink(${product.id})">
+                        <i class="fa-solid fa-link"></i> Copiar enlace
+                    </button>
                     <div class="modal-best-price-hero">
                         <span class="label">Desde</span>
                         <span class="amount">${formatCLP(bestOffer.price)}</span>
@@ -1857,6 +2000,7 @@ openProductDetail = window.openProductDetail = function(productId) {
                 </div>
                 <div id="tab-history" class="tab-panel">
                     ${sparkHtml}
+                    ${storeHistoryHtml}
                 </div>
             </div>
         </div>
@@ -1870,6 +2014,10 @@ openProductDetail = window.openProductDetail = function(productId) {
 closeModal = window.closeModal = function() {
     document.getElementById('modal-overlay').classList.remove('active');
     document.body.style.overflow = '';
+    if (new URLSearchParams(window.location.search).has('producto')) {
+        window.history.replaceState({}, '', window.location.pathname);
+        resetDefaultSeo();
+    }
 };
 
 switchTab = window.switchTab = function(btn, tabId) {
@@ -2380,6 +2528,40 @@ openCountryModal = window.openCountryModal = function() {
 // Global cache for all fetched products to support detailed modal & comparison anywhere
 if (!state.data.cache) state.data.cache = {};
 
+async function openPendingProductFromUrl() {
+    if (!state.pendingProductId || state.pendingProductOpened) return;
+
+    let product = findProductById(state.pendingProductId) || state.data.cache[state.pendingProductId];
+    if (!product) {
+        try {
+            const params = new URLSearchParams({
+                producto_id: String(state.pendingProductId),
+                page: '1',
+                limit: '1'
+            });
+            const response = await fetch(`${API_BASE_URL}/api/productos?${params.toString()}`, { cache: 'no-store' });
+            if (response.ok) {
+                const data = await response.json();
+                product = data.productos?.[0];
+                if (product) {
+                    state.data.cache[product.id] = product;
+                    if (!state.data[product.category]) state.data[product.category] = [];
+                    if (!state.data[product.category].some(item => item.id === product.id)) {
+                        state.data[product.category].push(product);
+                    }
+                }
+            }
+        } catch (error) {
+            console.warn('No se pudo cargar el producto compartido:', error);
+        }
+    }
+
+    if (product) {
+        state.pendingProductOpened = true;
+        setTimeout(() => openProductDetail(product.id), 50);
+    }
+}
+
 async function render(forceFetch = true) {
     const grid = document.getElementById('catalog-grid');
     if (!grid) return;
@@ -2642,6 +2824,7 @@ async function render(forceFetch = true) {
             const cardFallback = getProductFallbackImage(product);
             const isFavorite = state.favorites.some(f => f.id === product.id);
             const favIcon = isFavorite ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+            const productSharePath = getProductSharePath(product);
             
             // Store dots with store favicon badge.
             const storeDotsHtml = product.offers.map(offer => {
@@ -2706,7 +2889,9 @@ async function render(forceFetch = true) {
                 </div>
                 <div class="product-info">
                     <div class="prod-brand-row">
-                        <h3 class="prod-title">${product.brand} ${product.model}</h3>
+                        <h3 class="prod-title">
+                            <a class="prod-title-link" href="${productSharePath}" onclick="event.preventDefault(); openProductDetail(${product.id});">${product.brand} ${product.model}</a>
+                        </h3>
                     </div>
                     <div class="prod-specs-row">
                         ${specsBadgesHtml}
@@ -2779,6 +2964,7 @@ async function render(forceFetch = true) {
             fragment.appendChild(card);
         });
         grid.appendChild(fragment);
+        openPendingProductFromUrl();
     } catch (e) {
         console.error("Error rendering from API:", e);
         grid.innerHTML = `

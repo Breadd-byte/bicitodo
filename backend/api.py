@@ -1,5 +1,5 @@
 # api.py - Dynamic High-Performance FastAPI Backend for BiciTodo
-from fastapi import FastAPI, Query, HTTPException
+from fastapi import FastAPI, Query, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -8,6 +8,8 @@ import sqlite3
 import json
 import os
 import mimetypes
+import re
+import unicodedata
 from collections import defaultdict
 
 # Register WebP mime type for consistent serving headers across operating systems
@@ -98,6 +100,23 @@ def normalize_store_key(store_name):
     }
     return aliases.get(key, key)
 
+def slugify(value):
+    text = str(value or "")
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(ch for ch in text if not unicodedata.combining(ch))
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9]+", "-", text)
+    return re.sub(r"^-+|-+$", "", text)[:90]
+
+def xml_escape(value):
+    return (
+        str(value or "")
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
 STORE_FILTER_ALIASES = {
     "oxford": ["oxfordstore"],
     "trek": ["trekchile"],
@@ -135,6 +154,60 @@ async def get_stats():
     finally:
         conn.close()
 
+@app.get("/robots.txt")
+async def robots_txt():
+    content = "User-agent: *\nAllow: /\nSitemap: https://bicitodo.cl/sitemap.xml\n"
+    return Response(content=content, media_type="text/plain")
+
+@app.get("/sitemap.xml")
+async def sitemap_xml():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        rows = cursor.execute(
+            """
+            SELECT p.id, p.brand, p.model, p.category
+            FROM products p
+            WHERE COALESCE(p.is_international, 0) = 0
+            ORDER BY
+                CASE p.category
+                    WHEN 'bicicletas' THEN 0
+                    WHEN 'accesorios' THEN 1
+                    WHEN 'repuestos' THEN 2
+                    ELSE 3
+                END,
+                p.id DESC
+            LIMIT 10000
+            """
+        ).fetchall()
+
+        urls = [
+            """
+  <url>
+    <loc>https://bicitodo.cl/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>""".strip()
+        ]
+        for row in rows:
+            slug = slugify(f"{row['brand']} {row['model']}")
+            loc = f"https://bicitodo.cl/?producto={row['id']}-{slug}" if slug else f"https://bicitodo.cl/?producto={row['id']}"
+            priority = "0.9" if row["category"] == "bicicletas" else "0.7"
+            urls.append(f"""
+  <url>
+    <loc>{xml_escape(loc)}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>{priority}</priority>
+  </url>""".strip())
+
+        xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        xml += "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n"
+        xml += "\n".join(urls)
+        xml += "\n</urlset>\n"
+        return Response(content=xml, media_type="application/xml")
+    finally:
+        conn.close()
+
 @app.get("/api/productos")
 async def get_productos(
     page: int = Query(1, ge=1, description="Número de página"),
@@ -150,7 +223,8 @@ async def get_productos(
     sort_by: str = Query("relevant", description="Ordenamiento: relevant, price-asc, price-desc, discount, stores"),
     discount_min: int = Query(None, description="Descuento mínimo en porcentaje"),
     internacional: bool = Query(None, description="Filtrar por internacional (AliExpress)"),
-    quick_filter: str = Query(None, description="Filtro rápido de AliExpress: bestseller, toprated, trends, value")
+    quick_filter: str = Query(None, description="Filtro rápido de AliExpress: bestseller, toprated, trends, value"),
+    producto_id: int = Query(None, description="Cargar un producto exacto por ID para enlaces compartibles")
 ):
     """
     Endpoint de búsqueda y paginación dinámico de alto rendimiento.
@@ -165,6 +239,10 @@ async def get_productos(
         # Construcción dinámica de filtros WHERE
         where_clauses = []
         where_params = []
+
+        if producto_id is not None:
+            where_clauses.append("p.id = ?")
+            where_params.append(producto_id)
         
         # Filtro de categoría
         if categoria:
@@ -226,7 +304,9 @@ async def get_productos(
             where_params.append(discount_min)
 
         # Filtro de internacionalidad (AliExpress vs Tiendas Locales)
-        if internacional is True:
+        if producto_id is not None:
+            pass
+        elif internacional is True:
             where_clauses.append("p.is_international = 1")
         else:
             where_clauses.append("p.is_international = 0")
@@ -234,16 +314,16 @@ async def get_productos(
         # Filtro rápido para AliExpress
         if quick_filter:
             if quick_filter == "bestseller":
-                where_clauses.append("p.sales_count >= 1000")
+                where_clauses.append("p.sales_count >= 100")
             elif quick_filter == "toprated":
-                where_clauses.append("p.rating >= 4.8")
+                where_clauses.append("p.rating >= 4.5")
             elif quick_filter == "trends":
-                where_clauses.append("p.sales_count >= 500 AND p.discount_percent >= 25")
+                where_clauses.append("p.discount_percent >= 10")
             elif quick_filter == "value":
-                where_clauses.append("p.rating >= 4.7 AND pco.price_normal <= 100000")
+                where_clauses.append("p.rating >= 4.5 AND pco.price_normal <= 50000")
 
         # Determinar si hay filtros activos
-        has_filters = 1 if (categoria or tienda or brand or tipo or aro or price_min is not None or price_max is not None or search or discount_min is not None or internacional is True or quick_filter) else 0
+        has_filters = 1 if (producto_id is not None or categoria or tienda or brand or tipo or aro or price_min is not None or price_max is not None or search or discount_min is not None or internacional is True or quick_filter) else 0
 
         # Cláusula WHERE final
         where_sql = ""
@@ -362,6 +442,7 @@ async def get_productos(
             sp.price_card,
             sp.url,
             sp.image_url,
+            sp.last_updated,
             s.name as store_name,
             s.id as store_id
         FROM store_products sp
@@ -381,25 +462,36 @@ async def get_productos(
                 "price": o["price_normal"],
                 "oldPrice": o["price_card"],
                 "url": o["url"],
-                "imageUrl": o["image_url"]
+                "imageUrl": o["image_url"],
+                "lastUpdated": o["last_updated"],
+                "history": []
             })
 
         # 4. Obtener los historiales de precios para los productos de la página
         history_query = f"""
         SELECT 
             sp.product_id,
-            ph.price
+            sp.id AS offer_id,
+            s.name AS store_name,
+            ph.price,
+            ph.timestamp
         FROM price_history ph
         JOIN store_products sp ON ph.store_product_id = sp.id
+        JOIN stores s ON sp.store_id = s.id
         WHERE sp.product_id IN ({placeholders})
-        ORDER BY ph.timestamp ASC;
+        ORDER BY sp.product_id, sp.id, ph.timestamp ASC;
         """
         cursor.execute(history_query, product_ids)
         history_rows = cursor.fetchall()
         
         history_by_product = defaultdict(list)
+        history_by_product_store = defaultdict(lambda: defaultdict(list))
         for h in history_rows:
             history_by_product[h["product_id"]].append(h["price"])
+            history_by_product_store[h["product_id"]][h["store_name"]].append({
+                "price": h["price"],
+                "timestamp": h["timestamp"]
+            })
 
         # 5. Construir la lista final de productos en el formato del frontend
         productos_list = []
@@ -407,6 +499,12 @@ async def get_productos(
             pid = row["id"]
             p_offers = offers_by_product[pid]
             p_history = history_by_product[pid]
+
+            for offer in p_offers:
+                store_history = history_by_product_store[pid].get(offer["store"], [])
+                if not store_history and offer["price"]:
+                    store_history = [{"price": offer["price"], "timestamp": offer.get("lastUpdated")}]
+                offer["history"] = store_history[-8:]
             
             if not p_history and p_offers:
                 best_price = p_offers[0]["price"]
