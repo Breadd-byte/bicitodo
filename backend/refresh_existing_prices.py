@@ -42,7 +42,6 @@ HEADERS = {
 SHOPIFY_STORES = {
     "crossmountain": "https://crossmountain.cl",
     "faucon bikes": "https://fauconbikes.cl",
-    "ibikes": "https://ibikes.cl",
     "ds bikes": "https://www.dsbikes.cl",
     "satiro bikes": "https://satirobikes.cl",
 }
@@ -284,11 +283,24 @@ def price_from_visible_html(soup):
 
 
 def fetch_page_price(offer):
-    scraper = make_scraper()
-    try:
-        response = scraper.get(offer["url"], headers=HEADERS, timeout=18, allow_redirects=True)
-    except Exception as exc:
-        return {**offer, "status": "failed", "error": str(exc)}
+    response = None
+    last_error = None
+    for attempt in range(3):
+        scraper = make_scraper()
+        try:
+            response = scraper.get(offer["url"], headers=HEADERS, timeout=18, allow_redirects=True)
+        except Exception as exc:
+            last_error = str(exc)
+            time.sleep(1.5 * (attempt + 1))
+            continue
+
+        if response.status_code in {403, 429, 503}:
+            last_error = f"HTTP {response.status_code}"
+            time.sleep(2 * (attempt + 1))
+            continue
+        break
+    else:
+        return {**offer, "status": "failed", "error": last_error or "request failed"}
 
     if response.status_code in {404, 410}:
         return {**offer, "status": "gone", "price": None, "old_price": None}
