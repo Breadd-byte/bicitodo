@@ -146,6 +146,6 @@ Para que los precios se actualicen de forma totalmente automática todas las noc
 2. Si te pregunta qué editor usar, presiona `1` (para nano).
 3. Desplázate al final del archivo y agrega esta línea (refrescará los precios existentes todas las noches a las 3:00 AM, hará backup automático de la base y guardará un registro de actividad en `price_refresh.log`):
    ```text
-   0 3 * * * cd /home/ubuntu/bicitodo && /home/ubuntu/bicitodo/venv/bin/python /home/ubuntu/bicitodo/backend/refresh_existing_prices.py --only-stale-days 1 >> /home/ubuntu/bicitodo/backend/price_refresh.log 2>&1
+   0 3 * * * cd /home/ubuntu/bicitodo && PYTHONDONTWRITEBYTECODE=1 /home/ubuntu/bicitodo/venv/bin/python /home/ubuntu/bicitodo/backend/refresh_existing_prices.py --only-stale-days 1 >> /home/ubuntu/bicitodo/backend/price_refresh.log 2>&1
    ```
 4. Guarda el archivo presionando `Ctrl + O`, luego Enter, y sal con `Ctrl + X`.
