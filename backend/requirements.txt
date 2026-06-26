@@ -4,3 +4,5 @@ supabase
 pydantic
 Pillow
 cloudscraper
+beautifulsoup4
+lxml
