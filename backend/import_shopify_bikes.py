@@ -8,6 +8,7 @@ Uso:
 Fuentes actuales:
 - Satiro Bikes: https://satiro.cl/collections/bicicletas/products.json
 - Totem Chile: https://totem.cl/collections/bicicletas/products.json
+- Faucon Bikes: ruta y gravel desde colecciones oficiales Shopify
 """
 import argparse
 import json
@@ -53,6 +54,22 @@ SOURCES = [
         "store_url": "https://totem.cl",
         "products_url": "https://totem.cl/collections/bicicletas/products.json",
         "brand": "Totem",
+    },
+    {
+        "store_name": "Faucon Bikes",
+        "store_url": "https://fauconbikes.cl",
+        "products_url": "https://fauconbikes.cl/collections/ruta/products.json",
+        "brand": "Faucon",
+        "use_product_vendor": True,
+        "forced_type": "ruta",
+    },
+    {
+        "store_name": "Faucon Bikes",
+        "store_url": "https://fauconbikes.cl",
+        "products_url": "https://fauconbikes.cl/collections/bicicletas-de-gravel/products.json",
+        "brand": "Faucon",
+        "use_product_vendor": True,
+        "forced_type": "gravel",
     },
 ]
 
@@ -192,9 +209,9 @@ def pick_spec(description, label):
     return clean_text(match.group(1)) if match else ""
 
 
-def build_specs(source, product, description, item_type, wheel_size, frame_type):
+def build_specs(source, product, description, item_type, wheel_size, frame_type, brand=None):
     specs = {
-        "Marca": source["brand"],
+        "Marca": brand or source["brand"],
         "Tienda": source["store_name"],
         "Categoria": "Bicicletas",
         "Tipo": item_type,
@@ -244,7 +261,9 @@ def fetch_source(source, max_items=None):
             continue
 
         description = html_to_text(product.get("body_html"))
-        item_type = detect_type(title, description)
+        brand = clean_text(product.get("vendor")) if source.get("use_product_vendor") else ""
+        brand = brand or source["brand"]
+        item_type = source.get("forced_type") or detect_type(title, description)
         wheel_size = detect_wheel_size(title, description)
         frame_type = detect_frame_type(title, description)
         price = min(prices)
@@ -254,7 +273,7 @@ def fetch_source(source, max_items=None):
 
         item = {
             "name": title,
-            "brand": source["brand"],
+            "brand": brand,
             "store_name": source["store_name"],
             "store_url": source["store_url"],
             "url": product_url(source["store_url"], product.get("handle")),
@@ -266,7 +285,7 @@ def fetch_source(source, max_items=None):
             "type": item_type,
             "wheel_size": wheel_size,
             "frame_type": frame_type,
-            "specs": build_specs(source, product, description, item_type, wheel_size, frame_type),
+            "specs": build_specs(source, product, description, item_type, wheel_size, frame_type, brand=brand),
         }
         items.append(item)
         if max_items and len(items) >= max_items:
@@ -275,9 +294,12 @@ def fetch_source(source, max_items=None):
     return items
 
 
-def scrape_all(max_items=None):
+def scrape_all(max_items=None, store_names=None):
     items = []
+    selected_stores = {name.lower() for name in store_names or []}
     for source in SOURCES:
+        if selected_stores and source["store_name"].lower() not in selected_stores:
+            continue
         source_items = fetch_source(source, max_items=max_items)
         print(f"  [Scrape] {source['store_name']}: {len(source_items)} bicicletas")
         items.extend(source_items)
@@ -435,13 +457,14 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Solo scrapea y muestra resumen, no escribe DB.")
     parser.add_argument("--max-items", type=int, default=None, help="Maximo por fuente.")
     parser.add_argument("--no-download-images", action="store_true", help="Guarda URLs remotas en vez de descargar imagenes.")
+    parser.add_argument("--stores", nargs="*", help="Importa solo estas tiendas por nombre exacto, ej: Faucon Bikes.")
     args = parser.parse_args()
 
     if not os.path.exists(DB_PATH):
         raise FileNotFoundError(f"No existe la DB local: {DB_PATH}")
 
     print("[>] Scrapeando bicicletas Shopify...")
-    items = scrape_all(max_items=args.max_items)
+    items = scrape_all(max_items=args.max_items, store_names=args.stores)
     print_preview(items)
 
     if not args.dry_run:

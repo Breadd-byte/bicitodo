@@ -518,7 +518,7 @@ def run_all_scrapers():
         # Shopify Stores
         ("iBikes", "ibikes", lambda: scrape_shopify("iBikes", "ibikes", "https://ibikes.cl", ["bicicletas", "mountain-bike", "bicicletas-de-ruta", "bicicletas-electricas"])),
         ("Sátiro", "satiro", lambda: scrape_shopify("Satiro Bikes", "satiro", "https://satirobikes.cl", ["bicicletas", "mountain-bike", "ruta"])),
-        ("Faucon", "faucon", lambda: scrape_shopify("Faucon Bikes", "faucon", "https://fauconbikes.cl", ["bicicletas-1", "mountain-bike", "ruta"])),
+        ("Faucon", "faucon", lambda: scrape_shopify("Faucon Bikes", "faucon", "https://fauconbikes.cl", ["bicicletas-1", "mountain-bike", "ruta", "bicicletas-de-gravel"])),
         ("DS Bikes", "dsbikes", lambda: scrape_shopify("DS Bikes", "dsbikes", "https://www.dsbikes.cl", ["bicicletas", "mountain-bike", "ruta"])),
         ("CrossMountain", "crossmountain", lambda: scrape_shopify("CrossMountain", "crossmountain", "https://crossmountain.cl", ["bicicletas"])),
         
