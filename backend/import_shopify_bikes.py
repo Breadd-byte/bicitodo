@@ -17,12 +17,18 @@ import re
 import shutil
 import sqlite3
 import sys
+import time
 import unicodedata
 from datetime import datetime
 from html.parser import HTMLParser
 from urllib.parse import urljoin
 
 import requests
+
+try:
+    import cloudscraper
+except Exception:
+    cloudscraper = None
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -81,6 +87,29 @@ HEADERS = {
     "Accept": "application/json,text/plain,*/*",
     "Accept-Language": "es-CL,es;q=0.9,en-US;q=0.8",
 }
+
+
+def fetch_products_json(url):
+    clients = [requests]
+    if cloudscraper:
+        clients.append(cloudscraper.create_scraper(browser={"browser": "chrome", "platform": "windows", "mobile": False}))
+
+    last_error = None
+    for attempt in range(4):
+        client = clients[min(attempt, len(clients) - 1)]
+        try:
+            response = client.get(url, headers=HEADERS, timeout=30)
+            if response.status_code in {403, 429, 503}:
+                last_error = requests.HTTPError(f"HTTP {response.status_code} for {url}", response=response)
+                time.sleep(2 * (attempt + 1))
+                continue
+            response.raise_for_status()
+            return response.json()
+        except Exception as exc:
+            last_error = exc
+            time.sleep(1.5 * (attempt + 1))
+
+    raise last_error
 
 
 class TextExtractor(HTMLParser):
@@ -246,9 +275,7 @@ def localize_image(item, should_download=True):
 
 
 def fetch_source(source, max_items=None):
-    response = requests.get(source["products_url"], headers=HEADERS, timeout=25)
-    response.raise_for_status()
-    products = response.json().get("products") or []
+    products = fetch_products_json(source["products_url"]).get("products") or []
     items = []
 
     for product in products:
