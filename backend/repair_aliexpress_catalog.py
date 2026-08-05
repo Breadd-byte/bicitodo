@@ -251,6 +251,19 @@ def repair_database(db_path=DB_PATH):
     local_image_overrides = 0
 
     for row in rows:
+        # Conservative policy: never invent a product/image association from
+        # a search result. Existing direct item pages stay active; every other
+        # offer remains stored but quarantined until a verified direct listing
+        # and its matching image are supplied.
+        current_url = str(row["url"] or "").lower()
+        if "aliexpress." in current_url and "/item/" in current_url:
+            cur.execute("UPDATE store_products SET stock = 1 WHERE id = ?", (row["offer_id"],))
+            direct_urls += 1
+        else:
+            cur.execute("UPDATE store_products SET stock = 0 WHERE id = ?", (row["offer_id"],))
+            search_urls += 1
+        continue
+
         template = match_template(row, templates_by_brand)
         exact_template_match = (
             normalize_text(row["brand"]) == normalize_text(template.get("brand"))

@@ -1561,6 +1561,14 @@ closeCompareModal = window.closeCompareModal = function() {
 // =============================================
 function getRawProductUrl(offer) {
     if (offer.url && offer.url !== '#' && offer.url.startsWith('http')) {
+        if (offer.storeKey === 'aliexpress') {
+            try {
+                const target = new URL(offer.url);
+                if (!target.hostname.toLowerCase().includes('aliexpress.') || !target.pathname.includes('/item/')) return '#';
+            } catch (_) {
+                return '#';
+            }
+        }
         return offer.url;
     }
     return getStoreSearchUrl(offer.storeKey, '', '', '#');
