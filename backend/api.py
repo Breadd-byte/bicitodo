@@ -239,6 +239,8 @@ async def get_productos(
         # Construcción dinámica de filtros WHERE
         where_clauses = []
         where_params = []
+        # Do not expose offers quarantined by the catalog validator.
+        where_clauses.append("COALESCE(pco.stock, 1) = 1")
 
         if producto_id is not None:
             where_clauses.append("p.id = ?")
@@ -353,8 +355,10 @@ async def get_productos(
                 sp.store_id,
                 sp.price_normal,
                 sp.price_card,
+                sp.stock,
                 ROW_NUMBER() OVER (PARTITION BY sp.product_id ORDER BY sp.price_normal ASC) as price_rn
             FROM store_products sp
+            WHERE COALESCE(sp.stock, 1) = 1
         ),
         RankedProducts AS (
             SELECT 
@@ -386,8 +390,10 @@ async def get_productos(
                 sp.store_id,
                 sp.price_normal,
                 sp.price_card,
+                sp.stock,
                 ROW_NUMBER() OVER (PARTITION BY sp.product_id ORDER BY sp.price_normal ASC) as price_rn
             FROM store_products sp
+            WHERE COALESCE(sp.stock, 1) = 1
         ),
         RankedProducts AS (
             SELECT 

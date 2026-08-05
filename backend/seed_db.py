@@ -158,6 +158,9 @@ def main():
                 price = offer.get("price")
                 old_price = offer.get("oldPrice")
                 url = offer.get("url")
+                # A generic AliExpress search is not a verified product offer.
+                is_aliexpress = "aliexpress" in str(store_name or "").lower()
+                offer_stock = 0 if is_aliexpress and "/item/" not in str(url or "").lower() else 1
                 
                 # Prefer local static path if available in data.json
                 image_url = offer.get("imageUrl")
@@ -165,9 +168,9 @@ def main():
                     image_url = canonical_image
                 
                 cursor.execute("""
-                INSERT INTO store_products (product_id, store_id, url, image_url, price_normal, price_card)
-                VALUES (?, ?, ?, ?, ?, ?)
-                """, (product_id, store_id, url, image_url, price, old_price))
+                INSERT INTO store_products (product_id, store_id, url, image_url, price_normal, price_card, stock)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, (product_id, store_id, url, image_url, price, old_price, offer_stock))
                 
                 store_product_id = cursor.lastrowid
                 offers_count += 1
