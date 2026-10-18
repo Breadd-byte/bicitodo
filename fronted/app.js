@@ -1018,10 +1018,7 @@ async function updateStats() {
         if (statRep) statRep.textContent = stats.repuestos || '0';
         if (statTiendas) statTiendas.textContent = stats.tiendas || '0';
     } catch (e) {
-        if (statBicis) statBicis.textContent = '0';
-        if (statAcc) statAcc.textContent = '0';
-        if (statRep) statRep.textContent = '0';
-        if (statTiendas) statTiendas.textContent = '0';
+        console.warn("Stats API offline, keeping catalog counts");
     }
 }
 
@@ -2691,7 +2688,79 @@ async function render(forceFetch = true) {
             renderBrandFilter();
             renderTypeFilter();
         } catch (error) {
-            console.error("API error, fallback to cache:", error);
+            console.warn("API offline or error, falling back to local data.json:", error);
+            if (!state.fallbackData) {
+                try {
+                    const fallbackResp = await fetch('./data.json');
+                    if (fallbackResp.ok) {
+                        state.fallbackData = await fallbackResp.json();
+                    }
+                } catch (e) {
+                    console.error("Could not load data.json fallback:", e);
+                }
+            }
+            if (state.fallbackData) {
+                const catItems = state.fallbackData[state.category] || [];
+                let filtered = catItems.filter(p => !isBlockedSyntheticProduct(p));
+
+                if (state.filters.search) {
+                    const q = state.filters.search.toLowerCase();
+                    filtered = filtered.filter(p => 
+                        (p.brand && p.brand.toLowerCase().includes(q)) || 
+                        (p.model && p.model.toLowerCase().includes(q)) ||
+                        (p.specs && p.specs.toLowerCase().includes(q))
+                    );
+                }
+                if (state.filters.brands && state.filters.brands.length > 0) {
+                    filtered = filtered.filter(p => state.filters.brands.includes(p.brand.toLowerCase()));
+                }
+                if (state.filters.types && state.filters.types.length > 0) {
+                    filtered = filtered.filter(p => state.filters.types.includes((p.type || '').toLowerCase()));
+                }
+                if (state.filters.wheelSizes && state.filters.wheelSizes.length > 0) {
+                    filtered = filtered.filter(p => state.filters.wheelSizes.includes((p.wheelSize || '').toLowerCase()));
+                }
+                if (state.filters.priceMin !== null && state.filters.priceMin !== undefined) {
+                    filtered = filtered.filter(p => {
+                        const minPrice = Math.min(...(p.offers || []).map(o => o.price));
+                        return minPrice >= state.filters.priceMin;
+                    });
+                }
+                if (state.filters.priceMax !== null && state.filters.priceMax !== undefined) {
+                    filtered = filtered.filter(p => {
+                        const minPrice = Math.min(...(p.offers || []).map(o => o.price));
+                        return minPrice <= state.filters.priceMax;
+                    });
+                }
+
+                if (state.sortBy === 'price-asc') {
+                    filtered.sort((a, b) => Math.min(...a.offers.map(o => o.price)) - Math.min(...b.offers.map(o => o.price)));
+                } else if (state.sortBy === 'price-desc') {
+                    filtered.sort((a, b) => Math.min(...b.offers.map(o => o.price)) - Math.min(...a.offers.map(o => o.price)));
+                } else if (state.sortBy === 'stores') {
+                    filtered.sort((a, b) => (b.offers || []).length - (a.offers || []).length);
+                }
+
+                totalCount = filtered.length;
+                totalPages = Math.max(1, Math.ceil(totalCount / state.itemsPerPage));
+                state.totalCount = totalCount;
+                state.totalPages = totalPages;
+
+                const startIdx = (state.currentPage - 1) * state.itemsPerPage;
+                pageItems = filtered.slice(startIdx, startIdx + state.itemsPerPage);
+
+                pageItems.forEach(p => {
+                    state.data.cache[p.id] = p;
+                });
+
+                const brandCounts = {};
+                catItems.forEach(p => {
+                    brandCounts[p.brand] = (brandCounts[p.brand] || 0) + 1;
+                });
+                state.brandsMetadata = brandCounts;
+                renderBrandFilter();
+                renderTypeFilter();
+            }
         }
     }
     
