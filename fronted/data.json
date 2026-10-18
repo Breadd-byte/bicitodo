@@ -27260,43 +27260,6 @@
       ]
     },
     {
-      "id": 717,
-      "brand": "Sunpeed",
-      "model": "BICICLETA ZERO GRAFITO 29",
-      "type": "mtb",
-      "wheelSize": "29",
-      "frameType": "Aluminio",
-      "specs": "Sunpeed • BICICLETA ZERO GRAFITO 29",
-      "image": "/static/images/img_c3b43b997b7e24a6.webp",
-      "history": [
-        282949,
-        272469,
-        261990
-      ],
-      "fullSpecs": {
-        "Cuadro": "Aluminio 6061-T6 hidroformado con conificado variable y guiado interno",
-        "Horquilla": "SR Suntour XCE 28, muelle helicoidal, recorrido de 100 mm",
-        "Transmisión": "Shimano Tourney TY300, 3x7 velocidades",
-        "Manillas de Cambio": "Shimano Tourney EF41 integrados, 7 velocidades",
-        "Frenos": "Freno de disco mecánico Tektro M280 con rotores de 160 mm",
-        "Tamaño de Aro": "29",
-        "Neumáticos": "Bontrager XR2 Comp, 29x2.20\"",
-        "Llantas": "Bontrager Connection, doble pared, de 32 hoyos",
-        "Peso Aproximado": "14.2 kg",
-        "Pedales": "Plataforma de resina VP-536 antideslizante"
-      },
-      "offers": [
-        {
-          "store": "Falabella",
-          "storeKey": "falabella",
-          "price": 261990,
-          "oldPrice": 324990,
-          "url": "https://www.falabella.com/falabella-cl/product/144913122/BICICLETA-SUNPEED-ZERO-GRAFITO-29",
-          "imageUrl": "/static/images/img_c3b43b997b7e24a6.webp"
-        }
-      ]
-    },
-    {
       "id": 718,
       "brand": "Generico",
       "model": "Bicicleta Equilibrio Color Naranjo Aro 10 Correpasillos Ajustable NiÃ±os",
@@ -29883,6 +29846,950 @@
           "oldPrice": 279990,
           "url": "https://www.paris.cl/bicicleta-mtb-aro-29-merak-1-talla-l-hombre-277438.html",
           "imageUrl": "/static/images/img_d18cf5db465219f1.webp"
+        }
+      ]
+    },
+    {
+      "id": 717,
+      "brand": "Sunpeed",
+      "model": "BICICLETA ZERO GRAFITO 29",
+      "type": "mtb",
+      "wheelSize": "29",
+      "frameType": "Aluminio",
+      "specs": "{\"Cuadro\": \"Aluminio 6061-T6 hidroformado con conificado variable y guiado interno\", \"Horquilla\": \"SR Suntour XCE 28, muelle helicoidal, recorrido de 100 mm\", \"Transmisión\": \"Shimano Tourney TY300, 3x7 velocidades\", \"Manillas de Cambio\": \"Shimano Tourney EF41 integrados, 7 velocidades\", \"Frenos\": \"Freno de disco mecánico Tektro M280 con rotores de 160 mm\", \"Tamaño de Aro\": \"29\", \"Neumáticos\": \"Bontrager XR2 Comp, 29x2.20\\\"\", \"Llantas\": \"Bontrager Connection, doble pared, de 32 hoyos\", \"Peso Aproximado\": \"14.2 kg\", \"Pedales\": \"Plataforma de resina VP-536 antideslizante\"}",
+      "image": "/static/images/img_c3b43b997b7e24a6.webp",
+      "history": [
+        282949,
+        272469,
+        261990,
+        275990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Falabella",
+          "storeKey": "falabella",
+          "price": 275990,
+          "oldPrice": null,
+          "url": "https://www.falabella.com/falabella-cl/product/144913122/BICICLETA-SUNPEED-ZERO-GRAFITO-29",
+          "imageUrl": "/static/images/img_c3b43b997b7e24a6.webp"
+        }
+      ]
+    },
+    {
+      "id": 7053,
+      "brand": "Java",
+      "model": "Bicicleta Java Veloce 16S",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Java • RUTA • Aro 700c • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_veloce-16s-silver4939.png?193&t=1792352265",
+      "history": [
+        638790,
+        614910,
+        597000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 597000,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/veloce-16s",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_veloce-16s-silver4939.png?193&t=1792352265"
+        }
+      ]
+    },
+    {
+      "id": 7054,
+      "brand": "Java",
+      "model": "Bicicleta Java Onda 18S-R5",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Java • RUTA • Aro 700c • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_onda2737.jpg?193&t=1792352265",
+      "history": [
+        845300,
+        813700,
+        790000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 790000,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/onda-18s-r5",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_onda2737.jpg?193&t=1792352265"
+        }
+      ]
+    },
+    {
+      "id": 7055,
+      "brand": "Java",
+      "model": "Bicicleta Java Auriga 24S-N",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Java • RUTA • Aro 700c • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_auriga-24s-n-silver8908.png?193&t=1792352265",
+      "history": [
+        1015430,
+        977470,
+        949000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 949000,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/auriga-24s-n",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_auriga-24s-n-silver8908.png?193&t=1792352265"
+        }
+      ]
+    },
+    {
+      "id": 7056,
+      "brand": "Java",
+      "model": "Bicicleta Java Siluro Top ER7",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Java • RUTA • Aro 700c • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_siluro-top-er7-black1900.png?193&t=1792352265",
+      "history": [
+        1202787,
+        1157823,
+        1124100,
+        1915300,
+        1843700,
+        1790000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 1124100,
+          "oldPrice": 1249000,
+          "url": "https://www.javabikes.cl/product/siluro-top-er7",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_siluro-top-er7-black1900.png?193&t=1792352265"
+        },
+        {
+          "store": "Trip Helmets",
+          "storeKey": "triphelmets",
+          "price": 1790000,
+          "oldPrice": null,
+          "url": "https://triphelmets.com/products/bicicleta-java-siluro",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/2541/6480/files/JAVA-Siluro.jpg?v=1786055531"
+        }
+      ]
+    },
+    {
+      "id": 7057,
+      "brand": "Java",
+      "model": "Bicicleta Java Fuoco Top 105-2",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Carbono",
+      "specs": "Java • RUTA • Aro 700c • Cuadro Carbono",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_fuoco-top-1053690.png?193&t=1792352265",
+      "history": [
+        2236300,
+        2152700,
+        2090000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 2090000,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/fuoco-top-105-2",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_fuoco-top-1053690.png?193&t=1792352265"
+        }
+      ]
+    },
+    {
+      "id": 7058,
+      "brand": "Java",
+      "model": "Bicicleta Java Volata Di2 R7170",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Carbono",
+      "specs": "Java • RUTA • Aro 700c • Cuadro Carbono",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_volata-r7170-di2-purple8951.png?193&t=1792352265",
+      "history": [
+        2494170,
+        2400930,
+        2331000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 2331000,
+          "oldPrice": 2590000,
+          "url": "https://www.javabikes.cl/product/volata-di2-r7170",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_volata-r7170-di2-purple8951.png?193&t=1792352265"
+        }
+      ]
+    },
+    {
+      "id": 7059,
+      "brand": "Java",
+      "model": "Bicicleta Java Vesuvio R7170 Di2",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Carbono",
+      "specs": "Java • RUTA • Aro 700c • Cuadro Carbono",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_vesuvio-7120-di24065.png?193&t=1792352265",
+      "history": [
+        2494170,
+        2400930,
+        2331000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 2331000,
+          "oldPrice": 2590000,
+          "url": "https://www.javabikes.cl/product/vesuvio-r7170-di2",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_vesuvio-7120-di24065.png?193&t=1792352265"
+        }
+      ]
+    },
+    {
+      "id": 7060,
+      "brand": "Java",
+      "model": "Bicicleta Java Sequoia 16S",
+      "type": "gravel",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Java • GRAVEL • Aro 700c • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_sequoia-black2739.png?193&t=1792352267",
+      "history": [
+        640930,
+        616970,
+        599000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 599000,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/sequoia-16s",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_sequoia-black2739.png?193&t=1792352267"
+        }
+      ]
+    },
+    {
+      "id": 7061,
+      "brand": "Java",
+      "model": "Bicicleta Java BREZZA-9S",
+      "type": "mtb",
+      "wheelSize": "29",
+      "frameType": "Aluminio",
+      "specs": "Java • MTB • Aro 29 • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_bandera-java6589.jpg?193&t=1792352270",
+      "history": [
+        317415,
+        305549,
+        296650
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 296650,
+          "oldPrice": 349000,
+          "url": "https://www.javabikes.cl/product/brezza-9s",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_bandera-java6589.jpg?193&t=1792352270"
+        }
+      ]
+    },
+    {
+      "id": 7062,
+      "brand": "Java",
+      "model": "Bicicleta Java ALBA-12S",
+      "type": "mtb",
+      "wheelSize": "29",
+      "frameType": "Aluminio",
+      "specs": "Java • MTB • Aro 29 • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_67a9cd01-5f54-429f-b62a-0186c21fadbf8278.jpg?193&t=1792352270",
+      "history": [
+        491130,
+        472770,
+        459000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 459000,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/alba-12s",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_67a9cd01-5f54-429f-b62a-0186c21fadbf8278.jpg?193&t=1792352270"
+        }
+      ]
+    },
+    {
+      "id": 7063,
+      "brand": "Java",
+      "model": "Bicicleta Java Cima 13-S",
+      "type": "mtb",
+      "wheelSize": "29",
+      "frameType": "Aluminio",
+      "specs": "Java • MTB • Aro 29 • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_006e6934-5a48-4c78-8ac4-0b34e658ab751685.png?193&t=1792352270",
+      "history": [
+        801430,
+        771470,
+        749000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 749000,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/cima-13-s",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_006e6934-5a48-4c78-8ac4-0b34e658ab751685.png?193&t=1792352270"
+        }
+      ]
+    },
+    {
+      "id": 7064,
+      "brand": "Java",
+      "model": "Bicicleta Java Potenciómetro Magene PES P515",
+      "type": "urbana",
+      "wheelSize": "29",
+      "frameType": "Aluminio",
+      "specs": "Java • URBANA • Aro 29 • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_imagen-2025-10-16-1142513589314.png?193&t=1792352274",
+      "history": [
+        320989,
+        308989,
+        299990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 299990,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/potenciometro-magene-pes-p515",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_imagen-2025-10-16-1142513589314.png?193&t=1792352274"
+        }
+      ]
+    },
+    {
+      "id": 7065,
+      "brand": "Java",
+      "model": "Bicicleta Java Vega TT 24S",
+      "type": "urbana",
+      "wheelSize": "29",
+      "frameType": "Aluminio",
+      "specs": "Java • URBANA • Aro 29 • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_vega-green9274.png?193&t=1792352274",
+      "history": [
+        3734300,
+        3594700,
+        3490000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 3490000,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/vega-tt-24s",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_vega-green9274.png?193&t=1792352274"
+        }
+      ]
+    },
+    {
+      "id": 7066,
+      "brand": "Java",
+      "model": "Bicicleta Java ECO 20\"- 7S",
+      "type": "plegable",
+      "wheelSize": "20",
+      "frameType": "Aluminio",
+      "specs": "Java • PLEGABLE • Aro 20 • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_eco-negro0205.jpg?193&t=1792352278",
+      "history": [
+        587430,
+        565470,
+        549000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 549000,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/eco-20-7s",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_eco-negro0205.jpg?193&t=1792352278"
+        }
+      ]
+    },
+    {
+      "id": 7067,
+      "brand": "Java",
+      "model": "Bicicleta Java NEO 16\"- 9S",
+      "type": "plegable",
+      "wheelSize": "20",
+      "frameType": "Aluminio",
+      "specs": "Java • PLEGABLE • Aro 20 • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_neo-163521.jpg?193&t=1792352278",
+      "history": [
+        640930,
+        616970,
+        599000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 599000,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/neo-16-9s",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_neo-163521.jpg?193&t=1792352278"
+        }
+      ]
+    },
+    {
+      "id": 7068,
+      "brand": "Java",
+      "model": "Bicicleta Java ARIA 18S",
+      "type": "plegable",
+      "wheelSize": "20",
+      "frameType": "Aluminio",
+      "specs": "Java • PLEGABLE • Aro 20 • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_aria-b-sale2621.jpg?193&t=1792352278",
+      "history": [
+        847440,
+        815760,
+        792000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 792000,
+          "oldPrice": 990000,
+          "url": "https://www.javabikes.cl/product/aria-18s",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_aria-b-sale2621.jpg?193&t=1792352278"
+        }
+      ]
+    },
+    {
+      "id": 7069,
+      "brand": "Java",
+      "model": "Bicicleta Java Vittoria Air R7170",
+      "type": "triatlon",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Java • TRIATLON • Aro 700c • Cuadro Aluminio",
+      "image": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_vittoria-air-r7170-1113116.png?193&t=1792352282",
+      "history": [
+        3520300,
+        3388700,
+        3290000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Java Bikes Chile",
+          "storeKey": "javabikeschile",
+          "price": 3290000,
+          "oldPrice": null,
+          "url": "https://www.javabikes.cl/product/vittoria-air-r7170",
+          "imageUrl": "https://dojiw2m9tvv09.cloudfront.net/75463/product/M_vittoria-air-r7170-1113116.png?193&t=1792352282"
+        }
+      ]
+    },
+    {
+      "id": 7070,
+      "brand": "Java",
+      "model": "BICICLETA JAVA J-AIR",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Java • RUTA • Aro 700c • Cuadro Aluminio",
+      "image": "https://cdn.shopify.com/s/files/1/2541/6480/files/JAVA-J-AIR.jpg?v=1786053759",
+      "history": [
+        2011600,
+        1936400,
+        1880000
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "Trip Helmets",
+          "storeKey": "triphelmets",
+          "price": 1880000,
+          "oldPrice": null,
+          "url": "https://triphelmets.com/products/java-j-air-fuoco-105",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/2541/6480/files/JAVA-J-AIR.jpg?v=1786053759"
+        }
+      ]
+    },
+    {
+      "id": 7071,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed One MT200 ARO29",
+      "type": "mtb",
+      "wheelSize": "29",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • MTB • Aro 29 • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2024/08/ONE-NEGRA-1.jpg",
+      "history": [
+        285679,
+        274999,
+        266990,
+        320893,
+        308897,
+        299900
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 266990,
+          "oldPrice": 444990,
+          "url": "https://bluebike.cl/sunpeed-one-mt200-aro29/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2024/08/ONE-NEGRA-1.jpg"
+        },
+        {
+          "store": "Bike New Sport",
+          "storeKey": "bikenewsport",
+          "price": 299900,
+          "oldPrice": null,
+          "url": "https://bikenewsport.cl/products/copia-de-bicicleta-sunpeed-one-aro-29-azul-amarillo",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0629/6751/3260/files/sunpeedoneazulamarillo.jpg?v=1686677241"
+        }
+      ]
+    },
+    {
+      "id": 7072,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Triton",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • RUTA • Aro 700c • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2024/08/TRITON-NEGRA-1-2.jpg",
+      "history": [
+        369139,
+        355339,
+        344990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 344990,
+          "oldPrice": 574990,
+          "url": "https://bluebike.cl/sunpeed-triton/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2024/08/TRITON-NEGRA-1-2.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7073,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Kepler 9s Cues - PREVENTA",
+      "type": "gravel",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • GRAVEL • Aro 700c • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2026/05/KEPLER-NEGRA-01.jpg",
+      "history": [
+        635569,
+        611809,
+        593990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 593990,
+          "oldPrice": 824990,
+          "url": "https://bluebike.cl/sunpeed-kepler-9s-cues-preventa/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2026/05/KEPLER-NEGRA-01.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7074,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Zero XC2",
+      "type": "mtb",
+      "wheelSize": "29",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • MTB • Aro 29 • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2024/08/ZERO-GRAFITO-1.jpg",
+      "history": [
+        211849,
+        203929,
+        197990,
+        278093,
+        267697,
+        259900
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 197990,
+          "oldPrice": 329990,
+          "url": "https://bluebike.cl/sunpeed-zero-xc2/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2024/08/ZERO-GRAFITO-1.jpg"
+        },
+        {
+          "store": "Bike New Sport",
+          "storeKey": "bikenewsport",
+          "price": 259900,
+          "oldPrice": null,
+          "url": "https://bikenewsport.cl/products/bicicleta-sunpeed-zero-aro-29-color-azul",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0629/6751/3260/files/sunpeedzerocolorazul.jpg?v=1686762631"
+        }
+      ]
+    },
+    {
+      "id": 7075,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Charon hidráulica 18s 2027 - Preventa",
+      "type": "gravel",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • GRAVEL • Aro 700c • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2026/08/CHARON-2026-NEGRO.jpg",
+      "history": [
+        741499,
+        713779,
+        692990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 692990,
+          "oldPrice": 974990,
+          "url": "https://bluebike.cl/sunpeed-charon-hidraulica-18s-2027-preventa-diciembre/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2026/08/CHARON-2026-NEGRO.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7076,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Invincible 12s Full 105 Carbono PREVENTA",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Carbono",
+      "specs": "Sunpeed • RUTA • Aro 700c • Cuadro Carbono",
+      "image": "https://bluebike.cl/wp-content/uploads/2026/08/INVINCIBLE-SPORT-BLANCA-01.jpg",
+      "history": [
+        2070439,
+        1993039,
+        1934990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 1934990,
+          "oldPrice": 2687490,
+          "url": "https://bluebike.cl/sunpeed-invincible-12s-full-105-carbono-preventa-diciembre/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2026/08/INVINCIBLE-SPORT-BLANCA-01.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7077,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Mars- A Pro Hidráulica 12s PREVENTA",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • RUTA • Aro 700c • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2026/05/MARS-A-PRO-negra.jpg",
+      "history": [
+        962989,
+        926989,
+        899990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 899990,
+          "oldPrice": 1249990,
+          "url": "https://bluebike.cl/mars-a-pro-hidraulica-12s-preventa-diciembre/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2026/05/MARS-A-PRO-negra.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7078,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Universe CX Gravel",
+      "type": "gravel",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • GRAVEL • Aro 700c • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2026/09/universe-cx-gravel-morado.jpg",
+      "history": [
+        1765489,
+        1699489,
+        1649990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 1649990,
+          "oldPrice": 2062490,
+          "url": "https://bluebike.cl/sunpeed-universe-cx-gravel/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2026/09/universe-cx-gravel-morado.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7079,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed VICTORY EXPERT Di2 - PREVENTA",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Carbono",
+      "specs": "Sunpeed • RUTA • Aro 700c • Cuadro Carbono",
+      "image": "https://bluebike.cl/wp-content/uploads/2026/01/3EXP-1.jpg",
+      "history": [
+        3755689,
+        3615289,
+        3509990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 3509990,
+          "oldPrice": 4874990,
+          "url": "https://bluebike.cl/victory-expert-di2-preventa/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2026/01/3EXP-1.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7080,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Alpha 24 Hidráulica",
+      "type": "mtb",
+      "wheelSize": "29",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • MTB • Aro 29 • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2026/07/alpha-24-negra.jpg",
+      "history": [
+        353089,
+        339889,
+        329990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 329990,
+          "oldPrice": 412490,
+          "url": "https://bluebike.cl/sunpeed-alpha-24-hidraulica/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2026/07/alpha-24-negra.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7081,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Galaxy 12s Full 105 - PREVENTA",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • RUTA • Aro 700c • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2026/03/galaxy-12s-negra-scaled.jpg",
+      "history": [
+        1685239,
+        1622239,
+        1574990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 1574990,
+          "oldPrice": 2059990,
+          "url": "https://bluebike.cl/sunpeed-galaxy-12s-full-105-copia/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2026/03/galaxy-12s-negra-scaled.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7082,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Astro Hidráulica Tiagra UCI - PREVENTA",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • RUTA • Aro 700c • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2025/03/粉蓝_Sfane1.jpg",
+      "history": [
+        1145959,
+        1103119,
+        1070990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 1070990,
+          "oldPrice": 1487990,
+          "url": "https://bluebike.cl/sunpeed-astro-hidraulica-tiagra-uci-preventa/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2025/03/粉蓝_Sfane1.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7083,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed INTERSTELLAR TRIATLON TT",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Carbono",
+      "specs": "Sunpeed • RUTA • Aro 700c • Cuadro Carbono",
+      "image": "https://bluebike.cl/wp-content/uploads/2026/03/interstellar-scaled.jpg",
+      "history": [
+        7489989,
+        7209989,
+        6999990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 6999990,
+          "oldPrice": 9999990,
+          "url": "https://bluebike.cl/interstellar-triatlon-tt/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2026/03/interstellar-scaled.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7084,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Galaxy 12s Full 105",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • RUTA • Aro 700c • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2026/03/galaxy-12s-negra-scaled.jpg",
+      "history": [
+        1872489,
+        1802489,
+        1749990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 1749990,
+          "oldPrice": 2059990,
+          "url": "https://bluebike.cl/sunpeed-galaxy-12s-full-105/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2026/03/galaxy-12s-negra-scaled.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7085,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Stella pro Hidráulica Aro 27.5",
+      "type": "mtb",
+      "wheelSize": "27.5",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • MTB • Aro 27.5 • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2026/02/stella-hidraulica-1-scaled.jpg",
+      "history": [
+        481489,
+        463489,
+        449990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 449990,
+          "oldPrice": 599990,
+          "url": "https://bluebike.cl/stella-pro-hidraulica-aro-27-5/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2026/02/stella-hidraulica-1-scaled.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7086,
+      "brand": "Sunpeed",
+      "model": "Bicicleta Sunpeed Astro Hidráulica Tiagra UCI",
+      "type": "ruta",
+      "wheelSize": "700c",
+      "frameType": "Aluminio",
+      "specs": "Sunpeed • RUTA • Aro 700c • Cuadro Aluminio",
+      "image": "https://bluebike.cl/wp-content/uploads/2025/03/粉蓝_Sfane1.jpg",
+      "history": [
+        1273289,
+        1225689,
+        1189990
+      ],
+      "fullSpecs": {},
+      "offers": [
+        {
+          "store": "BlueBike (Sunpeed Oficial)",
+          "storeKey": "bluebikesunpeedoficial",
+          "price": 1189990,
+          "oldPrice": 1487990,
+          "url": "https://bluebike.cl/astro-hidraulica-tiagra/",
+          "imageUrl": "https://bluebike.cl/wp-content/uploads/2025/03/粉蓝_Sfane1.jpg"
         }
       ]
     }
