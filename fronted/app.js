@@ -125,12 +125,12 @@ try {
 // Detecta automáticamente el entorno: en producción usa el mismo origen,
 // en desarrollo local apunta al servidor FastAPI en el puerto 8000.
 const API_BASE_URL = (typeof window.API_BASE_URL === 'string') ? window.API_BASE_URL : (() => {
-    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-        // Producción: backend corriendo en Render
-        return 'https://bicitodo.onrender.com';
+    // En desarrollo local con frontend separado (ej. puerto 8080 o 5500), apuntar a FastAPI en el 8000
+    if ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '8000') {
+        return 'http://127.0.0.1:8000';
     }
-    // Desarrollo local: FastAPI corriendo en puerto 8000
-    return 'http://127.0.0.1:8000';
+    // En producción (Oracle Cloud / servidor unificado en el mismo host y puerto): usar ruta relativa
+    return '';
 })();
 
 // =============================================
