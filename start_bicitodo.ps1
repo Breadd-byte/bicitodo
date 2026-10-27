@@ -2,6 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $KeepAlive = Join-Path $Root "bicitodo_keepalive.ps1"
+$HiddenLauncher = Join-Path $Root "bicitodo_keepalive_hidden.vbs"
 $LogDir = Join-Path $Root "logs"
 New-Item -ItemType Directory -Force -Path $LogDir | Out-Null
 
@@ -13,12 +14,10 @@ $alreadyRunning = Get-CimInstance Win32_Process |
 
 if (-not $alreadyRunning) {
     Start-Process `
-        -FilePath powershell.exe `
-        -ArgumentList @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $KeepAlive) `
+        -FilePath wscript.exe `
+        -ArgumentList @("//B", "//Nologo", $HiddenLauncher) `
         -WorkingDirectory $Root `
-        -WindowStyle Hidden `
-        -RedirectStandardOutput (Join-Path $LogDir "keepalive_start.out.log") `
-        -RedirectStandardError (Join-Path $LogDir "keepalive_start.err.log")
+        -WindowStyle Hidden
 }
 
 Start-Sleep -Seconds 5

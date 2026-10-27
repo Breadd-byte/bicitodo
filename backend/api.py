@@ -97,6 +97,11 @@ def normalize_store_key(store_name):
         "bikeplus": "bikeplus",
         "bikeshop": "bikeshop",
         "fullbike": "fullbike",
+        "savabikeschile": "savachile",
+        "javabikeschile": "java",
+        "bluebikesunpeedoficial": "bluebike",
+        "bikenewsport": "bikenew",
+        "copenhague": "copenhague",
     }
     return aliases.get(key, key)
 
@@ -453,7 +458,7 @@ async def get_productos(
             s.id as store_id
         FROM store_products sp
         JOIN stores s ON sp.store_id = s.id
-        WHERE sp.product_id IN ({placeholders})
+        WHERE sp.product_id IN ({placeholders}) AND COALESCE(sp.stock, 1) = 1
         ORDER BY sp.price_normal ASC;
         """
         cursor.execute(offers_query, product_ids)
@@ -484,7 +489,7 @@ async def get_productos(
         FROM price_history ph
         JOIN store_products sp ON ph.store_product_id = sp.id
         JOIN stores s ON sp.store_id = s.id
-        WHERE sp.product_id IN ({placeholders})
+        WHERE sp.product_id IN ({placeholders}) AND COALESCE(sp.stock, 1) = 1
         ORDER BY sp.product_id, sp.id, ph.timestamp ASC;
         """
         cursor.execute(history_query, product_ids)
@@ -512,9 +517,9 @@ async def get_productos(
                     store_history = [{"price": offer["price"], "timestamp": offer.get("lastUpdated")}]
                 offer["history"] = store_history[-8:]
             
+            # Solo historial real observado (sin precios inventados)
             if not p_history and p_offers:
-                best_price = p_offers[0]["price"]
-                p_history = [int(best_price * 1.08), int(best_price * 1.04), best_price]
+                p_history = [p_offers[0]["price"]]
                 
             p_history = p_history[-6:]
             

@@ -2,6 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $KeepAlive = Join-Path $Root "bicitodo_keepalive.ps1"
+$HiddenLauncher = Join-Path $Root "bicitodo_keepalive_hidden.vbs"
 $TaskName = "BiciTodo_Web_KeepAlive"
 
 Write-Host "=== BiciTodo - Instalador Web KeepAlive ===" -ForegroundColor Cyan
@@ -15,8 +16,8 @@ try {
     }
 
     $action = New-ScheduledTaskAction `
-        -Execute "powershell.exe" `
-        -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$KeepAlive`"" `
+        -Execute "wscript.exe" `
+        -Argument "//B //Nologo `"$HiddenLauncher`"" `
         -WorkingDirectory $Root
 
     $trigger = New-ScheduledTaskTrigger -AtLogOn
@@ -48,16 +49,16 @@ try {
     $shortcutPath = Join-Path $startupDir "BiciTodo Web KeepAlive.lnk"
     $shell = New-Object -ComObject WScript.Shell
     $shortcut = $shell.CreateShortcut($shortcutPath)
-    $shortcut.TargetPath = "powershell.exe"
-    $shortcut.Arguments = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$KeepAlive`""
+    $shortcut.TargetPath = "wscript.exe"
+    $shortcut.Arguments = "//B //Nologo `"$HiddenLauncher`""
     $shortcut.WorkingDirectory = $Root
     $shortcut.WindowStyle = 7
     $shortcut.Description = "Mantiene arriba la API y la web local de BiciTodo"
     $shortcut.Save()
 
     Start-Process `
-        -FilePath powershell.exe `
-        -ArgumentList @("-NoProfile", "-ExecutionPolicy", "Bypass", "-WindowStyle", "Hidden", "-File", $KeepAlive) `
+        -FilePath wscript.exe `
+        -ArgumentList @("//B", "//Nologo", $HiddenLauncher) `
         -WorkingDirectory $Root `
         -WindowStyle Hidden
 
