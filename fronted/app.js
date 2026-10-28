@@ -918,6 +918,11 @@ const STORE_COLORS = {
     fullbike: '#dc2626',
     vidaurre: '#7c3aed',
     ibikes:  '#f58220',
+    p3cycles: '#20C968',
+    canyon: '#111827',
+    java: '#dc2626',
+    savachile: '#ea580c',
+    bluebike: '#2563eb',
     aliexpress: '#ff4747',
 };
 
@@ -941,6 +946,11 @@ const STORE_DOMAINS = {
     fullbike: 'fullbike.cl',
     vidaurre: 'vidaurrebikes.cl',
     ibikes: 'ibikes.cl',
+    p3cycles: 'p3cycles.cl',
+    canyon: 'canyon.com',
+    java: 'javabikes.cl',
+    savachile: 'savabikes.cl',
+    bluebike: 'bluebike.cl',
     aliexpress: 'aliexpress.com'
 };
 
@@ -4686,11 +4696,13 @@ function renderDefaultInstantDropdown() {
             <div class="instant-search-chips">
                 <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Trek')">Trek</button>
                 <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Specialized')">Specialized</button>
-                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Scott')">Scott</button>
                 <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Oxford')">Oxford</button>
-                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Deore')">Shimano Deore</button>
-                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Gravel')">Gravel</button>
-                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Carbon')">Carbono</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Giant')">Giant</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Canyon')">Canyon</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('P3 Cycles')">P3 Cycles</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Sunpeed')">Sunpeed</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Java')">Java</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Sava')">Sava</button>
             </div>
         </div>
         <div class="instant-search-section instant-search-tools">

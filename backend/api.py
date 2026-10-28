@@ -102,6 +102,8 @@ def normalize_store_key(store_name):
         "bluebikesunpeedoficial": "bluebike",
         "bikenewsport": "bikenew",
         "copenhague": "copenhague",
+        "p3cycles": "p3cycles",
+        "canyonchile": "canyon",
     }
     return aliases.get(key, key)
 
@@ -132,6 +134,8 @@ STORE_FILTER_ALIASES = {
     "dsbikes": ["dsbikes"],
     "vidaurre": ["vidaurrebikes"],
     "fullbike": ["fullbike"],
+    "p3cycles": ["p3cycles"],
+    "canyon": ["canyonchile"],
 }
 
 def expand_store_filter_keys(store_keys):
