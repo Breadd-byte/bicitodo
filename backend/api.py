@@ -229,7 +229,8 @@ async def get_productos(
     discount_min: int = Query(None, description="Descuento mínimo en porcentaje"),
     internacional: bool = Query(None, description="Filtrar por internacional (AliExpress)"),
     quick_filter: str = Query(None, description="Filtro rápido de AliExpress: bestseller, toprated, trends, value"),
-    producto_id: int = Query(None, description="Cargar un producto exacto por ID para enlaces compartibles")
+    producto_id: int = Query(None, description="Cargar un producto exacto por ID para enlaces compartibles"),
+    spec: str = Query(None, description="Filtrar por nivel de componente o especificación")
 ):
     """
     Endpoint de búsqueda y paginación dinámico de alto rendimiento.
@@ -302,8 +303,27 @@ async def get_productos(
         # Filtro de búsqueda por texto (búsqueda de marca o modelo)
         if search:
             search_query = f"%{search.lower()}%"
-            where_clauses.append("(LOWER(p.brand) LIKE ? OR LOWER(p.model) LIKE ?)")
-            where_params.extend([search_query, search_query])
+            where_clauses.append("(LOWER(p.brand) LIKE ? OR LOWER(p.model) LIKE ? OR LOWER(COALESCE(p.specs, '')) LIKE ? OR LOWER(COALESCE(p.frame_type, '')) LIKE ?)")
+            where_params.extend([search_query, search_query, search_query, search_query])
+
+        # Filtro por nivel de componente / especificación técnica
+        if spec:
+            spec_key = spec.strip().lower()
+            spec_patterns = {
+                "deore": ["%deore%"],
+                "cues": ["%cues%"],
+                "xt": ["% xt%", "%-xt%", "%slx%", "%xtr%"],
+                "105": ["%105%", "%ultegra%", "%dura-ace%", "%dura ace%"],
+                "tourney": ["%tourney%", "%altus%", "%acera%", "%alivio%"],
+                "sram": ["%sram%", "%eagle%", "% gx%", "% axs%", "% nx%", "% sx%"],
+                "hidraulico": ["%hidraul%", "%hidrául%", "%hydraulic%", "%mt200%"],
+                "carbon": ["%carbon%", "%fibra de carbono%", "%cf %", "%slr%"]
+            }.get(spec_key, [f"%{spec_key}%"])
+            or_parts = []
+            for pat in spec_patterns:
+                or_parts.append("(LOWER(p.model) LIKE ? OR LOWER(COALESCE(p.specs, '')) LIKE ? OR LOWER(COALESCE(p.frame_type, '')) LIKE ?)")
+                where_params.extend([pat, pat, pat])
+            where_clauses.append("(" + " OR ".join(or_parts) + ")")
 
         # Filtro de descuento mínimo
         if discount_min is not None:

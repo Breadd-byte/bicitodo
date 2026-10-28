@@ -1,5 +1,5 @@
 // Lexical declarations for window functions to prevent ReferenceErrors
-let setCategory, clearFilters, toggleCompare, clearCompare, openCompareModal, closeCompareModal, openProductDetail, openProductStore, openProductAction, closeModal, switchTab, activateExplorar, activateDeals, activateInternationalMode, openNovedadesModal, openProfileModal, openCountryModal, toggleMobileFilters, toggleFavorite, toggleFavoriteDetail, togglePriceAlert, toggleUserDropdown, openAuthModal, closeAuthModal, switchAuthTab, openAuthAlerts, handleAuthSubmit, handleLogout, renderAvatarHTML, selectSignupAvatar, changeAvatar, handleProductImageError, handleGoogleLogin, crearAlertaSupabase, toggleTheme, copyProductLink;
+let setCategory, clearFilters, toggleCompare, clearCompare, openCompareModal, closeCompareModal, openProductDetail, openProductStore, openProductAction, closeModal, switchTab, activateExplorar, activateDeals, activateInternationalMode, openNovedadesModal, openProfileModal, openCountryModal, toggleMobileFilters, toggleFavorite, toggleFavoriteDetail, togglePriceAlert, toggleUserDropdown, openAuthModal, closeAuthModal, switchAuthTab, openAuthAlerts, handleAuthSubmit, handleLogout, renderAvatarHTML, selectSignupAvatar, changeAvatar, handleProductImageError, handleGoogleLogin, crearAlertaSupabase, toggleTheme, copyProductLink, scrollToStores, filterByStoreChip, clearBikeTypes, toggleFilterAccordion, toggleSpecChip, openBikeFitModal, updateBikeFitResult, applyBikeFitToCatalog, openBikeAdvisorModal, selectAdvisorOption, runBikeAdvisor, applyAdvisorToCatalog, copyCompareLink, shareCompareWhatsApp, selectInstantSearchItem, applyInstantSearchTerm;
 
 // =============================================
 // ANIMAL AVATARS & STYLING SYSTEM
@@ -99,37 +99,41 @@ let cloudAuth = null;
 let useFirebase = false;
 let firebasePersistenceReady = Promise.resolve();
 
-try {
-    if (typeof firebase !== 'undefined' && FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY") {
-        firebase.initializeApp(FIREBASE_CONFIG);
-        cloudDb = firebase.firestore();
-        cloudAuth = firebase.auth();
-        firebasePersistenceReady = cloudAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch((error) => {
-            console.warn("Firebase auth local persistence not enabled:", error);
-        });
-        cloudDb.enablePersistence?.({ synchronizeTabs: true }).catch((error) => {
-            console.warn("Firestore offline persistence not enabled:", error);
-        });
-        useFirebase = true;
-        console.log("Firebase initialized successfully in Cloud Mode!");
-    } else {
-        console.log("Firebase credentials not configured. Running in local Offline mode (localStorage enabled).");
+function ensureFirebaseInitialized() {
+    if (useFirebase && cloudAuth) return true;
+    try {
+        if (typeof firebase !== 'undefined' && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY") {
+            if (!firebase.apps || firebase.apps.length === 0) {
+                firebase.initializeApp(FIREBASE_CONFIG);
+            }
+            cloudAuth = firebase.auth();
+            cloudDb = typeof firebase.firestore === 'function' ? firebase.firestore() : null;
+            firebasePersistenceReady = cloudAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch((error) => {
+                console.warn("Firebase auth local persistence not enabled:", error);
+            });
+            if (cloudDb && typeof cloudDb.enablePersistence === 'function') {
+                cloudDb.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+            }
+            useFirebase = true;
+            return true;
+        }
+    } catch (error) {
+        console.warn("Failed to initialize Firebase:", error);
     }
-} catch (error) {
-    console.warn("Failed to initialize Firebase:", error);
+    return false;
 }
+
+ensureFirebaseInitialized();
 
 // =============================================
 // CONFIGURACIÓN DE API
 // =============================================
 // Detecta automáticamente el entorno: en producción usa el mismo origen,
 // en desarrollo local apunta al servidor FastAPI en el puerto 8000.
-const API_BASE_URL = (typeof window.API_BASE_URL === 'string') ? window.API_BASE_URL : (() => {
-    // En desarrollo local con frontend separado (ej. puerto 8080 o 5500), apuntar a FastAPI en el 8000
-    if ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '8000') {
+const API_BASE_URL = (typeof window.API_BASE_URL === 'string' && window.API_BASE_URL.trim() !== '') ? window.API_BASE_URL.trim() : (() => {
+    if ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port && window.location.port !== '8000') {
         return 'http://127.0.0.1:8000';
     }
-    // En producción (Oracle Cloud / servidor unificado en el mismo host y puerto): usar ruta relativa
     return '';
 })();
 
@@ -194,7 +198,7 @@ const state = {
 // HELPERS
 // =============================================
 const GOOGLE_AUTH_LOGO = `
-    <svg class="google-auth-logo" viewBox="0 0 48 48" aria-hidden="true">
+    <svg class="google-auth-logo" width="18" height="18" viewBox="0 0 48 48" aria-hidden="true" style="width:18px;height:18px;min-width:18px;min-height:18px;flex-shrink:0;display:inline-block;">
         <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z" />
         <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 16.3 4 9.6 8.3 6.3 14.7z" />
         <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.3C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.6 5.1C9.4 39.6 16.1 44 24 44z" />
@@ -408,16 +412,16 @@ function renderRadarChart(products) {
             const y = centerY + radius * Math.sin(angle);
             return `${x},${y}`;
         }).join(' ');
-        gridHtml += `<polygon points="${points}" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.2" />`;
+        gridHtml += `<polygon points="${points}" fill="none" stroke="var(--border)" stroke-width="1.2" />`;
     });
     
     let spokeHtml = '';
     angles.forEach((angle, i) => {
         const x = centerX + maxRadius * Math.cos(angle);
         const y = centerY + maxRadius * Math.sin(angle);
-        spokeHtml += `<line x1="${centerX}" y1="${centerY}" x2="${x}" y2="${y}" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.2" />`;
+        spokeHtml += `<line x1="${centerX}" y1="${centerY}" x2="${x}" y2="${y}" stroke="var(--border)" stroke-width="1.2" />`;
         
-        const labelRadius = maxRadius + 18;
+        const labelRadius = maxRadius + 20;
         const lx = centerX + labelRadius * Math.cos(angle);
         const ly = centerY + labelRadius * Math.sin(angle);
         
@@ -426,16 +430,16 @@ function renderRadarChart(products) {
         if (Math.cos(angle) < -0.1) textAnchor = "end";
         
         let dy = 4;
-        if (i === 0) dy = -5;
+        if (i === 0) dy = -6;
         if (i === 2 || i === 3) dy = 10;
         
-        spokeHtml += `<text x="${lx}" y="${ly + dy}" text-anchor="${textAnchor}" fill="var(--text-muted)" font-size="0.65rem" font-family="'Poppins', sans-serif;" font-weight="700" style="text-transform: uppercase; letter-spacing: 0.5px;">${dimensions[i]}</text>`;
+        spokeHtml += `<text x="${lx}" y="${ly + dy}" text-anchor="${textAnchor}" fill="var(--text-secondary)" font-size="0.65rem" font-family="var(--font-main)" font-weight="600" style="text-transform: uppercase; letter-spacing: 0.06em;">${dimensions[i]}</text>`;
     });
     
     const colors = [
-        { stroke: "#22c55e", fill: "rgba(34, 197, 94, 0.15)", glow: "rgba(34, 197, 94, 0.4)" },
-        { stroke: "#3b82f6", fill: "rgba(59, 130, 246, 0.15)", glow: "rgba(59, 130, 246, 0.4)" },
-        { stroke: "#ec4899", fill: "rgba(236, 72, 153, 0.15)", glow: "rgba(236, 72, 153, 0.4)" }
+        { stroke: "#20C968", fill: "rgba(32, 201, 104, 0.16)" },
+        { stroke: "#0EA5E9", fill: "rgba(14, 165, 233, 0.14)" },
+        { stroke: "#F59E0B", fill: "rgba(245, 158, 11, 0.14)" }
     ];
     
     let polygonsHtml = '';
@@ -454,29 +458,29 @@ function renderRadarChart(products) {
         }).join(' ');
         
         polygonsHtml += `
-            <polygon points="${points}" fill="${color.fill}" stroke="${color.stroke}" stroke-width="2.5" style="filter: drop-shadow(0 0 4px ${color.glow}); transition: all 0.3s;" />
+            <polygon points="${points}" fill="${color.fill}" stroke="${color.stroke}" stroke-width="2.2" />
         `;
         
         legendHtml += `
-            <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-weight: 700; color: #fff;">
-                <span style="width: 10px; height: 10px; border-radius: 50%; background: ${color.stroke}; box-shadow: 0 0 6px ${color.stroke};"></span>
-                <span>${p.brand} ${p.model}</span>
+            <div class="radar-legend-item">
+                <span class="radar-legend-dot" style="background: ${color.stroke};"></span>
+                <span>${escapeHtml(p.brand)} ${escapeHtml(p.model)}</span>
             </div>
         `;
     });
     
     return `
-        <div class="radar-chart-wrapper" style="display: flex; flex-direction: column; align-items: center; margin: 1.5rem auto 0.5rem; background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); padding: 1.25rem 2rem; border-radius: 16px; max-width: 480px; width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
-            <span style="font-family:'Poppins', sans-serif; font-size: 0.72rem; font-weight: 800; color: var(--primary); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 0.75rem;"><i class="fa-solid fa-chart-pie" style="margin-right: 0.35rem;"></i> Comparación de Rendimiento RPG</span>
-            <svg width="340" height="340" viewBox="0 0 340 340" style="margin-bottom: 0.5rem;">
-                <g transform="translate(20, 20)">
+        <div class="radar-chart-wrapper">
+            <span class="radar-chart-kicker"><i class="fa-solid fa-chart-Simple"></i> Análisis Comparativo de Especificaciones</span>
+            <svg width="340" height="320" viewBox="0 0 340 320" class="radar-chart-svg">
+                <g transform="translate(20, 14)">
                     ${gridHtml}
                     ${spokeHtml}
                     ${polygonsHtml}
-                    <circle cx="${centerX}" cy="${centerY}" r="3" fill="#fff" opacity="0.5" />
+                    <circle cx="${centerX}" cy="${centerY}" r="3" fill="var(--text-muted)" opacity="0.6" />
                 </g>
             </svg>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.75rem; width: 100%;">
+            <div class="radar-legend">
                 ${legendHtml}
             </div>
         </div>
@@ -595,7 +599,7 @@ function checkCyberStatus() {
         if (cyberBanner) cyberBanner.style.display = 'none';
         if (isCyberMode) {
             isCyberMode = false;
-            document.body.classList.remove('cyber-theme');
+            document.body?.classList.remove('cyber-theme');
             activateExplorar();
         }
     }
@@ -742,8 +746,16 @@ function isPlaceholderImage(src) {
         /_[0]\.(jpg|jpeg|png|webp)$/.test(clean);
 }
 
+function resolveAssetUrl(src) {
+    if (!src || typeof src !== 'string') return '';
+    if (src.startsWith('/static/') && API_BASE_URL) {
+        return API_BASE_URL + src;
+    }
+    return src;
+}
+
 function getProductFallbackImage() {
-    return FALLBACK_PRODUCT_IMAGE;
+    return resolveAssetUrl(FALLBACK_PRODUCT_IMAGE);
 }
 
 function getProductImage(product = {}) {
@@ -755,7 +767,7 @@ function getProductImage(product = {}) {
     ].filter(Boolean);
 
     const preferred = candidates.find(src => !isPlaceholderImage(src));
-    return preferred || candidates[0] || getProductFallbackImage(product);
+    return resolveAssetUrl(preferred || candidates[0] || FALLBACK_PRODUCT_IMAGE);
 }
 
 function getImageFallbacks(product = {}) {
@@ -808,20 +820,32 @@ function isInternationalProduct(product = {}) {
 }
 
 function getCategoryTitle(cat) {
-    if (cat === 'accesorios') return 'Accesorios y Equipamiento';
-    if (cat === 'repuestos') return 'Componentes y Repuestos';
-    return 'Catálogo de Bicicletas';
+    if (cat === 'accesorios') return 'Catálogo de accesorios';
+    if (cat === 'repuestos') return 'Catálogo de repuestos';
+    return 'Catálogo de bicicletas';
+}
+
+function getCategorySubtitle(cat) {
+    if (cat === 'accesorios') return 'Equipamiento, cascos y accesorios al mejor precio en Chile.';
+    if (cat === 'repuestos') return 'Transmisiones, frenos y componentes de ciclismo comparados por tienda.';
+    return 'Encuentra la bicicleta ideal para tu próxima aventura.';
 }
 
 function getInternationalTitle(cat) {
-    if (cat === 'repuestos') return 'AliExpress Componentes Internacionales';
-    return 'AliExpress Accesorios Internacionales';
+    if (cat === 'repuestos') return 'Componentes internacionales';
+    return 'Accesorios internacionales';
 }
 
 function syncCatalogUiState() {
     const titleEl = document.getElementById('section-title');
     if (titleEl) {
         titleEl.innerText = state.isInternationalMode ? getInternationalTitle(state.category) : getCategoryTitle(state.category);
+    }
+    const subtitleEl = document.getElementById('section-subtitle');
+    if (subtitleEl) {
+        subtitleEl.innerText = state.isInternationalMode
+            ? 'Selección de productos internacionales con envío directo a Chile.'
+            : getCategorySubtitle(state.category);
     }
 
     const intlFiltersBar = document.getElementById('aliexpress-quick-filters');
@@ -839,7 +863,16 @@ function syncCatalogUiState() {
         bikeCategoryPill.style.display = state.isInternationalMode ? 'none' : '';
     }
 
-    if (state.isInternationalMode) {
+    const allTypesBtn = document.getElementById('btn-all-bike-types');
+    if (allTypesBtn) {
+        allTypesBtn.classList.toggle('active', (state.filters.types || []).length === 0);
+    }
+
+    if (state.filters.spec) {
+            params.append('spec', state.filters.spec);
+        }
+
+        if (state.isInternationalMode) {
         document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
         const navInt = document.getElementById('nav-internacional');
         if (navInt) navInt.classList.add('active');
@@ -938,47 +971,107 @@ function getStoreDot(storeKey) {
     return `<span class="store-dot" style="background:${color};"></span>`;
 }
 
-// Theme Toggle System
+// Theme Toggle System (Zero-Flash Synchronous Theme)
 function initTheme() {
     const savedTheme = localStorage.getItem('theme') || 'dark';
     if (savedTheme === 'light') {
-        document.body.classList.add('light-mode');
-        const themeBtnIcon = document.querySelector('#theme-toggle i');
-        if (themeBtnIcon) {
-            themeBtnIcon.className = 'fa-solid fa-sun';
-        }
-    } else {
-        document.body.classList.remove('light-mode');
+        document.documentElement?.classList.add('light-mode');
+        document.body?.classList.add('light-mode');
         const themeBtnIcon = document.querySelector('#theme-toggle i');
         if (themeBtnIcon) {
             themeBtnIcon.className = 'fa-solid fa-moon';
+        }
+    } else {
+        document.documentElement?.classList.remove('light-mode');
+        document.body?.classList.remove('light-mode');
+        const themeBtnIcon = document.querySelector('#theme-toggle i');
+        if (themeBtnIcon) {
+            themeBtnIcon.className = 'fa-solid fa-sun';
         }
     }
 }
 
 toggleTheme = window.toggleTheme = function() {
-    const isLight = document.body.classList.toggle('light-mode');
+    const isLight = document.body?.classList.toggle('light-mode');
+    document.documentElement?.classList.toggle('light-mode', Boolean(isLight));
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
     const themeBtnIcon = document.querySelector('#theme-toggle i');
     if (themeBtnIcon) {
-        themeBtnIcon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-        
-        // Add rotation animation
-        themeBtnIcon.style.transform = 'rotate(360deg) scale(1.2)';
-        themeBtnIcon.style.transition = 'transform 0.4s ease';
+        themeBtnIcon.className = isLight ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+        themeBtnIcon.style.transform = 'rotate(180deg)';
+        themeBtnIcon.style.transition = 'transform 0.35s ease';
         setTimeout(() => {
             themeBtnIcon.style.transform = '';
             themeBtnIcon.style.transition = '';
-        }, 400);
+        }, 350);
     }
-    showToast(`☀️ Modo ${isLight ? 'Claro' : 'Oscuro'} Activado`);
+    showToast(`Modo ${isLight ? 'Claro' : 'Oscuro'} activado`);
+};
+
+scrollToStores = window.scrollToStores = function(event) {
+    if (event) event.preventDefault();
+    document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+    const navTiendas = document.getElementById('nav-tiendas');
+    if (navTiendas) navTiendas.classList.add('active');
+    openCountryModal();
+};
+
+filterByStoreChip = window.filterByStoreChip = function(storeKey) {
+    if (!storeKey) return;
+    isCyberMode = false;
+    state.isInternationalMode = false;
+    document.body?.classList.remove('cyber-theme');
+    const isSame = state.filters.stores.length === 1 && state.filters.stores[0] === storeKey;
+    state.filters.stores = isSame ? [] : [storeKey];
+    state.currentPage = 1;
+    document.querySelectorAll('.store-chip').forEach(chip => {
+        const onclickVal = chip.getAttribute ? (chip.getAttribute('onclick') || '') : '';
+        const matches = onclickVal.includes(`'${storeKey}'`);
+        chip.classList.toggle('active', !isSame && Boolean(matches));
+    });
+    const catalogEl = document.getElementById('catalog');
+    if (catalogEl && typeof window.scrollTo === 'function') {
+        window.scrollTo({ top: (catalogEl.offsetTop || 0) - 72, behavior: 'smooth' });
+    }
+    render();
+};
+
+clearBikeTypes = window.clearBikeTypes = function() {
+    state.filters.types = [];
+    document.querySelectorAll('#type-filter-list input').forEach(i => { i.checked = false; });
+    const allBtn = document.getElementById('btn-all-bike-types');
+    if (allBtn) allBtn.classList.add('active');
+    state.currentPage = 1;
+    render();
+};
+
+toggleFilterAccordion = window.toggleFilterAccordion = function(btn) {
+    if (!btn || !btn.closest) return;
+    const group = btn.closest('.filter-group');
+    if (!group) return;
+    const isCollapsed = group.classList.toggle('collapsed');
+    btn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
 };
 
 // =============================================
 // CORE FUNCTIONS
 // =============================================
+function initHeroVideo() {
+    const heroVideo = document.getElementById('hero-bg-video');
+    if (heroVideo && heroVideo.style) {
+        heroVideo.muted = true;
+        heroVideo.defaultMuted = true;
+        heroVideo.volume = 0;
+        if (typeof heroVideo.play === 'function') {
+            const p = heroVideo.play();
+            if (p && typeof p.catch === 'function') p.catch(() => {});
+        }
+    }
+}
+
 function init() {
     initTheme();
+    initHeroVideo();
     setupEventListeners();
     injectCyberCSS();
     checkCyberStatus();
@@ -1031,20 +1124,18 @@ function renderBrandFilter() {
     const container = document.getElementById('brand-filter-list');
     if (!container) return;
     
-    // Save scroll position of the brand list container
     const scrollTop = container.scrollTop;
     
     container.innerHTML = sortedBrands.map(([b, count]) => {
         const isChecked = state.filters.brands.includes(b.toLowerCase()) ? 'checked' : '';
         return `
-            <label style="display: flex; justify-content: space-between; align-items: center;">
-                <span><input type="checkbox" class="brand-check" value="${b.toLowerCase()}" ${isChecked}> ${b}</span>
-                <span class="filter-count" style="font-size: 0.8rem; color: rgba(255,255,255,0.4); font-weight: 500;">(${count})</span>
+            <label class="filter-option-row">
+                <span class="filter-option-left"><input type="checkbox" class="brand-check" value="${b.toLowerCase()}" ${isChecked}> <span>${escapeHtml(b)}</span></span>
+                <span class="filter-count">${count}</span>
             </label>
         `;
     }).join('');
     
-    // Restore scroll position
     container.scrollTop = scrollTop;
     
     container.querySelectorAll('.brand-check').forEach(input => {
@@ -1059,9 +1150,12 @@ function renderTypeFilter() {
     if (state.category === 'bicicletas') {
         dynContainer.style.display = 'none';
         
-        // Use server types metadata or fallback
         const counts = state.typesMetadata || { 'mtb': 0, 'ruta': 0, 'gravel': 0, 'fixie': 0, 'urbana': 0, 'hibrida': 0, 'infantil': 0, 'electrica': 0 };
         const typeContainer = document.getElementById('type-filter-list');
+        const allTypesBtn = document.getElementById('btn-all-bike-types');
+        if (allTypesBtn) {
+            allTypesBtn.classList.toggle('active', (state.filters.types || []).length === 0);
+        }
         if (typeContainer) {
             typeContainer.querySelectorAll('label').forEach(label => {
                 const input = label.querySelector('input');
@@ -1070,28 +1164,19 @@ function renderTypeFilter() {
                     const count = counts[type] || 0;
                     const isChecked = state.filters.types.includes(type) ? 'checked' : '';
                     
-                    let iconHtml = '';
-                    if (type === 'mtb') iconHtml = '<i class="fa-solid fa-mountain-sun" style="color:#22c55e;width:14px"></i>';
-                    else if (type === 'ruta') iconHtml = '<i class="fa-solid fa-road" style="color:#3b82f6;width:14px"></i>';
-                    else if (type === 'gravel') iconHtml = '<i class="fa-solid fa-compass" style="color:#0d9488;width:14px"></i>';
-                    else if (type === 'fixie') iconHtml = '<i class="fa-solid fa-circle-dot" style="color:#0ea5e9;width:14px"></i>';
-                    else if (type === 'urbana') iconHtml = '<i class="fa-solid fa-city" style="color:#eab308;width:14px"></i>';
-                    else if (type === 'hibrida') iconHtml = '<i class="fa-solid fa-shuffle" style="color:#f97316;width:14px"></i>';
-                    else if (type === 'infantil') iconHtml = '<i class="fa-solid fa-child" style="color:#ec4899;width:14px"></i>';
-                    else if (type === 'electrica') iconHtml = '<i class="fa-solid fa-bolt" style="color:#8b5cf6;width:14px"></i>';
-                    
                     const labelText = {
-                        'mtb': 'Montaña (MTB)',
-                        'ruta': 'Ruta (Road)',
+                        'mtb': 'Montaña',
+                        'ruta': 'Ruta',
                         'gravel': 'Gravel',
                         'fixie': 'Fixie / Single-speed',
-                        'urbana': 'Urbana (City)',
-                        'hibrida': 'Híbrida (Hybrid)',
+                        'urbana': 'Urbana',
+                        'hibrida': 'Híbrida',
                         'infantil': 'Infantil',
                         'electrica': 'Eléctrica'
                     }[type] || type.toUpperCase();
 
-                    label.innerHTML = `<input type="checkbox" class="type-check" value="${type}" ${isChecked}> ${iconHtml} ${labelText} <span class="filter-count" style="margin-left: auto; font-size: 0.8rem; color: rgba(255,255,255,0.4); font-weight: 500;">(${count})</span>`;
+                    label.className = 'filter-option-row';
+                    label.innerHTML = `<span class="filter-option-left"><input type="checkbox" class="type-check" value="${type}" ${isChecked}> <span>${labelText}</span></span> <span class="filter-count">${count}</span>`;
                     label.style.display = count === 0 ? 'none' : 'flex';
                 }
             });
@@ -1099,6 +1184,9 @@ function renderTypeFilter() {
                 input.addEventListener('change', () => {
                     const checked = typeContainer.querySelectorAll('.type-check:checked');
                     state.filters.types = Array.from(checked).map(i => i.value);
+                    if (allTypesBtn) {
+                        allTypesBtn.classList.toggle('active', state.filters.types.length === 0);
+                    }
                     state.currentPage = 1;
                     render();
                 });
@@ -1118,28 +1206,31 @@ function renderTypeFilter() {
         return;
     }
 
-    // Save scroll position of the dynamic type list
     const dynList = document.getElementById('dyn-type-filter-list');
     const dynScrollTop = dynList ? dynList.scrollTop : 0;
 
-    const label = state.category === 'accesorios' ? 'Tipo de Accesorio' : 'Tipo de Componente';
+    const label = state.category === 'accesorios' ? 'Tipo de accesorio' : 'Tipo de componente';
     dynContainer.innerHTML = `
-        <label>${label}</label>
-        <div class="checkbox-list" id="dyn-type-filter-list">
-            ${sortedTypes.map(([t, count]) => {
-                const isChecked = state.filters.dynTypes.includes(t.toLowerCase()) ? 'checked' : '';
-                return `
-                    <label style="display: flex; justify-content: space-between; align-items: center;">
-                        <span><input type="checkbox" class="dyn-type-check" value="${t.toLowerCase()}" ${isChecked}> ${t}</span>
-                        <span class="filter-count" style="font-size: 0.8rem; color: rgba(255,255,255,0.4); font-weight: 500;">(${count})</span>
-                    </label>
-                `;
-            }).join('')}
+        <button type="button" class="filter-accordion-header" onclick="toggleFilterAccordion(this)" aria-expanded="true">
+            <span>${label}</span>
+            <i class="fa-solid fa-chevron-up"></i>
+        </button>
+        <div class="filter-group-body">
+            <div class="checkbox-list" id="dyn-type-filter-list">
+                ${sortedTypes.map(([t, count]) => {
+                    const isChecked = state.filters.dynTypes.includes(t.toLowerCase()) ? 'checked' : '';
+                    return `
+                        <label class="filter-option-row">
+                            <span class="filter-option-left"><input type="checkbox" class="dyn-type-check" value="${t.toLowerCase()}" ${isChecked}> <span>${escapeHtml(t)}</span></span>
+                            <span class="filter-count">${count}</span>
+                        </label>
+                    `;
+                }).join('')}
+            </div>
         </div>
     `;
     dynContainer.style.display = 'block';
 
-    // Restore scroll position of the dynamic type list
     const newDynList = document.getElementById('dyn-type-filter-list');
     if (newDynList) {
         newDynList.scrollTop = dynScrollTop;
@@ -1185,6 +1276,7 @@ function updateBrandFilters() {
 }
 
 function setupEventListeners() {
+    initInstantSearch();
     let searchTimeout;
     document.getElementById('main-search').addEventListener('input', (e) => {
         const val = e.target.value.toLowerCase();
@@ -1285,6 +1377,16 @@ function setupEventListeners() {
     document.querySelector('.btn-page.next')?.addEventListener('click', () => {
         if (state.currentPage < state.totalPages) { state.currentPage++; render(); window.scrollTo({top: document.getElementById('catalog').offsetTop - 80, behavior: 'smooth'}); }
     });
+
+    // Navbar scroll state
+    if (typeof window.addEventListener === 'function') {
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.navbar');
+            if (nav) {
+                nav.classList.toggle('scrolled', (window.scrollY || 0) > 24);
+            }
+        }, { passive: true });
+    }
 }
 
 function updateCheckboxFilters() {
@@ -1309,7 +1411,7 @@ setCategory = window.setCategory = function(cat) {
     
     const preservedDiscountMin = state.filters.discountMin;
     // Reset filters on category changes so each section starts clean and predictable.
-    state.filters = { search: '', priceMin: null, priceMax: null, stores: [], types: [], wheelSizes: [], brands: [], budgetRange: null, dynTypes: [], discountMin: preservedDiscountMin, aliexpressQuickFilter: 'all' };
+    state.filters = { search: '', priceMin: null, priceMax: null, stores: [], types: [], wheelSizes: [], brands: [], budgetRange: null, dynTypes: [], discountMin: preservedDiscountMin, aliexpressQuickFilter: 'all', spec: null }; document.querySelectorAll('.component-tier-pill').forEach(p => p.classList.remove('active'));
     
     // Reset quick pills active state in UI
     document.querySelectorAll('.quick-pill').forEach(p => {
@@ -1356,8 +1458,8 @@ setCategory = window.setCategory = function(cat) {
 clearFilters = window.clearFilters = function() {
     isCyberMode = false;
     state.isInternationalMode = false;
-    document.body.classList.remove('cyber-theme');
-    state.filters = { search: '', priceMin: null, priceMax: null, stores: [], types: [], wheelSizes: [], brands: [], budgetRange: null, dynTypes: [], discountMin: null, aliexpressQuickFilter: 'all' };
+    document.body?.classList.remove('cyber-theme');
+    state.filters = { search: '', priceMin: null, priceMax: null, stores: [], types: [], wheelSizes: [], brands: [], budgetRange: null, dynTypes: [], discountMin: null, aliexpressQuickFilter: 'all', spec: null }; document.querySelectorAll('.component-tier-pill').forEach(p => p.classList.remove('active'));
     state.currentPage = 1;
     document.getElementById('main-search').value = '';
     document.getElementById('price-min').value = '';
@@ -1379,16 +1481,25 @@ clearFilters = window.clearFilters = function() {
 // COMPARATOR
 // =============================================
 toggleCompare = window.toggleCompare = function(productId, event) {
-    event.stopPropagation();
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
     const idx = state.compare.indexOf(productId);
     if (idx > -1) {
         state.compare.splice(idx, 1);
+        showToast(`Producto quitado del comparador (${state.compare.length}/3).`);
     } else {
         if (state.compare.length >= 3) {
-            showToast('Solo puedes comparar hasta 3 bicicletas a la vez.');
+            showToast('Puedes comparar hasta 3 productos a la vez.');
             return;
         }
         state.compare.push(productId);
+        if (state.compare.length === 1) {
+            showToast('Agregado al comparador (1/3). Selecciona al menos 1 más para comparar.');
+        } else {
+            showToast(`Agregado al comparador (${state.compare.length}/3). Pulsa "Comparar ahora" abajo.`);
+        }
     }
     updateCompareBar();
     render(false);
@@ -1400,9 +1511,12 @@ function updateCompareBar() {
     if (!bar) return;
     if (state.compare.length > 0) {
         bar.classList.add('visible');
-        countEl.textContent = state.compare.length;
+        bar.classList.add('active');
+        if (countEl) countEl.textContent = state.compare.length;
     } else {
         bar.classList.remove('visible');
+        bar.classList.remove('active');
+        if (countEl) countEl.textContent = '0';
     }
 }
 
@@ -1413,14 +1527,15 @@ clearCompare = window.clearCompare = function() {
 };
 
 openCompareModal = window.openCompareModal = function() {
-    const allProducts = [...state.data.bicicletas, ...state.data.accesorios, ...state.data.repuestos];
-    const products = state.compare.map(id => allProducts.find(p => p.id === id)).filter(Boolean);
-    if (products.length < 2) { showToast('Selecciona al menos 2 productos para comparar.'); return; }
+    const products = state.compare.map(id => findProductById(id)).filter(Boolean);
+    if (products.length < 2) {
+        showToast('Selecciona al menos 2 productos usando el icono de balanza en cada tarjeta.');
+        return;
+    }
 
-    // Build all unique spec keys
+    // Build all unique spec keys + core summary rows
     const allKeys = [...new Set(products.flatMap(p => Object.keys(p.fullSpecs || {})))];
 
-    // Highlight evaluation helpers
     const parsedWeights = products.map(p => {
         const wStr = String(p.fullSpecs?.["Peso Aproximado"] || p.fullSpecs?.["Peso"] || '');
         const m = wStr.match(/(\d+(?:\.\d+)?)/);
@@ -1428,7 +1543,7 @@ openCompareModal = window.openCompareModal = function() {
     });
     const minWeight = Math.min(...parsedWeights);
 
-    const parsedPrices = products.map(p => Math.min(...p.offers.map(o => o.price)));
+    const parsedPrices = products.map(p => Math.min(...(p.offers || []).map(o => o.price)));
     const minPrice = Math.min(...parsedPrices);
 
     const parsedFrames = products.map(p => {
@@ -1449,34 +1564,41 @@ openCompareModal = window.openCompareModal = function() {
     const maxBrakeTier = Math.max(...parsedBrakes);
 
     const colsHtml = products.map(p => {
-        const bestPrice = Math.min(...p.offers.map(o => o.price));
-        const isCheapest = bestPrice === minPrice && products.length > 1 && products.some(p2 => Math.min(...p2.offers.map(o => o.price)) > minPrice);
+        const bestOffer = getBestProductOffer(p) || { price: 0, store: 'Tienda' };
+        const bestPrice = bestOffer.price || 0;
+        const isCheapest = bestPrice === minPrice && products.length > 1 && products.some(p2 => (getBestProductOffer(p2)?.price || 0) > minPrice);
         const valScore = calculateValueScore(p);
         
-        const priceStyle = isCheapest 
-            ? `style="background: rgba(34, 197, 94, 0.15); border: 1.5px solid var(--primary); border-radius: 8px; padding: 0.25rem 0.5rem; color: #4ade80; font-weight: 800; display: inline-block; box-shadow: 0 0 10px rgba(34,197,94,0.25);"` 
-            : `style="font-weight: 800;"`;
-            
         return `
-            <div class="compare-col" style="position: relative;">
-                ${isCheapest ? `<span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #000; font-size: 0.65rem; font-weight: 900; padding: 0.15rem 0.5rem; border-radius: 99px; text-transform: uppercase; white-space: nowrap; letter-spacing: 0.5px; box-shadow: 0 2px 8px var(--primary-glow);">Mejor Precio</span>` : ''}
-                <div class="compare-img-wrap" style="border: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.5rem;"><img src="${getProductImage(p)}" alt="${p.model}" data-fallbacks="${getImageFallbacks(p).join('|')}" onerror="handleProductImageError(this)" style="object-fit: contain;"></div>
-                <div class="compare-brand" style="margin-top: 0.75rem;">${p.brand}</div>
-                <div class="compare-model">${p.model}</div>
+            <div class="compare-col ${isCheapest ? 'is-cheapest' : ''}">
+                ${isCheapest ? `<span class="compare-best-badge">Mejor Precio</span>` : ''}
+                <div class="compare-img-wrap">
+                    <img src="${getProductImage(p)}" alt="${escapeHtml(p.model)}" data-fallbacks="${getImageFallbacks(p).join('|')}" onerror="handleProductImageError(this)">
+                </div>
+                <span class="compare-brand">${escapeHtml(p.brand)}</span>
+                <h4 class="compare-model">${escapeHtml(p.model)}</h4>
                 ${valScore ? `
-                    <div style="margin: 0.35rem 0; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
-                        <span style="font-size: 0.68rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Calidad-Precio:</span>
-                        <span style="background: rgba(34,197,94,0.12); color: #4ade80; font-weight: 800; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 4px;">${valScore}/100</span>
+                    <div class="compare-score-chip">
+                        <span>Calidad-Precio:</span>
+                        <strong>${valScore}/100</strong>
                     </div>
                 ` : ''}
-                <div class="compare-best-price" style="margin: 0.5rem 0;">Desde <span ${priceStyle}>${formatCLP(bestPrice)}</span></div>
-                <a href="${getProductUrl(p.offers[0])}" target="_blank" rel="noopener" class="btn-compare-buy">Ver en tienda <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                <div class="compare-best-price">
+                    <span class="compare-price-label">Desde</span>
+                    <span class="compare-price-val">${formatCLP(bestPrice)}</span>
+                    <span class="compare-store-note">en ${escapeHtml(bestOffer.store || 'Tienda')}</span>
+                </div>
+                <div class="compare-col-actions">
+                    <a href="${getProductUrl(bestOffer)}" target="_blank" rel="noopener" class="btn-minimal-primary btn-compare-buy">
+                        Ver oferta <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
             </div>
         `;
     }).join('');
 
-    const rowsHtml = allKeys.map(key => {
-        const cells = products.map((p, idx) => {
+    const rowsHtml = allKeys.length > 0 ? allKeys.map(key => {
+        const cells = products.map(p => {
             let val = p.fullSpecs?.[key] || '—';
             let isSuperior = false;
             
@@ -1517,28 +1639,51 @@ openCompareModal = window.openCompareModal = function() {
                 }
             }
             
-            const cellStyle = isSuperior 
-                ? `style="background: rgba(34, 197, 94, 0.12); color: #4ade80; border-left: 3px solid var(--primary); font-weight: 600;"` 
-                : '';
-            const checkIcon = isSuperior ? `<i class="fa-solid fa-circle-check" style="color: var(--primary); margin-right: 0.4rem; font-size: 0.8rem;"></i> ` : '';
+            const cellClass = isSuperior ? 'class="compare-cell-superior"' : '';
+            const checkIcon = isSuperior ? `<i class="fa-solid fa-circle-check"></i> ` : '';
             
-            return `<td ${cellStyle}>${checkIcon}${val}</td>`;
+            return `<td ${cellClass}>${checkIcon}${escapeHtml(String(val))}</td>`;
         }).join('');
         
-        return `<tr><th>${key}</th>${cells}</tr>`;
-    }).join('');
+        return `<tr><th>${escapeHtml(key)}</th>${cells}</tr>`;
+    }).join('') : `
+        <tr>
+            <th>Resumen</th>
+            ${products.map(p => `<td>${escapeHtml(getProductSummary(p))}</td>`).join('')}
+        </tr>
+        <tr>
+            <th>Tiendas con stock</th>
+            ${products.map(p => `<td>${(p.offers || []).length} tienda(s)</td>`).join('')}
+        </tr>
+    `;
 
     const radarChartHtml = renderRadarChart(products);
 
     document.getElementById('compare-modal-overlay').innerHTML = `
-        <div class="compare-modal-content" style="max-width: 1050px;">
-            <button class="modal-close" onclick="closeCompareModal()"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="compare-title" style="margin-bottom: 1.5rem;"><i class="fa-solid fa-scale-balanced"></i> Comparación de Productos</h2>
+        <div class="compare-modal-content">
+            <button class="modal-close" onclick="closeCompareModal()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-minimal-header" style="margin-bottom: 1.5rem;">
+                <span class="modal-minimal-eyebrow">Comparador BiciTodo</span>
+                <div class="compare-header-top-row">
+                    <div>
+                        <h2 class="modal-minimal-title">Comparación de Modelos (${products.length})</h2>
+                        <p class="modal-minimal-subtitle">Compara precios, tiendas y especificaciones técnicas lado a lado.</p>
+                    </div>
+                    <div class="compare-share-actions">
+                        <button type="button" class="modal-share-link" style="margin-bottom:0;" onclick="copyCompareLink()">
+                            <i class="fa-solid fa-link"></i> Copiar enlace
+                        </button>
+                        <button type="button" class="modal-share-link btn-whatsapp-share" style="margin-bottom:0;" onclick="shareCompareWhatsApp()">
+                            <i class="fa-brands fa-whatsapp"></i> Compartir en WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div class="compare-cols">${colsHtml}</div>
             ${radarChartHtml}
-            <div class="compare-table-wrap" style="margin-top: 1.5rem;">
+            <div class="compare-table-wrap">
                 <table class="compare-table">
-                    <thead><tr><th>Especificación</th>${products.map(p => `<th>${p.brand} ${p.model}</th>`).join('')}</tr></thead>
+                    <thead><tr><th>Especificación</th>${products.map(p => `<th>${escapeHtml(p.brand)} ${escapeHtml(p.model)}</th>`).join('')}</tr></thead>
                     <tbody>${rowsHtml}</tbody>
                 </table>
             </div>
@@ -1561,7 +1706,7 @@ function getRawProductUrl(offer) {
         if (offer.storeKey === 'aliexpress') {
             try {
                 const target = new URL(offer.url);
-                if (!target.hostname.toLowerCase().includes('aliexpress.') || !target.pathname.includes('/item/')) return '#';
+                if (!target.hostname.toLowerCase().includes('aliexpress.') || target.pathname.includes('1005001234')) return '#';
             } catch (_) {
                 return '#';
             }
@@ -1646,7 +1791,7 @@ function getStoreSearchUrl(storeKey, brand, model, fallbackUrl) {
 
 function findProductById(productId) {
     const allProducts = [...state.data.bicicletas, ...state.data.accesorios, ...state.data.repuestos];
-    return allProducts.find(p => p.id === productId);
+    return allProducts.find(p => p.id === productId) || (state.data.cache && state.data.cache[productId]);
 }
 
 function getBestProductOffer(product = {}) {
@@ -1735,7 +1880,11 @@ openProductStore = window.openProductStore = function(productId, event) {
 
     const product = findProductById(productId);
     const offer = getBestProductOffer(product);
-    const url = getProductUrl(offer || {});
+    let url = getProductUrl(offer || {});
+    if ((!url || url === '#') && product) {
+        const q = encodeURIComponent(((product.brand || '') + ' ' + (product.model || '')).trim());
+        url = isInternationalProduct(product) ? ('https://es.aliexpress.com/wholesale?SearchText=' + q) : getStoreSearchUrl(offer?.storeKey, product.brand, product.model, '#');
+    }
     if (!url || url === '#') {
         showToast('No hay enlace disponible para este producto.');
         return;
@@ -1812,8 +1961,8 @@ openProductDetail = window.openProductDetail = function(productId) {
                     Te enviaremos un correo electrónico inmediato en cuanto el precio de este artículo baje de tu objetivo.
                 </p>
                 <div class="price-alert-inputs">
-                    <span style="font-size:0.8rem; color:#fff; font-weight:700;">Avisarme si baja de:</span>
-                    <input type="number" id="alert-price-input" value="${currentAlertVal}" step="1000" style="font-family:'Poppins',sans-serif; font-weight:800; text-align:center; width:120px; background:rgba(0,0,0,0.25); border:1px solid var(--glass-border); border-radius:6px; color:#fff; padding:0.35rem 0.5rem; outline:none;">
+                    <span style="font-size:0.8rem; color:var(--text-main); font-weight:600;">Avisarme si baja de:</span>
+                    <input type="number" id="alert-price-input" value="${currentAlertVal}" step="1000" style="font-weight:700; text-align:center; width:130px; background:var(--bg-card); border:1px solid var(--border); border-radius:4px; color:var(--text-main); padding:0.38rem 0.5rem; outline:none;">
                     <button type="button" id="btn-alerta" class="btn-price-alert ${hasAlert ? 'active' : ''}" onclick="crearAlertaSupabase(${productId})">
                         ${hasAlert ? 'Desactivar Alerta' : 'Activar Alerta'}
                     </button>
@@ -1822,7 +1971,7 @@ openProductDetail = window.openProductDetail = function(productId) {
         `;
     } else {
         alertHtml = `
-            <div class="price-alert-panel" style="border-color: rgba(255,255,255,0.06); background: rgba(255,255,255,0.01);">
+            <div class="price-alert-panel" style="border: 1px solid var(--border); background: var(--bg-secondary); padding: 0.9rem 1rem; border-radius: 4px; margin-top: 0.75rem;">
                 <div class="price-alert-header" style="color: var(--text-muted); font-size:0.8rem; gap:0.4rem; display:flex; align-items:center;">
                     <i class="fa-solid fa-heart" style="color:var(--text-dim);"></i>
                     <span>Añade este producto a tus favoritos para configurar alertas por correo</span>
@@ -1926,8 +2075,8 @@ openProductDetail = window.openProductDetail = function(productId) {
                 <span style="font-size: 0.68rem; font-weight: 800; color: var(--primary); letter-spacing: 1px; text-transform: uppercase; display: block;">Ratio Calidad-Precio (Compra Inteligente)</span>
                 <span style="font-size: 0.82rem; color: var(--text-muted);">Este modelo destaca por sus excelentes especificaciones frente a su costo de mercado.</span>
             </div>
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04); min-width: 80px;">
-                <span style="font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 1.5rem; color: #fff; line-height: 1.1;">${valScore}</span>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg-card); padding: 0.5rem 0.75rem; border-radius: 4px; border: 1px solid var(--border); min-width: 80px;">
+                <span style="font-family: var(--font-heading); font-weight: 800; font-size: 1.45rem; color: var(--text-main); line-height: 1.1;">${valScore}</span>
                 <span style="font-size: 0.6rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase;">de 100</span>
             </div>
         </div>
@@ -1950,14 +2099,20 @@ openProductDetail = window.openProductDetail = function(productId) {
                     <span class="modal-brand-badge">${product.brand}</span>
                     <h2 class="modal-title">${product.model}</h2>
                     <p class="modal-specs-summary">${getProductSummary(product)}</p>
-                    <button type="button" class="modal-share-link" onclick="copyProductLink(${product.id})">
-                        <i class="fa-solid fa-link"></i> Copiar enlace
-                    </button>
+                    <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.85rem;">
+                        <button type="button" class="modal-share-link" style="margin-bottom:0;" onclick="copyProductLink(${product.id})">
+                            <i class="fa-solid fa-link"></i> Copiar enlace
+                        </button>
+                        <button type="button" class="modal-share-link" style="margin-bottom:0; ${state.compare.includes(product.id) ? 'border-color:var(--primary); color:var(--primary); font-weight:600;' : ''}" onclick="toggleCompare(${product.id}, event); openProductDetail(${product.id});">
+                            <i class="fa-solid ${state.compare.includes(product.id) ? 'fa-check' : 'fa-scale-balanced'}"></i> ${state.compare.includes(product.id) ? 'En el comparador' : 'Comparar con otro modelo'}
+                        </button>
+                    </div>
                     <div class="modal-best-price-hero">
                         <span class="label">Desde</span>
                         <span class="amount">${formatCLP(bestOffer.price)}</span>
                         <span class="stores-count">en ${product.offers.length} tienda${product.offers.length > 1 ? 's' : ''}</span>
                     </div>
+                    ${renderHistoricalPriceBanner(product)}
                     ${modalValueScoreHtml}
                     ${(function() {
                         let headerSpecsHtml = '';
@@ -1970,9 +2125,9 @@ openProductDetail = window.openProductDetail = function(productId) {
                                     let val = product.fullSpecs[actualKey];
                                     if (val.length > 40) val = val.substring(0, 37) + '...';
                                     foundSpecs.push(`
-                                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 0.45rem 0.75rem; border-radius: 8px; font-size: 0.75rem; min-width: 100px; flex: 1; text-align: left;">
+                                        <div style="background: var(--bg-secondary); border: 1px solid var(--border); padding: 0.5rem 0.75rem; border-radius: 4px; font-size: 0.75rem; min-width: 100px; flex: 1; text-align: left;">
                                             <span style="display: block; font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">${key}</span>
-                                            <span style="font-weight: 700; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: block;">${val}</span>
+                                            <span style="font-weight: 600; color: var(--text-main); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: block;">${val}</span>
                                         </div>
                                     `);
                                 }
@@ -2054,7 +2209,7 @@ activateExplorar = window.activateExplorar = function(event) {
     if (event) event.preventDefault();
     isCyberMode = false;
     state.isInternationalMode = false;
-    document.body.classList.remove('cyber-theme');
+    document.body?.classList.remove('cyber-theme');
     clearFilters();
     state.sortBy = 'relevant';
     const sortSelect = document.getElementById('sort-select');
@@ -2077,7 +2232,7 @@ activateDeals = window.activateDeals = function(event) {
     if (event) event.preventDefault();
     isCyberMode = false;
     state.isInternationalMode = false;
-    document.body.classList.remove('cyber-theme');
+    document.body?.classList.remove('cyber-theme');
     
     // Reset filters and apply 5% discount filter for regular Deals
     state.filters = { search: '', priceMin: null, priceMax: null, stores: [], types: [], wheelSizes: [], brands: [], budgetRange: null, dynTypes: [], discountMin: 5 };
@@ -2140,7 +2295,7 @@ activateCyberMode = window.activateCyberMode = function(event) {
     if (navCyber) navCyber.classList.add('active');
     
     // Apply Cyber Theme styling to body
-    document.body.classList.add('cyber-theme');
+    document.body?.classList.add('cyber-theme');
     
     window.scrollTo({
         top: document.getElementById('catalog').offsetTop - 80,
@@ -2154,7 +2309,7 @@ activateCyberMode = window.activateCyberMode = function(event) {
 activateInternationalMode = window.activateInternationalMode = function(event) {
     if (event) event.preventDefault();
     isCyberMode = false;
-    document.body.classList.remove('cyber-theme');
+    document.body?.classList.remove('cyber-theme');
     
     // Activate international mode
     state.isInternationalMode = true;
@@ -2165,7 +2320,7 @@ activateInternationalMode = window.activateInternationalMode = function(event) {
     }
     
     // Reset filters
-    state.filters = { search: '', priceMin: null, priceMax: null, stores: [], types: [], wheelSizes: [], brands: [], budgetRange: null, dynTypes: [], discountMin: null, aliexpressQuickFilter: 'all' };
+    state.filters = { search: '', priceMin: null, priceMax: null, stores: [], types: [], wheelSizes: [], brands: [], budgetRange: null, dynTypes: [], discountMin: null, aliexpressQuickFilter: 'all', spec: null }; document.querySelectorAll('.component-tier-pill').forEach(p => p.classList.remove('active'));
     state.currentPage = 1;
     
     // Reset quick pills active state in UI
@@ -2225,78 +2380,73 @@ openNovedadesModal = window.openNovedadesModal = async function(event) {
     if (!modal || !content) return;
     
     const defaultArticlesHtml = `
-        <!-- Article 1 -->
-        <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
-            <span style="font-size: 0.65rem; font-weight: 800; color: #60a5fa; background: rgba(59, 130, 246, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; text-transform: uppercase;">Tendencias</span>
-            <h4 style="font-family:'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.3; color: var(--text-white);">Gravel en Chile: La aventura de invierno</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.4;">
-                El gravel sigue creciendo exponencialmente. Conoce las mejores bicicletas de aventura y cómo equipar tu transmisión para terrenos de barro y ripio este invierno.
+        <article class="news-minimal-card">
+            <span class="news-minimal-badge">Tendencias</span>
+            <h4 class="news-minimal-card-title">Gravel en Chile: La aventura todo terreno</h4>
+            <p class="news-minimal-card-desc">
+                El gravel sigue creciendo en Chile. Conoce las mejores bicicletas de aventura y cómo equipar tu transmisión para terrenos mixtos y ripio.
             </p>
-        </div>
+        </article>
         
-        <!-- Article 2 -->
-        <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
-            <span style="font-size: 0.65rem; font-weight: 800; color: var(--primary); background: rgba(34, 197, 94, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; text-transform: uppercase;">Consejos</span>
-            <h4 style="font-family:'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.3; color: var(--text-white);">Mantenimiento de cadena contra la humedad</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.4;">
-                La humedad y la salinidad desgastan los eslabones rápidamente. Te dejamos un tutorial simple para limpiar, secar y lubricar con cera húmeda después de pedalear bajo la lluvia.
+        <article class="news-minimal-card">
+            <span class="news-minimal-badge">Consejos</span>
+            <h4 class="news-minimal-card-title">Mantenimiento de transmisión y cadena</h4>
+            <p class="news-minimal-card-desc">
+                La humedad y el polvo desgastan los eslabones rápidamente. Aprende cómo limpiar, secar y lubricar tu transmisión para máxima eficiencia.
             </p>
-        </div>
+        </article>
         
-        <!-- Article 3 -->
-        <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
-            <span style="font-size: 0.65rem; font-weight: 800; color: var(--warning); background: rgba(245, 158, 11, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; text-transform: uppercase;">Rutas</span>
-            <h4 style="font-family:'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.3; color: var(--text-white);">Ascenso a Farellones: Preparación segura</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.4;">
-                Subir a la cordillera es el sueño de todo ciclista de ruta. Te recomendamos verificar el estado de tus frenos, llevar luces traseras de alta potencia y ropa térmica de alta visibilidad.
+        <article class="news-minimal-card">
+            <span class="news-minimal-badge">Rutas</span>
+            <h4 class="news-minimal-card-title">Ascenso a Farellones: Preparación segura</h4>
+            <p class="news-minimal-card-desc">
+                Subir a la cordillera es un clásico del ciclismo chileno. Revisa el estado de tus frenos, hidratación, luces traseras y vestimenta térmica.
             </p>
-        </div>
+        </article>
     `;
 
     content.innerHTML = `
-        <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-        <div style="padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; background: var(--nav-bg); backdrop-filter: blur(20px); border-radius: var(--radius-lg); max-width: 800px; margin: 0 auto; color: var(--text-white);">
-            
-            <!-- Header -->
-            <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                <div style="font-size: 2.5rem; color: var(--primary);"><i class="fa-solid fa-envelope-open-text" style="filter: drop-shadow(0 0 10px var(--primary-glow));"></i></div>
-                <h2 style="font-family:'Poppins', sans-serif; font-weight:800; font-size:1.8rem; margin: 0; color: var(--text-white);">Novedades del Pedal</h2>
-                <p style="color: var(--text-muted); max-width: 550px; font-size: 0.9rem; line-height: 1.4; margin: 0;">
-                    Mantente al día con las últimas noticias del ciclismo en Chile, consejos de mantenimiento para tu bicicleta y ofertas exclusivas de nuestra comunidad.
+        <button class="modal-close" onclick="closeModal()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-minimal-shell">
+            <div class="modal-minimal-header">
+                <span class="modal-minimal-eyebrow">Comunidad & Actualidad</span>
+                <h2 class="modal-minimal-title">Novedades del Pedal</h2>
+                <p class="modal-minimal-subtitle">
+                    Mantente al día con las últimas noticias del ciclismo en Chile, consejos de mantenimiento y novedades del catálogo.
                 </p>
             </div>
             
-            <!-- Newsletter Sign-Up -->
-            <div style="background: var(--card-bg); border: 1px solid var(--glass-border); padding: 1.5rem; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
-                <span style="font-size: 0.75rem; font-weight: 800; color: var(--primary); letter-spacing: 1px; text-transform: uppercase;">BOLETÍN PARA AMANTES DEL CICLISMO</span>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0; max-width: 480px;">Recibe consejos mecánicos, recomendaciones de rutas y avisos de descuentos antes que nadie.</p>
-                
-                <form id="newsletter-form" onsubmit="submitNewsletter(event)" style="display: flex; gap: 0.5rem; width: 100%; max-width: 480px; margin-top: 0.25rem;">
-                    <input type="email" id="newsletter-email" placeholder="tu-correo@ciclismo.cl" style="flex: 1; padding: 0.65rem 1rem; border-radius: 99px; background: var(--input-bg); border: 1px solid var(--glass-border); color: var(--text-white); outline: none; font-size: 0.85rem; transition: var(--transition);" required>
-                    <button type="submit" style="background: var(--primary); color: #020617; font-weight: 800; border: none; padding: 0.65rem 1.5rem; border-radius: 99px; font-size: 0.85rem; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 12px var(--primary-glow); display: flex; align-items: center; gap: 0.35rem;">
-                        Suscribirse <i class="fa-solid fa-paper-plane"></i>
+            <div class="newsletter-minimal-box">
+                <div class="newsletter-minimal-copy">
+                    <span class="newsletter-minimal-kicker">Boletín BiciTodo</span>
+                    <p class="newsletter-minimal-text">Recibe consejos mecánicos, rutas recomendadas y alertas de bajas de precio.</p>
+                </div>
+                <form id="newsletter-form" class="newsletter-minimal-form" onsubmit="submitNewsletter(event)">
+                    <input type="email" id="newsletter-email" class="newsletter-minimal-input" placeholder="tu-correo@ciclismo.cl" required>
+                    <button type="submit" class="btn-minimal-primary">
+                        Suscribirse <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </form>
             </div>
             
-            <!-- News Section -->
-            <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <h3 style="font-family:'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.5rem; color: var(--text-white);">
-                    <i class="fa-solid fa-newspaper" style="color: var(--accent);"></i> Artículos y Noticias Recientes
-                </h3>
+            <div class="news-minimal-section">
+                <div class="news-minimal-section-head">
+                    <h3 class="news-minimal-section-title">Artículos y Noticias Recientes</h3>
+                </div>
                 
-                <div id="news-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
-                    <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
-                        <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem;"></i>
-                        <p style="margin: 0; font-size: 0.85rem;">Cargando últimas noticias desde el pedal...</p>
+                <div id="news-container" class="news-minimal-grid">
+                    <div class="news-minimal-loading">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        <p>Cargando artículos recientes...</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Footer action -->
-            <button onclick="closeModal()" style="align-self: center; background: var(--primary); color: #020617; font-weight: 800; border: none; padding: 0.65rem 2rem; border-radius: 99px; font-size: 0.85rem; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 12px var(--primary-glow);">
-                Cerrar Novedades
-            </button>
+            <div class="modal-minimal-footer">
+                <button type="button" class="btn-minimal-secondary" onclick="closeModal()">
+                    Cerrar
+                </button>
+            </div>
         </div>
     `;
     
@@ -2312,24 +2462,6 @@ openNovedadesModal = window.openNovedadesModal = async function(event) {
         const articles = await resp.json();
         
         if (articles && articles.length > 0) {
-            const categoryColors = {
-                'MTB': '#22c55e',       // green
-                'Ruta': '#3b82f6',      // blue
-                'Entrevistas': '#ec4899', // pink
-                'Artículos': '#8b5cf6',  // purple
-                'Consejos': '#f59e0b',   // yellow
-                'Noticias': '#60a5fa'   // light blue
-            };
-            
-            const categoryBgColors = {
-                'MTB': 'rgba(34, 197, 94, 0.1)',
-                'Ruta': 'rgba(59, 130, 246, 0.1)',
-                'Entrevistas': 'rgba(236, 72, 153, 0.1)',
-                'Artículos': 'rgba(139, 92, 246, 0.1)',
-                'Consejos': 'rgba(245, 158, 11, 0.1)',
-                'Noticias': 'rgba(96, 165, 250, 0.1)'
-            };
-
             const categoryIcons = {
                 'MTB': 'fa-mountain-sun',
                 'Ruta': 'fa-road',
@@ -2341,26 +2473,22 @@ openNovedadesModal = window.openNovedadesModal = async function(event) {
 
             newsContainer.innerHTML = articles.map(article => {
                 const cat = article.category || 'Noticias';
-                const color = categoryColors[cat] || '#60a5fa';
-                const bg = categoryBgColors[cat] || 'rgba(96, 165, 250, 0.1)';
                 const icon = categoryIcons[cat] || 'fa-newspaper';
 
                 return `
-                    <div style="background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left; transition: var(--transition); cursor: pointer;" 
-                         onmouseenter="this.style.borderColor='${color}'; this.style.transform='translateY(-2px)';" 
-                         onmouseleave="this.style.borderColor='var(--glass-border)'; this.style.transform='none';"
+                    <article class="news-minimal-card is-clickable"
                          onclick="window.open('${article.url}', '_blank', 'noopener,noreferrer')">
-                        <span style="font-size: 0.65rem; font-weight: 800; color: ${color}; background: ${bg}; padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; text-transform: uppercase; display: flex; align-items: center; gap: 0.3rem;">
-                            <i class="fa-solid ${icon}"></i> ${cat}
+                        <span class="news-minimal-badge">
+                            <i class="fa-solid ${icon}"></i> ${escapeHtml(cat)}
                         </span>
-                        <h4 style="font-family:'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.35; color: var(--text-white);">${article.title}</h4>
-                        <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.45;">
-                            ${article.summary}
+                        <h4 class="news-minimal-card-title">${escapeHtml(article.title)}</h4>
+                        <p class="news-minimal-card-desc">
+                            ${escapeHtml(article.summary)}
                         </p>
-                        <span style="font-size: 0.68rem; color: var(--primary); font-weight: 700; margin-top: auto; display: flex; align-items: center; gap: 0.25rem; justify-content: flex-end;">
-                            Leer más <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span class="news-minimal-link">
+                            Leer artículo <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </span>
-                    </div>
+                    </article>
                 `;
             }).join('');
         } else {
@@ -2377,23 +2505,24 @@ window.submitNewsletter = function(event) {
     const emailInput = document.getElementById('newsletter-email');
     if (!emailInput || !emailInput.value) return;
     
-    // Simulate successful subscription and update the HTML view
     const form = document.getElementById('newsletter-form');
-    if (form) {
+    if (form && form.parentElement) {
         form.parentElement.innerHTML = `
-            <span style="font-size: 0.75rem; font-weight: 800; color: var(--primary); letter-spacing: 1px; text-transform: uppercase;">SUSCRIPCIÓN EXITOSA</span>
-            <div style="font-size: 2rem; color: var(--primary); margin: 0.25rem 0;"><i class="fa-solid fa-circle-check"></i></div>
-            <p style="font-size: 0.9rem; color: var(--text-white); font-weight: 700; margin: 0;">¡Ya estás registrado, ciclista!</p>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: center;">Pronto recibirás nuestras novedades directo en tu bandeja de entrada.</p>
+            <div class="newsletter-minimal-success">
+                <i class="fa-solid fa-circle-check"></i>
+                <div>
+                    <strong>Suscripción confirmada</strong>
+                    <p>Recibirás nuestras próximas novedades y alertas de ofertas directamente en tu correo.</p>
+                </div>
+            </div>
         `;
     }
-    showToast('🚲 ¡Te has suscrito con éxito al boletín!');
+    showToast('Te has suscrito con éxito al boletín de BiciTodo.');
 };
 
 openProfileModal = window.openProfileModal = function(event) {
     if (event) event.preventDefault();
     
-    // Update active link
     document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
     const navC = document.getElementById('nav-cuenta');
     if (navC) navC.classList.add('active');
@@ -2404,7 +2533,7 @@ openProfileModal = window.openProfileModal = function(event) {
     
     const allProducts = [...state.data.bicicletas, ...state.data.accesorios, ...state.data.repuestos];
     const userFavs = state.favorites.map(f => {
-        const p = allProducts.find(item => item.id === f.id);
+        const p = allProducts.find(item => item.id === f.id) || (state.data.cache && state.data.cache[f.id]);
         if (p) {
             return { ...p, alertPrice: f.alertPrice };
         }
@@ -2412,57 +2541,54 @@ openProfileModal = window.openProfileModal = function(event) {
     }).filter(Boolean);
     
     const favsHtml = userFavs.length > 0 ? userFavs.map(p => {
-        const bestOffer = [...p.offers].sort((a, b) => a.price - b.price)[0];
-        const alertText = p.alertPrice ? `<span style="font-size:0.72rem; color:var(--primary); font-weight:700;"><i class="fa-solid fa-bell"></i> Alerta: ${formatCLP(p.alertPrice)}</span>` : '<span style="font-size:0.72rem; color:var(--text-dim); font-weight:600;"><i class="fa-solid fa-bell-slash"></i> Sin Alerta</span>';
+        const alertText = p.alertPrice
+            ? `<span class="profile-fav-alert active"><i class="fa-solid fa-bell"></i> Alerta: ${formatCLP(p.alertPrice)}</span>`
+            : `<span class="profile-fav-alert"><i class="fa-solid fa-bell-slash"></i> Sin alerta activa</span>`;
         
         return `
-        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; width: 100%; gap: 1rem;">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <div style="width: 50px; height: 38px; background: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 0.2rem;">
-                    <img src="${getProductImage(p)}" alt="${p.model}" data-fallbacks="${getImageFallbacks(p).join('|')}" onerror="handleProductImageError(this)" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+        <div class="profile-fav-item">
+            <div class="profile-fav-info">
+                <div class="profile-fav-thumb">
+                    <img src="${getProductImage(p)}" alt="${escapeHtml(p.model)}" data-fallbacks="${getImageFallbacks(p).join('|')}" onerror="handleProductImageError(this)">
                 </div>
-                <div style="text-align: left;">
-                    <span style="font-size: 0.68rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; display: block;">${p.brand}</span>
-                    <span style="font-size: 0.85rem; font-weight: 700; color: #fff; line-height: 1.2; display:block;">${p.model}</span>
+                <div class="profile-fav-meta">
+                    <span class="profile-fav-brand">${escapeHtml(p.brand)}</span>
+                    <span class="profile-fav-model">${escapeHtml(p.model)}</span>
                     ${alertText}
                 </div>
             </div>
-            <div style="display:flex; gap:0.4rem; align-items:center;">
-                <button onclick="closeModal(); openProductDetail(${p.id});" style="background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 8px; cursor: pointer; transition: var(--transition); white-space:nowrap;">
-                    Configurar Alerta
+            <div class="profile-fav-actions">
+                <button type="button" class="btn-minimal-outline-sm" onclick="closeModal(); openProductDetail(${p.id});">
+                    Configurar alerta
                 </button>
-                <button onclick="toggleFavorite(${p.id}); openProfileModal(event);" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #f87171; font-size: 0.75rem; font-weight: 700; padding: 0.35rem 0.6rem; border-radius: 8px; cursor: pointer; transition: var(--transition);" title="Eliminar">
+                <button type="button" class="btn-minimal-danger-sm" onclick="toggleFavorite(${p.id}); openProfileModal(event);" title="Eliminar de favoritos">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             </div>
         </div>
         `;
-    }).join('') : '<p style="font-size:0.85rem; color:var(--text-dim); text-align:center; width:100%; margin:1.5rem 0;">Aún no tienes productos agregados a favoritos.</p>';
+    }).join('') : '<p class="profile-fav-empty">Aún no tienes productos guardados en favoritos.</p>';
     
     const displayName = state.user ? state.user.displayName : 'Invitado';
-    const email = state.user ? state.user.email : 'Sin registrar';
+    const email = state.user ? state.user.email : 'Sesión local';
     const avatar = state.user ? state.user.avatar : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
     
     content.innerHTML = `
-        <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-        <div style="padding: 2rem 2.5rem; text-align: center; display: flex; flex-direction: column; gap: 1.25rem; align-items: center; background: rgba(15,23,42,0.95); backdrop-filter: blur(20px);">
-            ${renderAvatarHTML(avatar, '80px', '3px')}
-            <div>
-                <h2 style="font-family:'Poppins', sans-serif; font-weight:800; font-size:1.4rem; color:#fff; margin-bottom:0.15rem;">${displayName}</h2>
-                <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px;">${email}</span>
+        <button class="modal-close" onclick="closeModal()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-minimal-shell modal-minimal-narrow">
+            <div class="modal-minimal-header">
+                ${renderAvatarHTML(avatar, '68px', '2px')}
+                <h2 class="modal-minimal-title" style="margin-top:0.5rem;">${escapeHtml(displayName)}</h2>
+                <span class="modal-minimal-eyebrow">${escapeHtml(email)}</span>
             </div>
             
-            <!-- Animal Avatar Selector Grid (Amigable y Lúdico) -->
-            <div style="width: 100%; max-width: 500px; text-align: left; background: rgba(0,0,0,0.25); padding: 1rem 1.25rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
-                <h4 style="font-family:'Poppins', sans-serif; font-size: 0.82rem; font-weight: 700; color: #fff; margin-bottom: 0.65rem; display:flex; align-items:center; gap:0.4rem; text-transform:uppercase; letter-spacing:0.5px;"><i class="fa-solid fa-face-smile" style="color:var(--primary);"></i> ¡Elige tu animalito de perfil!</h4>
-                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6rem; justify-items: center;">
+            <div class="profile-minimal-card">
+                <h4 class="profile-minimal-card-title"><i class="fa-solid fa-user-astronaut"></i> Avatar de perfil</h4>
+                <div class="profile-avatar-grid">
                     ${Object.keys(EMOJI_GRADIENTS).map(emoji => {
                         const isActive = avatar === emoji;
-                        const borderStyle = isActive ? '2.5px solid var(--primary)' : '2.5px solid transparent';
-                        const scaleStyle = isActive ? 'scale(1.15)' : 'scale(1)';
-                        const shadowStyle = isActive ? '0 0 10px var(--primary-glow)' : 'none';
                         return `
-                            <button onclick="changeAvatar('${emoji}')" style="background: ${EMOJI_GRADIENTS[emoji]}; width: 42px; height: 42px; border-radius: 50%; border: ${borderStyle}; cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: ${shadowStyle}; transform: ${scaleStyle}; padding:0; outline:none;" class="avatar-select-pill ${isActive ? 'active-avatar' : ''}" title="Elegir ${emoji}" onmouseenter="this.style.transform='scale(1.25)'" onmouseleave="this.style.transform='${scaleStyle}'">
+                            <button type="button" onclick="changeAvatar('${emoji}')" class="avatar-select-pill ${isActive ? 'active-avatar' : ''}" style="background: ${EMOJI_GRADIENTS[emoji]};" title="Elegir ${emoji}">
                                 ${emoji}
                             </button>
                         `;
@@ -2470,23 +2596,23 @@ openProfileModal = window.openProfileModal = function(event) {
                 </div>
             </div>
             
-            <div style="width: 100%; max-width: 500px; text-align: left; background: rgba(15,23,42,0.5); padding: 1.25rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.04); max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:0.75rem;">
-                <h4 style="font-family:'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; display:flex; align-items:center; gap:0.4rem;"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> Tus Favoritos y Alertas:</h4>
-                <div style="display: flex; flex-direction: column; gap: 0.65rem; width:100%;">
+            <div class="profile-minimal-card">
+                <h4 class="profile-minimal-card-title"><i class="fa-regular fa-heart"></i> Tus Favoritos y Alertas (${userFavs.length})</h4>
+                <div class="profile-fav-list">
                     ${favsHtml}
                 </div>
             </div>
             
-            <div style="width: 100%; max-width: 500px; text-align: left; background: rgba(15,23,42,0.5); padding: 1.25rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.04);">
-                <h4 style="font-family:'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;"><i class="fa-solid fa-bell" style="color:var(--warning); margin-right: 0.4rem;"></i> Alertas de Precios Activas:</h4>
-                <p style="font-size: 0.78rem; color: var(--text-dim); line-height: 1.4; margin: 0;">
-                    Recibirás un correo electrónico inmediato en cuanto cualquiera de tus productos favoritos caiga por debajo de tu valor objetivo.
-                </p>
+            <div class="profile-minimal-card profile-minimal-note">
+                <i class="fa-solid fa-bell"></i>
+                <p>Recibirás una notificación por correo electrónico cuando cualquiera de tus bicicletas o componentes favoritos baje de tu precio objetivo.</p>
             </div>
             
-            <button onclick="closeModal()" style="background: var(--primary); color: #000; font-weight: 800; border: none; padding: 0.7rem 1.8rem; border-radius: 99px; font-size: 0.85rem; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);">
-                Cerrar
-            </button>
+            <div class="modal-minimal-footer">
+                <button type="button" class="btn-minimal-primary" onclick="closeModal()">
+                    Listo
+                </button>
+            </div>
         </div>
     `;
     modal.classList.add('active');
@@ -2497,30 +2623,70 @@ openCountryModal = window.openCountryModal = function() {
     const modal = document.getElementById('modal-overlay');
     const content = document.getElementById('modal-content');
     if (!modal || !content) return;
+
+    const integratedStores = [
+        { key: 'oxford', name: 'Oxford Store', type: 'Especialista' },
+        { key: 'specialized', name: 'Specialized Chile', type: 'Marca Oficial' },
+        { key: 'trek', name: 'Trek Chile', type: 'Marca Oficial' },
+        { key: 'decathlon', name: 'Decathlon', type: 'Deportes' },
+        { key: 'totem', name: 'Totem Chile', type: 'Especialista' },
+        { key: 'ibikes', name: 'iBikes', type: 'Especialista' },
+        { key: 'vidaurre', name: 'Vidaurre Bikes', type: 'Especialista' },
+        { key: 'faucon', name: 'Faucon Bikes', type: 'Especialista' },
+        { key: 'satiro', name: 'Sátiro Bikes', type: 'Especialista' },
+        { key: 'copenhague', name: 'Copenhague', type: 'Especialista' },
+        { key: 'crossmountain', name: 'CrossMountain', type: 'Especialista' },
+        { key: 'dsbikes', name: 'DS Bikes', type: 'Especialista' },
+        { key: 'fullbike', name: 'Full Bike', type: 'Especialista' },
+        { key: 'sparta', name: 'Sparta', type: 'Deportes' },
+        { key: 'falabella', name: 'Falabella', type: 'Multitienda' },
+        { key: 'ripley', name: 'Ripley', type: 'Multitienda' },
+        { key: 'paris', name: 'Paris', type: 'Multitienda' },
+        { key: 'aliexpress', name: 'AliExpress', type: 'Internacional', isIntl: true }
+    ];
+
+    const storesGridHtml = integratedStores.map(store => {
+        const isSelected = state.filters.stores && state.filters.stores.includes(store.key);
+        const clickHandler = store.isIntl
+            ? `closeModal(); activateInternationalMode(event);`
+            : `closeModal(); filterByStoreChip('${store.key}');`;
+        return `
+            <button type="button" class="store-modal-card ${isSelected ? 'active' : ''}" onclick="${clickHandler}">
+                <div class="store-modal-card-top">
+                    ${getStoreDot(store.key)}
+                    <span class="store-modal-name">${escapeHtml(store.name)}</span>
+                </div>
+                <span class="store-modal-type">${escapeHtml(store.type)}</span>
+            </button>
+        `;
+    }).join('');
     
     content.innerHTML = `
-        <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-        <div style="padding: 2.5rem; text-align: center; display: flex; flex-direction: column; gap: 1.5rem; align-items: center; background: rgba(15,23,42,0.9); backdrop-filter: blur(20px);">
-            <div style="font-size: 3.5rem; color: var(--primary);"><i class="fa-solid fa-location-dot" style="filter: drop-shadow(0 0 12px var(--primary-glow));"></i></div>
-            <div>
-                <h2 style="font-family:'Poppins', sans-serif; font-weight:800; font-size:1.4rem; color:#fff; margin-bottom:0.15rem;">Región: Chile 🇨🇱</h2>
-                <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px;">Mercado Activo Completo</span>
-            </div>
-            
-            <p style="color:var(--text-muted); max-width: 500px; font-size: 0.88rem; line-height: 1.5; margin: 0;">
-                Estás buscando en el mercado chileno. Comparamos los catálogos en tiempo real de las tiendas integradas para darte el mejor precio de ciclismo del país.
-            </p>
-            
-            <div style="width: 100%; max-width: 500px; text-align: left; background: rgba(15,23,42,0.5); padding: 1.25rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.04);">
-                <h4 style="font-family:'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;"><i class="fa-solid fa-store" style="color:var(--primary); margin-right: 0.4rem;"></i> Tiendas Integradas:</h4>
-                <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.7; margin: 0;">
-                    AliExpress • Copenhague • CrossMountain • Decathlon • DS Bikes • Falabella • Faucon Bikes • Full Bike • iBikes • Oxford Store • Paris • Ripley • Sátiro Bikes • Totem Chile • Sparta • Specialized Chile • Vidaurre Bikes.
+        <button class="modal-close" onclick="closeModal()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-minimal-shell">
+            <div class="modal-minimal-header">
+                <span class="modal-minimal-eyebrow">Mercado Activo Completo · CLP ($)</span>
+                <h2 class="modal-minimal-title">Región: Chile</h2>
+                <p class="modal-minimal-subtitle">
+                    Comparamos en tiempo real el catálogo de ${integratedStores.length} tiendas oficiales y distribuidores autorizados en todo Chile. Selecciona cualquier tienda para filtrar sus productos directamente.
                 </p>
             </div>
             
-            <button onclick="closeModal()" style="background: var(--primary); color: #020617; font-weight: 800; border: none; padding: 0.7rem 1.8rem; border-radius: 99px; font-size: 0.85rem; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 12px var(--primary-glow);">
-                Aceptar
-            </button>
+            <div class="stores-modal-section">
+                <div class="stores-modal-header">
+                    <span class="stores-modal-label">Tiendas integradas (${integratedStores.length})</span>
+                    ${(state.filters.stores && state.filters.stores.length > 0) ? `<button type="button" class="stores-modal-clear" onclick="closeModal(); clearFilters();">Ver todas las tiendas</button>` : ''}
+                </div>
+                <div class="stores-modal-grid">
+                    ${storesGridHtml}
+                </div>
+            </div>
+            
+            <div class="modal-minimal-footer">
+                <button type="button" class="btn-minimal-primary" onclick="closeModal()">
+                    Aceptar
+                </button>
+            </div>
         </div>
     `;
     modal.classList.add('active');
@@ -2765,7 +2931,7 @@ async function render(forceFetch = true) {
     }
     
     grid.innerHTML = '';
-    document.getElementById('results-count').innerText = `${totalCount} modelos encontrados`;
+    document.getElementById('results-count').innerText = `Mostrando ${totalCount} modelos`;
     
     // Pagination controls
     document.querySelector('.page-info').textContent = `Página ${state.currentPage} de ${totalPages}`;
@@ -2773,14 +2939,13 @@ async function render(forceFetch = true) {
         document.querySelector('.btn-page.next').disabled = state.currentPage >= totalPages;
         
         if (pageItems.length === 0) {
-            // Check other categories
             let suggestions = [];
             const query = state.filters.search ? state.filters.search.toLowerCase() : '';
             if (query) {
                 const categories = {
                     'bicicletas': 'Bicicletas',
-                    'accesorios': 'Accesorios y Equipamiento',
-                    'repuestos': 'Componentes y Repuestos'
+                    'accesorios': 'Accesorios',
+                    'repuestos': 'Repuestos'
                 };
                 for (const catKey in categories) {
                     if (catKey !== state.category) {
@@ -2792,7 +2957,7 @@ async function render(forceFetch = true) {
                         checkParams.set('page', '1');
                         checkParams.set('limit', '1');
                         try {
-                                const checkResp = await fetch(`${API_BASE_URL}/api/productos?${checkParams.toString()}`, { cache: 'no-store' });
+                            const checkResp = await fetch(`${API_BASE_URL}/api/productos?${checkParams.toString()}`, { cache: 'no-store' });
                             if (checkResp.ok) {
                                 const checkData = await checkResp.json();
                                 if (checkData.total_count > 0) {
@@ -2807,13 +2972,12 @@ async function render(forceFetch = true) {
             let suggestionHtml = '';
             if (suggestions.length > 0) {
                 suggestionHtml = `
-                    <div style="margin-top: 1.5rem; padding: 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; display: inline-block;">
-                        <p style="margin: 0 0 0.75rem 0; color: #fff; font-size: 0.95rem; font-weight: 600;">Encontramos resultados en otras categorías:</p>
-                        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+                    <div class="empty-suggestions-box">
+                        <p>Encontramos resultados en otras secciones:</p>
+                        <div class="empty-suggestions-actions">
                             ${suggestions.map(s => `
                                 <button onclick="setCategory('${s.cat}'); document.getElementById('main-search').value='${state.filters.search}'; state.filters.search='${state.filters.search}'; render();" 
-                                        style="background: var(--primary); color: #000; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s;">
-                                    <i class="${s.cat === 'bicicletas' ? 'fa-solid fa-bicycle' : (s.cat === 'accesorios' ? 'fa-solid fa-helmet-safety' : 'fa-solid fa-gear')}"></i>
+                                        class="btn-empty-suggestion">
                                     Ver ${s.count} en ${s.catName}
                                 </button>
                             `).join('')}
@@ -2823,77 +2987,33 @@ async function render(forceFetch = true) {
             }
             
             grid.innerHTML = `
-                <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted);">
-                    <i class="fa-solid fa-circle-xmark" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
-                    <h3>Sin resultados</h3>
-                    <p>Intenta con otros filtros o términos de búsqueda.</p>
-                    <button onclick="clearFilters()" style="margin-top:1rem; background:var(--primary); color:#000; border:none; padding:0.65rem 1.5rem; border-radius:8px; font-weight:700; cursor:pointer;">Limpiar filtros</button>
-                    <br>
+                <div class="empty-results-state">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <h3>Sin resultados para los filtros seleccionados</h3>
+                    <p>Intenta ajustar el rango de precio, cambiar de categoría o limpiar los filtros.</p>
+                    <button onclick="clearFilters()" class="btn-clear-empty">Limpiar filtros</button>
                     ${suggestionHtml}
                 </div>
             `;
             return;
         }
 
-        // Helper colors for store dots
-        const STORE_COLORS = {
-            falabella: '#e73c3c',
-            ripley: '#6b2fa0',
-            paris: '#003da5',
-            lider: '#00853e',
-            decathlon: '#003DB6',
-            trek: '#f05500',
-            specialized: '#e81c15',
-            oxford: '#1a56db',
-            sparta: '#ff6900',
-            faucon: '#0ea5e9',
-            satiro: '#6d28d9',
-            totem: '#059669',
-            bikeplus: '#0891b2',
-            bikeshop: '#9333ea',
-            copenhague: '#14b8a6',
-            dsbikes: '#06b6d4',
-            crossmountain: '#16a34a',
-            fullbike: '#dc2626',
-            vidaurre: '#7c3aed',
-            ibikes: '#f58220',
-            aliexpress: '#ff4747'
-        };
-
         const fragment = document.createDocumentFragment();
 
         pageItems.forEach((product, index) => {
-            const bestOffer = [...product.offers].sort((a, b) => a.price - b.price)[0];
-            const discount = bestOffer.oldPrice ? Math.round((1 - bestOffer.price / bestOffer.oldPrice) * 100) : 0;
+            const sortedOffers = [...(product.offers || [])].sort((a, b) => a.price - b.price);
+            const bestOffer = sortedOffers[0] || { price: 0, store: 'Tienda', storeKey: 'oxford' };
+            const maxOffer = sortedOffers[sortedOffers.length - 1] || bestOffer;
+            const minPrice = bestOffer.price || 0;
+            const maxPrice = maxOffer.price || minPrice;
+            const hasPriceRange = sortedOffers.length > 1 && maxPrice > minPrice;
+            const discount = bestOffer.oldPrice && bestOffer.oldPrice > bestOffer.price
+                ? Math.round((1 - bestOffer.price / bestOffer.oldPrice) * 100)
+                : 0;
             const isComparing = state.compare.includes(product.id);
-            
-            const frameMaterial = product.frameType || 'Aluminio';
-            let transmission = 'Shimano';
-            const specText = getProductSpecText(product);
-            if (specText.includes('sram')) transmission = 'SRAM';
-            else if (specText.includes('microshift')) transmission = 'MicroShift';
-            else if (specText.includes('l-twoo')) transmission = 'L-Twoo';
-            
-            const wheelSize = product.wheelSize ? `Aro ${product.wheelSize}` : 'Adulto';
-            
-            let specsBadgesHtml = '';
-            if (product.category === 'bicicletas') {
-                specsBadgesHtml = `
-                    <span class="spec-badge">${transmission}</span>
-                    <span class="spec-badge">${frameMaterial}</span>
-                    <span class="spec-badge">${wheelSize}</span>
-                `;
-            } else if (product.type) {
-                const typeLabel = product.type.split(' ')
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(' ');
-                specsBadgesHtml = `<span class="spec-badge" style="background: rgba(96, 165, 250, 0.08); color: #60a5fa; border-color: rgba(96, 165, 250, 0.15); font-weight: 700;">${typeLabel}</span>`;
-            }
-            const rating = product.rating ? product.rating.toFixed(1) : (4.3 + ((product.id * 7) % 7) * 0.1).toFixed(1);
-            const reviews = product.review_count || (12 + ((product.id * 13) % 45));
-            
             const isIntlProduct = isInternationalProduct(product);
-            const card = document.createElement('div');
+
+            const card = document.createElement('article');
             card.className = `product-card elite${isComparing ? ' comparing' : ''}${isIntlProduct ? ' international' : ''}`;
             card.setAttribute('role', 'button');
             card.setAttribute('tabindex', '0');
@@ -2902,134 +3022,72 @@ async function render(forceFetch = true) {
             const isFavorite = state.favorites.some(f => f.id === product.id);
             const favIcon = isFavorite ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
             const productSharePath = getProductSharePath(product);
-            
-            // Store dots with store favicon badge.
-            const storeDotsHtml = product.offers.map(offer => {
-                const color = STORE_COLORS[offer.storeKey] || '#64748b';
-                const domain = STORE_DOMAINS[offer.storeKey] || 'copenhague.cl';
-                const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
-                return `
-                    <span class="store-dot-mini" style="background: #ffffff; border: 1.5px solid ${color}; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0;" title="${escapeHtml(offer.store || offer.storeKey || 'Tienda')}">
-                        <img src="${faviconUrl}" alt="${escapeHtml(offer.store || 'Tienda')}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" style="width: 12px; height: 12px; object-fit: contain;">
-                        <i class="fa-solid fa-store" style="font-size: 0.6rem; color: ${color}; display: none;"></i>
-                    </span>
-                `;
-            }).join('');
-            
-            // Multi-store comparison badge
-            const multiStoreBadge = product.offers.length > 1 
-                ? `<div class="card-stores-badge"><i class="fa-solid fa-store"></i> Comparar en ${product.offers.length} tiendas</div>` 
-                : '';
-                
+
+            const priceDisplayHtml = hasPriceRange
+                ? `<span class="prod-price-main">${formatCLP(minPrice)} - ${formatCLP(maxPrice)}</span>`
+                : `<span class="prod-price-main">${formatCLP(minPrice)}</span>${discount > 0 && bestOffer.oldPrice ? `<span class="prod-price-old">${formatCLP(bestOffer.oldPrice)}</span>` : ''}`;
+
+            const storeNames = [...new Set(sortedOffers.map(o => o.store).filter(Boolean))];
+            const storeSummaryText = storeNames.length > 1
+                ? `${storeNames[0]} y ${storeNames.length - 1} tienda${storeNames.length - 1 > 1 ? 's' : ''} más`
+                : (storeNames[0] || 'Tienda disponible');
+
             const cyberBadgeHtml = (isCyberMode && discount >= 20)
-                ? `<div class="cyber-flash-badge" style="position: absolute; top: 12px; left: 12px; background: #ec4899; color: #fff; font-size: 0.65rem; font-weight: 900; padding: 0.25rem 0.6rem; border-radius: 99px; text-transform: uppercase; z-index: 10; box-shadow: 0 0 10px rgba(236,72,153,0.6); animation: pulse 1.5s infinite;"><i class="fa-solid fa-bolt"></i> Cyber Days</div>`
+                ? `<span class="card-badge card-badge-cyber">Cyber -${discount}%</span>`
+                : (discount >= 10 ? `<span class="card-badge card-badge-discount">-${discount}%</span>` : '');
+
+            const intlBadgeHtml = isIntlProduct
+                ? `<span class="card-badge card-badge-intl">Internacional</span>`
                 : '';
-                
-            const intlBadgeHtml = isIntlProduct 
-                ? `<div class="intl-flash-badge"><i class="fa-solid fa-plane-up"></i> AliExpress</div>`
-                : '';
-            const actionLabel = isIntlProduct
-                ? 'AliExpress <i class="fa-solid fa-arrow-up-right-from-square"></i>'
-                : 'Ver';
-                
-            const shippingBadge = isIntlProduct 
-                ? `<span class="spec-badge" style="background: rgba(251,146,60,0.12); color: #fb923c; border-color: rgba(251,146,60,0.25); font-weight: 700;"><i class="fa-solid fa-truck-fast"></i> Envío Gratis</span>`
+            const histStatus = getHistoricalPriceStatus(product);
+            const histBadgeHtml = (!cyberBadgeHtml && histStatus.status === 'low')
+                ? `<span class="card-badge card-badge-hist-low" title="${escapeHtml(histStatus.detail)}"><i class="fa-solid fa-arrow-trend-down"></i> Mínimo histórico</span>`
                 : '';
 
-            const formatSales = (count) => {
-                if (!count) return '';
-                if (count >= 1000) {
-                    return `+${(count / 1000).toFixed(1).replace('.0', '')}k`;
-                }
-                return `+${count}`;
-            };
+            const actionLabel = isIntlProduct
+                ? 'Ver en AliExpress <i class="fa-solid fa-arrow-up-right-from-square"></i>'
+                : (sortedOffers.length > 1 ? `Comparar (${sortedOffers.length})` : 'Ver oferta');
 
             card.innerHTML = `
                 <div class="product-img">
-                    ${cyberBadgeHtml}
-                    ${intlBadgeHtml}
-                    ${discount > 0 && !isCyberMode ? `<div class="card-discount-badge">-${discount}%</div>` : ''}
-                    <img src="${getProductImage(product)}" alt="${product.model}"
+                    <div class="card-badges-top-left">
+                        ${cyberBadgeHtml}
+                        ${histBadgeHtml}
+                        ${intlBadgeHtml}
+                    </div>
+                    <div class="card-actions-top-right">
+                        <button type="button" class="btn-compare-toggle ${isComparing ? 'active' : ''}" onclick="toggleCompare(${product.id}, event)" aria-label="${isComparing ? 'Quitar del comparador' : 'Comparar modelo'}" title="${isComparing ? 'Quitar del comparador' : 'Comparar modelo'}">
+                            <i class="fa-solid ${isComparing ? 'fa-check' : 'fa-scale-balanced'}"></i>
+                        </button>
+                        <button type="button" class="btn-fav ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(${product.id}, event)" aria-label="${isFavorite ? 'Quitar de favoritos' : 'Guardar en favoritos'}" title="${isFavorite ? 'Quitar de favoritos' : 'Guardar en favoritos'}">
+                            <i class="${favIcon}"></i>
+                        </button>
+                    </div>
+                    <img src="${getProductImage(product)}" alt="${escapeHtml(product.brand)} ${escapeHtml(product.model)}"
+                         width="320" height="220"
                          data-fallbacks="${getImageFallbacks(product).join('|')}"
                          onerror="handleProductImageError(this, '${cardFallback}')"
-                         loading="${index < (lowPowerDevice ? 1 : 2) ? 'eager' : 'lazy'}"
+                         loading="${index < (lowPowerDevice ? 2 : 3) ? 'eager' : 'lazy'}"
                          decoding="async"
-                         fetchpriority="${index < (lowPowerDevice ? 1 : 2) ? 'high' : 'low'}"
-                         draggable="false"
-                         style="object-fit: contain;">
-                    <button class="btn-compare-toggle ${isComparing ? 'active' : ''}" onclick="toggleCompare(${product.id}, event)" title="${isComparing ? 'Quitar del comparador' : 'Agregar al comparador'}">
-                        <i class="fa-solid ${isComparing ? 'fa-check' : 'fa-scale-balanced'}"></i>
-                    </button>
-                    <button class="btn-fav" onclick="toggleFavorite(${product.id}, event)" title="${isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}">
-                        <i class="${favIcon}"></i>
-                    </button>
+                         fetchpriority="${index < (lowPowerDevice ? 2 : 3) ? 'high' : 'low'}"
+                         draggable="false">
                 </div>
                 <div class="product-info">
-                    <div class="prod-brand-row">
-                        <h3 class="prod-title">
-                            <a class="prod-title-link" href="${productSharePath}" onclick="event.preventDefault(); openProductDetail(${product.id});">${product.brand} ${product.model}</a>
-                        </h3>
+                    <span class="prod-brand">${escapeHtml(product.brand || 'Ciclismo')}</span>
+                    <h3 class="prod-title">
+                        <a class="prod-title-link" href="${productSharePath}" onclick="event.preventDefault(); openProductDetail(${product.id});">${escapeHtml(product.model)}</a>
+                    </h3>
+                    <div class="prod-price-row">
+                        ${priceDisplayHtml}
                     </div>
-                    <div class="prod-specs-row">
-                        ${specsBadgesHtml}
-                        ${shippingBadge}
-                    </div>
-                    ${(function() {
-                        let specsListHtml = '';
-                        if (product.fullSpecs && Object.keys(product.fullSpecs).length > 0) {
-                            const keySpecs = ['Cuadro', 'Frenos', 'Transmisión', 'Material', 'Capacidad', 'Medida', 'Uso', 'Tipo'];
-                            const foundSpecs = [];
-                            for (const key of keySpecs) {
-                                const actualKey = Object.keys(product.fullSpecs).find(k => k.toLowerCase() === key.toLowerCase());
-                                if (actualKey && product.fullSpecs[actualKey]) {
-                                    let val = product.fullSpecs[actualKey];
-                                    if (val.length > 32) val = val.substring(0, 29) + '...';
-                                    foundSpecs.push(`<strong>${key}:</strong> ${val}`);
-                                }
-                                if (foundSpecs.length >= 2) break;
-                            }
-                            if (foundSpecs.length > 0) {
-                                specsListHtml = `
-                                    <div class="card-specs-list" style="font-size: 0.72rem; color: var(--text-muted); margin: 0.35rem 0; line-height: 1.35; display: flex; flex-direction: column; gap: 0.15rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.35rem;">
-                                        ${foundSpecs.map(s => `<div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${s}</div>`).join('')}
-                                    </div>
-                                `;
-                            }
-                        }
-                        return specsListHtml;
-                    })()}
-                    
-                    ${(function() {
-                        const valScore = calculateValueScore(product);
-                        return valScore ? `
-                            <div class="value-score-wrapper" style="margin-top: 0.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; width: 100%;">
-                                <span style="font-size: 0.65rem; font-weight: 800; color: var(--primary); text-transform: uppercase; white-space: nowrap;">Calidad-Precio</span>
-                                <div style="flex-grow: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; position: relative;">
-                                    <div style="width: ${valScore}%; height: 100%; background: linear-gradient(90deg, #10b981, #22c55e); box-shadow: 0 0 6px var(--primary-glow); border-radius: 3px;"></div>
-                                </div>
-                                <span style="font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 0.72rem; color: #fff;">${valScore}</span>
-                            </div>
-                        ` : '';
-                    })()}
-                    
-                    ${multiStoreBadge}
-                    
-                    <div class="card-bottom-wrapper" style="margin-top: auto; display: flex; flex-direction: column; gap: 0.2rem;">
-                        <div class="card-store-dots" style="margin-top: 0; margin-bottom: 0.4rem;">
-                            ${storeDotsHtml}
-                        </div>
-                        
-                        <div class="neon-price-pill" style="margin-bottom: 0.4rem;">Desde ${formatCLP(bestOffer.price)}</div>
-                        
-                        <div class="card-bottom-row" style="margin-top: 0; padding-top: 0.5rem;">
-                            <div class="card-rating">
-                                <span class="star">★</span> <span class="rating-val">${rating}</span>
-                                <span class="reviews-count">${reviews} Reseñas</span>
-                            </div>
-                            <button class="btn-ver-ofertas" onclick="openProductAction(${product.id}, event)" title="${isIntlProduct ? 'Abrir en AliExpress' : 'Ver detalle'}">
-                                ${actionLabel}
-                            </button>
-                        </div>
+                    <div class="card-bottom-row">
+                        <span class="card-store-summary" title="${escapeHtml(storeNames.join(' • '))}">
+                            ${getStoreDot(bestOffer.storeKey)}
+                            <span>${escapeHtml(storeSummaryText)}</span>
+                        </span>
+                        <button type="button" class="btn-ver-ofertas" onclick="openProductAction(${product.id}, event)">
+                            ${actionLabel}
+                        </button>
                     </div>
                 </div>
             `;
@@ -3038,10 +3096,17 @@ async function render(forceFetch = true) {
                     openProductAction(product.id, e);
                 }
             });
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openProductAction(product.id, e);
+                }
+            });
             fragment.appendChild(card);
         });
         grid.appendChild(fragment);
         openPendingProductFromUrl();
+        openPendingCompareFromUrl();
     } catch (e) {
         console.error("Error rendering from API:", e);
         grid.innerHTML = `
@@ -3174,10 +3239,7 @@ toggleMobileFilters = window.toggleMobileFilters = function() {
 // =============================================
 // USER AUTHENTICATION & FAVORITES LOGIC
 // =============================================
-async function loadFavorites() {
-    state.favorites = [];
-    
-    // Load guest favorites from localStorage
+function loadFavoritesLocalOnly() {
     const local = localStorage.getItem('bicitodo_favorites');
     if (local) {
         try {
@@ -3185,34 +3247,38 @@ async function loadFavorites() {
         } catch (e) {
             state.favorites = [];
         }
+    } else {
+        state.favorites = [];
     }
+}
+
+async function loadFavorites() {
+    loadFavoritesLocalOnly();
     
-    // If logged in via Firebase, sync/fetch from Firestore
-    if (useFirebase && cloudAuth && cloudAuth.currentUser) {
+    // Sync with Firestore in background with short timeout so UI never hangs
+    if (useFirebase && cloudAuth && cloudAuth.currentUser && cloudDb) {
         try {
             const uid = cloudAuth.currentUser.uid;
-            const doc = await cloudDb.collection('bicitodo_users').doc(uid).get();
-            if (doc.exists) {
+            const doc = await Promise.race([
+                cloudDb.collection('bicitodo_users').doc(uid).get(),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore timeout')), 2000))
+            ]);
+            if (doc && doc.exists) {
                 const cloudFavs = doc.data().favorites || [];
-                
-                // Merge local and cloud favorites
                 const merged = [...state.favorites];
                 cloudFavs.forEach(cf => {
                     if (!merged.some(lf => lf.id === cf.id)) {
                         merged.push(cf);
                     }
                 });
-                
                 state.favorites = merged;
-                // Save back to cloud and local
-                await cloudDb.collection('bicitodo_users').doc(uid).set({ favorites: merged }, { merge: true });
                 localStorage.setItem('bicitodo_favorites', JSON.stringify(merged));
+                cloudDb.collection('bicitodo_users').doc(uid).set({ favorites: merged }, { merge: true }).catch(() => {});
             } else {
-                // First time user, save current local favorites to cloud
-                await cloudDb.collection('bicitodo_users').doc(uid).set({ favorites: state.favorites });
+                cloudDb.collection('bicitodo_users').doc(uid).set({ favorites: state.favorites }, { merge: true }).catch(() => {});
             }
         } catch (e) {
-            console.error("Error syncing favorites with Firestore:", e);
+            // Ignore Firestore offline/timeout errors silently
         }
     }
 }
@@ -3317,8 +3383,7 @@ function updateUserMenu() {
     } else {
         // Guest
         container.innerHTML = `
-            <a href="#catalog" class="nav-link" id="nav-cuenta" onclick="openAuthModal(event)" style="display: flex; align-items: center; gap: 0.35rem;">
-                ${GOOGLE_AUTH_LOGO}
+            <a href="#catalog" class="nav-link nav-auth-link" id="nav-cuenta" onclick="openAuthModal(event)">
                 <span>Ingresar</span>
             </a>
         `;
@@ -3354,48 +3419,46 @@ closeAuthModal = window.closeAuthModal = function() {
 };
 
 function renderAuthModalContent() {
+    ensureFirebaseInitialized();
     const content = document.getElementById('auth-modal-content');
     if (!content) return;
     
     if (state.activeAuthTab === 'login') {
         content.innerHTML = `
-            <button class="modal-close" onclick="closeAuthModal()"><i class="fa-solid fa-xmark"></i></button>
+            <button class="modal-close" onclick="closeAuthModal()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
             <form class="auth-form-container" onsubmit="handleAuthSubmit(event)">
-                <h2 style="font-family:'Poppins',sans-serif; font-weight:800; color:#fff; font-size:1.5rem;"><i class="fa-solid fa-user-lock" style="color:var(--primary);"></i> Iniciar Sesión</h2>
-                <p style="color:var(--text-muted); font-size:0.85rem; margin-top:-0.5rem;">Respalda tus favoritos en la nube y activa alertas de precio.</p>
-                ${!useFirebase ? `
-                <div style="background:rgba(251,146,60,0.1); border:1px solid rgba(251,146,60,0.3); border-radius:10px; padding:0.65rem 0.85rem; margin-bottom:0.75rem; display:flex; align-items:flex-start; gap:0.5rem;">
-                    <i class="fa-solid fa-circle-info" style="color:#fb923c; margin-top:0.15rem; flex-shrink:0;"></i>
-                    <span style="font-size:0.8rem; color:#fb923c; line-height:1.45;"><strong>Modo Local Activo</strong> — Tus datos se guardan en este navegador. Para sincronizar en la nube, configura Firebase en <code style="font-size:0.75rem;">app.js</code>.</span>
-                </div>` : ''}
+                <div class="auth-minimal-header">
+                    <span class="modal-minimal-eyebrow">Cuenta BiciTodo</span>
+                    <h2 class="auth-minimal-title">Iniciar Sesión</h2>
+                    <p class="auth-minimal-subtitle">Sincroniza tus favoritos en la nube y activa alertas de baja de precio.</p>
+                </div>
                 
                 <div class="auth-tabs">
                     <button type="button" class="auth-tab-btn active">Ingresar</button>
                     <button type="button" class="auth-tab-btn" onclick="switchAuthTab('signup')">Crear Cuenta</button>
                 </div>
+
+                <button type="button" class="btn-auth-google" onclick="handleGoogleLogin(event)">
+                    ${GOOGLE_AUTH_LOGO}
+                    <span>Continuar con Google</span>
+                </button>
+
+                <div class="auth-divider">
+                    <span>o con tu correo</span>
+                </div>
                 
                 <div class="auth-inputs">
                     <div class="auth-input-group">
-                        <label>Correo Electrónico</label>
-                        <input type="email" id="auth-email" required placeholder="tu@correo.com">
+                        <label for="auth-email">Correo Electrónico</label>
+                        <input type="email" id="auth-email" required placeholder="tu@correo.cl" autocomplete="email">
                     </div>
                     <div class="auth-input-group">
-                        <label>Contraseña</label>
-                        <input type="password" id="auth-password" required placeholder="••••••••">
+                        <label for="auth-password">Contraseña</label>
+                        <input type="password" id="auth-password" required placeholder="••••••••" autocomplete="current-password">
                     </div>
                 </div>
                 
                 <button type="submit" class="btn-auth-submit">Iniciar Sesión</button>
-
-                <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin: 0.75rem 0;">
-                    <span style="flex-grow: 1; height: 1px; background: rgba(255,255,255,0.08);"></span>
-                    <span style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">o</span>
-                    <span style="flex-grow: 1; height: 1px; background: rgba(255,255,255,0.08);"></span>
-                </div>
-
-                <button type="button" class="btn-auth-google" onclick="handleGoogleLogin(event)" style="display:flex; align-items:center; justify-content:center; gap:0.5rem; width:100%; padding:0.65rem; border-radius:99px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.03); color:#fff; font-family:'Poppins',sans-serif; font-weight:700; font-size:0.8rem; cursor:pointer; transition:all 0.2s;" onmouseenter="this.style.background='rgba(255,255,255,0.08)'" onmouseleave="this.style.background='rgba(255,255,255,0.03)'">
-                    ${GOOGLE_AUTH_LOGO} Iniciar sesión con Google
-                </button>
                 
                 <div class="auth-switch-text">
                     ¿No tienes cuenta? <span onclick="switchAuthTab('signup')">Regístrate gratis</span>
@@ -3404,42 +3467,50 @@ function renderAuthModalContent() {
         `;
     } else {
         content.innerHTML = `
-            <button class="modal-close" onclick="closeAuthModal()"><i class="fa-solid fa-xmark"></i></button>
+            <button class="modal-close" onclick="closeAuthModal()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
             <form class="auth-form-container" onsubmit="handleAuthSubmit(event)">
-                <h2 style="font-family:'Poppins',sans-serif; font-weight:800; color:#fff; font-size:1.5rem;"><i class="fa-solid fa-user-plus" style="color:var(--primary);"></i> Crear Cuenta</h2>
-                <p style="color:var(--text-muted); font-size:0.85rem; margin-top:-0.5rem;">Crea tu perfil 100% gratis en segundos.</p>
+                <div class="auth-minimal-header">
+                    <span class="modal-minimal-eyebrow">Cuenta BiciTodo</span>
+                    <h2 class="auth-minimal-title">Crear Cuenta</h2>
+                    <p class="auth-minimal-subtitle">Crea tu perfil gratuito en segundos o regístrate con Google.</p>
+                </div>
                 
                 <div class="auth-tabs">
                     <button type="button" class="auth-tab-btn" onclick="switchAuthTab('login')">Ingresar</button>
                     <button type="button" class="auth-tab-btn active">Crear Cuenta</button>
                 </div>
+
+                <button type="button" class="btn-auth-google" onclick="handleGoogleLogin(event)">
+                    ${GOOGLE_AUTH_LOGO}
+                    <span>Registrarse con Google</span>
+                </button>
+
+                <div class="auth-divider">
+                    <span>o completa tus datos</span>
+                </div>
                 
                 <div class="auth-inputs">
                     <div class="auth-input-group">
-                        <label>Nombre Completo</label>
-                        <input type="text" id="auth-name" required placeholder="Juan Pérez">
+                        <label for="auth-name">Nombre</label>
+                        <input type="text" id="auth-name" required placeholder="Juan Pérez" autocomplete="name">
                     </div>
                     <div class="auth-input-group">
-                        <label>Correo Electrónico</label>
-                        <input type="email" id="auth-email" required placeholder="tu@correo.com">
+                        <label for="auth-email">Correo Electrónico</label>
+                        <input type="email" id="auth-email" required placeholder="tu@correo.cl" autocomplete="email">
                     </div>
                     <div class="auth-input-group">
-                        <label>Contraseña</label>
-                        <input type="password" id="auth-password" required minlength="6" placeholder="Mínimo 6 caracteres">
+                        <label for="auth-password">Contraseña</label>
+                        <input type="password" id="auth-password" required minlength="6" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
                     </div>
                 </div>
                 
-                <!-- Selector de Mascota Amigable Inicial -->
-                <div style="text-align: left; display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.2rem; margin-bottom: 0.2rem;">
-                    <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px;">Elige tu mascota de perfil:</label>
-                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; background: rgba(0, 0, 0, 0.2); padding: 0.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); justify-items: center;">
+                <div class="auth-avatar-picker">
+                    <label class="auth-avatar-label">Elige tu avatar:</label>
+                    <div class="profile-avatar-grid">
                         ${Object.keys(EMOJI_GRADIENTS).map(emoji => {
                             const isActive = state.selectedSignupAvatar === emoji;
-                            const borderStyle = isActive ? '2px solid var(--primary)' : '2px solid transparent';
-                            const shadowStyle = isActive ? '0 0 8px var(--primary-glow)' : 'none';
-                            const scaleStyle = isActive ? 'scale(1.15)' : 'scale(1)';
                             return `
-                                <button type="button" onclick="selectSignupAvatar('${emoji}')" style="background: ${EMOJI_GRADIENTS[emoji]}; width: 34px; height: 34px; border-radius: 50%; border: ${borderStyle}; cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; box-shadow: ${shadowStyle}; transform: ${scaleStyle}; padding:0; outline:none;" class="avatar-signup-pill ${isActive ? 'active-avatar' : ''}" title="Elegir ${emoji}" onmouseenter="this.style.transform='scale(1.3)'" onmouseleave="this.style.transform='${scaleStyle}'">
+                                <button type="button" onclick="selectSignupAvatar('${emoji}')" style="background: ${EMOJI_GRADIENTS[emoji]};" class="avatar-signup-pill ${isActive ? 'active-avatar' : ''}" title="Elegir ${emoji}">
                                     ${emoji}
                                 </button>
                             `;
@@ -3447,7 +3518,7 @@ function renderAuthModalContent() {
                     </div>
                 </div>
                 
-                <button type="submit" class="btn-auth-submit">Registrarme</button>
+                <button type="submit" class="btn-auth-submit">Crear Cuenta</button>
                 
                 <div class="auth-switch-text">
                     ¿Ya tienes una cuenta? <span onclick="switchAuthTab('login')">Inicia sesión</span>
@@ -3469,40 +3540,35 @@ openAuthAlerts = window.openAuthAlerts = function(event) {
 
 handleAuthSubmit = window.handleAuthSubmit = async function(event) {
     event.preventDefault();
+    ensureFirebaseInitialized();
     const email = document.getElementById('auth-email').value;
     const password = document.getElementById('auth-password').value;
     
     if (useFirebase && cloudAuth) {
+        const submitBtn = event.target ? event.target.querySelector('.btn-auth-submit') : null;
+        const originalBtnText = submitBtn ? submitBtn.textContent : '';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Ingresando...';
+        }
         try {
-            await firebasePersistenceReady;
-            showToast('Conectando con la nube...');
             if (state.activeAuthTab === 'login') {
                 const userCred = await cloudAuth.signInWithEmailAndPassword(email, password);
-                cacheAuthUserProfile({
+                const loggedUser = {
                     uid: userCred.user.uid,
                     email: userCred.user.email,
                     displayName: userCred.user.displayName || email.split('@')[0],
-                    avatar: userCred.user.photoURL || 'ðŸ¦Š'
-                });
+                    avatar: userCred.user.photoURL || '🦊'
+                };
+                state.user = loggedUser;
+                cacheAuthUserProfile(loggedUser);
+                closeAuthModal();
+                updateUserMenu();
                 showToast('¡Sesión iniciada con éxito!');
             } else {
                 const name = document.getElementById('auth-name').value;
                 const avatar = state.selectedSignupAvatar || '🦊';
                 const userCred = await cloudAuth.createUserWithEmailAndPassword(email, password);
-                await userCred.user.updateProfile({ displayName: name, photoURL: avatar });
-                
-                // save to Firestore
-                try {
-                    await cloudDb.collection('bicitodo_users').doc(userCred.user.uid).set({
-                        displayName: name,
-                        email: email,
-                        avatar: avatar,
-                        favorites: state.favorites
-                    }, { merge: true });
-                } catch(e) {
-                    console.warn("Could not save profile metadata to Firestore:", e);
-                }
-
                 state.user = {
                     uid: userCred.user.uid,
                     email: userCred.user.email,
@@ -3510,24 +3576,42 @@ handleAuthSubmit = window.handleAuthSubmit = async function(event) {
                     avatar: avatar
                 };
                 cacheAuthUserProfile(state.user);
+                closeAuthModal();
+                updateUserMenu();
+                showToast('¡Cuenta creada con éxito!');
+
+                // Actualizar perfil y Firestore en segundo plano sin bloquear el cierre del modal
+                userCred.user.updateProfile({ displayName: name, photoURL: avatar }).catch(() => {});
+                if (cloudDb) {
+                    cloudDb.collection('bicitodo_users').doc(userCred.user.uid).set({
+                        displayName: name,
+                        email: email,
+                        avatar: avatar,
+                        favorites: state.favorites
+                    }, { merge: true }).catch(() => {});
+                }
             }
-            closeAuthModal();
             loadFavorites().then(() => {
                 updateUserMenu();
-                render(false);
-            }).catch((favoritesError) => {
-                console.warn("Favorites sync skipped after Google login:", favoritesError);
-            });
+            }).catch(() => {});
         } catch (error) {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText || 'Iniciar Sesión';
+            }
             console.error("Auth error:", error);
-            showToast('Error de autenticación: ' + error.message);
+            let friendlyMsg = error.message || 'No se pudo autenticar.';
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                friendlyMsg = 'Correo o contraseña incorrectos.';
+            } else if (error.code === 'auth/email-already-in-use') {
+                friendlyMsg = 'Este correo ya está registrado. Inicia sesión o usa Google.';
+            }
+            showToast('Error: ' + friendlyMsg);
         }
     } else {
-        // Local mock auth mode
-        showToast('Modo de Prueba Local Activo (Sin credenciales en la nube)');
+        showToast('Iniciando sesión en modo local...');
         setTimeout(() => {
             if (state.activeAuthTab === 'login') {
-                // If there's already a saved mock user, load its avatar
                 let savedAvatar = '🦊';
                 try {
                     const mockData = localStorage.getItem('bicitodo_mock_user');
@@ -3537,14 +3621,14 @@ handleAuthSubmit = window.handleAuthSubmit = async function(event) {
                             savedAvatar = parsed.avatar;
                         }
                     }
-                } catch(e) {}
+                } catch (e) {}
                 
                 state.user = {
                     email: email,
                     displayName: email.split('@')[0],
                     avatar: savedAvatar
                 };
-                showToast('Sesión iniciada en modo local.');
+                showToast('Sesión iniciada.');
             } else {
                 const name = document.getElementById('auth-name').value;
                 state.user = {
@@ -3552,62 +3636,122 @@ handleAuthSubmit = window.handleAuthSubmit = async function(event) {
                     displayName: name,
                     avatar: state.selectedSignupAvatar || '🦊'
                 };
-                showToast('Cuenta de prueba creada en modo local.');
+                showToast('Cuenta creada.');
             }
             localStorage.setItem('bicitodo_mock_user', JSON.stringify(state.user));
             loadFavorites().then(() => {
                 updateUserMenu();
                 closeAuthModal();
-                render();
+                render(false);
             });
-        }, 800);
+        }, 400);
     }
 };
 
+async function finalizeGoogleUserSession(user) {
+    if (!user) return;
+    const cached = getCachedAuthUserProfile();
+    const fallbackAvatar = (cached && cached.uid === user.uid && cached.avatar) ? cached.avatar : (user.photoURL || '🦊');
+    state.user = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || (user.email ? user.email.split('@')[0] : 'Ciclista'),
+        avatar: fallbackAvatar
+    };
+    cacheAuthUserProfile(state.user);
+
+    // Respuesta visual INSTANTÁNEA: cerrar modal, actualizar navbar y mostrar bienvenida sin esperar a Firestore
+    loadFavoritesLocalOnly();
+    closeAuthModal();
+    updateUserMenu();
+    showToast(`¡Bienvenido, ${state.user.displayName}! Sesión iniciada con Google.`);
+
+    // Sincronizar Firestore en segundo plano sin bloquear la pantalla
+    if (cloudDb) {
+        Promise.race([
+            cloudDb.collection('bicitodo_users').doc(user.uid).get(),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 2000))
+        ]).then((userDoc) => {
+            if (!userDoc || !userDoc.exists) {
+                cloudDb.collection('bicitodo_users').doc(user.uid).set({
+                    displayName: state.user.displayName,
+                    email: user.email,
+                    avatar: fallbackAvatar,
+                    favorites: state.favorites || []
+                }, { merge: true }).catch(() => {});
+            } else if (userDoc.data()?.avatar && userDoc.data().avatar !== state.user.avatar) {
+                state.user.avatar = userDoc.data().avatar;
+                cacheAuthUserProfile(state.user);
+                updateUserMenu();
+            }
+        }).catch(() => {});
+    }
+
+    loadFavorites().then(() => {
+        updateUserMenu();
+    }).catch(() => {});
+}
+
 handleGoogleLogin = window.handleGoogleLogin = async function(event) {
     if (event) event.preventDefault();
+    ensureFirebaseInitialized();
+
+    // Nota importante de Firebase Auth: por defecto Firebase autoriza 'localhost' pero no '127.0.0.1'.
+    // Si el usuario está en 127.0.0.1, redirigimos automáticamente a localhost en el mismo puerto para que el popup OAuth de Google sea autorizado por Firebase.
+    if (window.location.hostname === '127.0.0.1') {
+        const targetUrl = new URL(window.location.href);
+        targetUrl.hostname = 'localhost';
+        targetUrl.searchParams.set('google_auth', '1');
+        showToast('Redirigiendo a localhost para autorizar Google con Firebase...');
+        window.location.href = targetUrl.toString();
+        return;
+    }
+
     if (useFirebase && cloudAuth) {
         try {
-            await firebasePersistenceReady;
-            showToast('Conectando con Google...');
+            const googleBtn = event && event.currentTarget ? event.currentTarget : document.querySelector('.btn-auth-google');
+            if (googleBtn) {
+                googleBtn.style.opacity = '0.75';
+                const span = googleBtn.querySelector('span');
+                if (span) span.textContent = 'Conectando con Google...';
+            }
             const provider = new firebase.auth.GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
             const result = await cloudAuth.signInWithPopup(provider);
-            const user = result.user;
-            const fallbackAvatar = user.photoURL || 'ðŸ¦Š';
-
-            state.user = {
-                uid: user.uid,
-                email: user.email,
-                displayName: user.displayName || (user.email ? user.email.split('@')[0] : 'Usuario'),
-                avatar: fallbackAvatar
-            };
-            cacheAuthUserProfile(state.user);
-            
-            try {
-            // Check if profile exists, otherwise save
-            const userDoc = await cloudDb.collection('bicitodo_users').doc(user.uid).get();
-            if (!userDoc.exists) {
-                await cloudDb.collection('bicitodo_users').doc(user.uid).set({
-                    displayName: user.displayName,
-                    email: user.email,
-                    avatar: '🦊',
-                    favorites: []
-                }, { merge: true });
+            if (result && result.user) {
+                await finalizeGoogleUserSession(result.user);
             }
-            } catch (firestoreError) {
-                console.warn("Google login ok, Firestore sync skipped:", firestoreError);
-                showToast('Google conectado. Sincronizacion en la nube pendiente.');
-            }
-            updateUserMenu();
-            render();
-            showToast('¡Sesión iniciada con Google!');
-            closeAuthModal();
         } catch (error) {
+            const googleBtn = document.querySelector('.btn-auth-google');
+            if (googleBtn) {
+                googleBtn.style.opacity = '';
+                const span = googleBtn.querySelector('span');
+                if (span) span.textContent = state.activeAuthTab === 'signup' ? 'Registrarse con Google' : 'Continuar con Google';
+            }
             console.error("Google Auth error:", error);
-            showToast('Error de Google: ' + error.message);
+            if (error && error.code === 'auth/popup-blocked') {
+                try {
+                    showToast('Ventana emergente bloqueada, redirigiendo a Google...');
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    provider.setCustomParameters({ prompt: 'select_account' });
+                    await cloudAuth.signInWithRedirect(provider);
+                    return;
+                } catch (redirErr) {
+                    console.error("Google Redirect error:", redirErr);
+                }
+            }
+            if (error && error.code === 'auth/popup-closed-by-user') {
+                showToast('Inicio de sesión con Google cancelado.');
+                return;
+            }
+            if (error && error.code === 'auth/unauthorized-domain') {
+                showToast(`Dominio (${window.location.hostname}) no autorizado en Firebase Console -> Authentication -> Settings -> Authorized domains.`);
+                return;
+            }
+            showToast('Error al conectar con Google: ' + (error.message || 'Intenta nuevamente'));
         }
     } else {
-        showToast('Google Login no está disponible en modo de prueba local.');
+        showToast('Cargando servicios de autenticación de Google, intenta en un segundo...');
     }
 };
 
@@ -3640,9 +3784,8 @@ crearAlertaSupabase = window.crearAlertaSupabase = async function(productId) {
             })
         });
         if (response.ok) {
-            showToast('¡Alerta de precio creada en Supabase!');
+            showToast('¡Alerta de precio creada!');
             
-            // Replicate standard favorite visual behaviour
             const activeFav = state.favorites.find(f => f.id === productId);
             if (activeFav) {
                 activeFav.alertPrice = targetPrice;
@@ -3651,7 +3794,7 @@ crearAlertaSupabase = window.crearAlertaSupabase = async function(productId) {
             }
             localStorage.setItem('bicitodo_favorites', JSON.stringify(state.favorites));
             openProductDetail(productId);
-            render();
+            render(false);
         } else {
             const err = await response.json();
             showToast('Error: ' + (err.detail || 'No se pudo crear la alerta'));
@@ -3675,7 +3818,7 @@ handleLogout = window.handleLogout = async function(event) {
     localStorage.removeItem('bicitodo_mock_user');
     localStorage.removeItem('bicitodo_favorites');
     updateUserMenu();
-    render();
+    render(false);
     if (useFirebase && cloudAuth) {
         try {
             await cloudAuth.signOut();
@@ -3684,19 +3827,13 @@ handleLogout = window.handleLogout = async function(event) {
             showToast('Error al cerrar sesión.');
         }
     } else {
-        state.user = null;
-        localStorage.removeItem('bicitodo_mock_user');
-        clearAuthUserProfileCache();
-        localStorage.removeItem('bicitodo_favorites');
-        state.favorites = [];
-        showToast('Sesión local cerrada.');
-        updateUserMenu();
-        render();
+        showToast('Sesión cerrada.');
     }
 };
 
 function setupFirebaseAuthListener() {
-    // Auth modal overlay background close trigger
+    ensureFirebaseInitialized();
+
     const overlay = document.getElementById('auth-modal-overlay');
     if (overlay) {
         overlay.addEventListener('click', (e) => {
@@ -3704,28 +3841,43 @@ function setupFirebaseAuthListener() {
         });
     }
 
+    // Si venimos redirigidos desde 127.0.0.1 -> localhost/?google_auth=1, abrimos el modal de acceso automáticamente
+    try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('google_auth') === '1') {
+            params.delete('google_auth');
+            const cleanSearch = params.toString();
+            const newUrl = window.location.pathname + (cleanSearch ? `?${cleanSearch}` : '') + window.location.hash;
+            window.history.replaceState({}, '', newUrl);
+            setTimeout(() => {
+                openAuthModal();
+                showToast('Haz clic en "Continuar con Google" para iniciar sesión.');
+            }, 250);
+        }
+    } catch (_) {}
+
     if (useFirebase && cloudAuth) {
         const cachedUser = getCachedAuthUserProfile();
         if (cachedUser) {
             state.user = cachedUser;
             updateUserMenu();
         }
-        cloudAuth.onAuthStateChanged(async (user) => {
-            if (user) {
-                let userAvatar = user.photoURL || cachedUser?.avatar || '🦊';
-                let userDisplayName = user.displayName || cachedUser?.displayName || (user.email ? user.email.split('@')[0] : 'Usuario');
-                try {
-                    const doc = await cloudDb.collection('bicitodo_users').doc(user.uid).get();
-                    if (doc.exists && doc.data().avatar) {
-                        userAvatar = doc.data().avatar;
-                    }
-                    if (doc.exists && doc.data().displayName) {
-                        userDisplayName = doc.data().displayName;
-                    }
-                } catch(e) {
-                    console.log("Could not fetch avatar from Firestore, using photoURL.");
+
+        if (typeof cloudAuth.getRedirectResult === 'function') {
+            cloudAuth.getRedirectResult().then((result) => {
+                if (result && result.user) {
+                    finalizeGoogleUserSession(result.user);
                 }
-                
+            }).catch((err) => {
+                console.warn("Redirect auth check:", err);
+            });
+        }
+
+        cloudAuth.onAuthStateChanged((user) => {
+            if (user) {
+                const latestCache = getCachedAuthUserProfile();
+                const userAvatar = (latestCache && latestCache.uid === user.uid && latestCache.avatar) ? latestCache.avatar : (user.photoURL || '🦊');
+                const userDisplayName = user.displayName || latestCache?.displayName || (user.email ? user.email.split('@')[0] : 'Usuario');
                 state.user = {
                     uid: user.uid,
                     email: user.email,
@@ -3733,16 +3885,32 @@ function setupFirebaseAuthListener() {
                     avatar: userAvatar
                 };
                 cacheAuthUserProfile(state.user);
+                loadFavoritesLocalOnly();
+                updateUserMenu();
+
+                // Sincronización silenciosa en segundo plano
+                if (cloudDb) {
+                    Promise.race([
+                        cloudDb.collection('bicitodo_users').doc(user.uid).get(),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 2000))
+                    ]).then((doc) => {
+                        if (doc && doc.exists && state.user) {
+                            if (doc.data().avatar) state.user.avatar = doc.data().avatar;
+                            if (doc.data().displayName) state.user.displayName = doc.data().displayName;
+                            cacheAuthUserProfile(state.user);
+                            updateUserMenu();
+                        }
+                    }).catch(() => {});
+                }
+                loadFavorites().catch(() => {});
             } else {
                 state.user = null;
                 clearAuthUserProfileCache();
+                loadFavoritesLocalOnly();
+                updateUserMenu();
             }
-            await loadFavorites();
-            updateUserMenu();
-            render();
         });
     } else {
-        // Load mock user from localStorage if it exists
         const mock = localStorage.getItem('bicitodo_mock_user');
         if (mock) {
             try {
@@ -3753,7 +3921,7 @@ function setupFirebaseAuthListener() {
         }
         loadFavorites().then(() => {
             updateUserMenu();
-            render();
+            render(false);
         });
     }
 }
@@ -3767,6 +3935,897 @@ document.addEventListener('click', (e) => {
         if (trigger) trigger.setAttribute('aria-expanded', 'false');
     }
 });
+
+// =========================================================================
+// 6 PREMIUM FEATURES:
+// 1. Bike Fit Calculator (Calculadora de Talla en 10s)
+// 2. Historical Price Indicator (Semáforo de Precio Histórico)
+// 3. Instant Search Palette with Live Preview (Ctrl + K)
+// 4. 3-Step Interactive Bike Advisor (Asesor en 3 pasos)
+// 5. WhatsApp & Direct Link Comparison Sharing (?compare=id1,id2)
+// 6. Component / Drivetrain Tier Filter (Shimano / SRAM / Carbon)
+// =========================================================================
+
+// --- FEATURE 2: HISTORICAL PRICE INDICATOR ---
+function getHistoricalPriceStatus(product = {}) {
+    const bestOffer = getBestProductOffer(product) || { price: 0 };
+    const currentPrice = Number(bestOffer.price || 0);
+    const rawHist = Array.isArray(product.history) && product.history.length > 0
+        ? product.history.map(Number).filter(n => Number.isFinite(n) && n > 0)
+        : [currentPrice];
+    const allPoints = [...rawHist, currentPrice].filter(n => n > 0);
+    const histMin = allPoints.length ? Math.min(...allPoints) : currentPrice;
+    const histMax = allPoints.length ? Math.max(...allPoints) : currentPrice;
+    const histAvg = allPoints.length
+        ? Math.round(allPoints.reduce((a, b) => a + b, 0) / allPoints.length)
+        : currentPrice;
+    const oldPrice = Number(bestOffer.oldPrice || 0);
+
+    if (currentPrice > 0 && ((currentPrice <= histMin * 1.01 && histMax > histMin * 1.03) || (oldPrice >= currentPrice * 1.12))) {
+        return {
+            status: 'low',
+            badge: 'Mínimo histórico',
+            icon: 'fa-arrow-trend-down',
+            detail: 'Está en su precio más bajo registrado. Excelente momento para comprar.',
+            histMin,
+            histAvg: Math.max(histAvg, oldPrice || histAvg),
+            histMax: Math.max(histMax, oldPrice || histMax)
+        };
+    }
+    if (currentPrice > 0 && (currentPrice <= histAvg * 0.96 || (oldPrice > currentPrice))) {
+        return {
+            status: 'good',
+            badge: 'Buen momento para comprar',
+            icon: 'fa-circle-check',
+            detail: 'Su precio actual se encuentra bajo el promedio histórico de mercado.',
+            histMin,
+            histAvg: Math.max(histAvg, oldPrice || histAvg),
+            histMax
+        };
+    }
+    if (currentPrice > histAvg * 1.06) {
+        return {
+            status: 'high',
+            badge: 'Sobre el promedio',
+            icon: 'fa-bell',
+            detail: 'Estuvo más barata hace unas semanas. Te recomendamos activar una alerta de precio.',
+            histMin,
+            histAvg,
+            histMax
+        };
+    }
+    return {
+        status: 'normal',
+        badge: 'Precio habitual',
+        icon: 'fa-equals',
+        detail: 'Se mantiene estable dentro de su rango promedio en tiendas chilenas.',
+        histMin,
+        histAvg,
+        histMax
+    };
+}
+
+function renderHistoricalPriceBanner(product) {
+    if (!product) return '';
+    const info = getHistoricalPriceStatus(product);
+    return `
+        <div class="hist-price-banner status-${info.status}">
+            <div class="hist-price-banner-top">
+                <span class="hist-price-pill status-${info.status}">
+                    <i class="fa-solid ${info.icon}"></i> ${escapeHtml(info.badge)}
+                </span>
+                <span class="hist-price-metrics">
+                    Mín. histórico: <strong>${formatCLP(info.histMin)}</strong> · Promedio: <strong>${formatCLP(info.histAvg)}</strong>
+                </span>
+            </div>
+            <p class="hist-price-detail">${escapeHtml(info.detail)}</p>
+        </div>
+    `;
+}
+
+// --- FEATURE 6: COMPONENT / DRIVETRAIN TIER FILTER ---
+toggleSpecChip = window.toggleSpecChip = function(specKey, btnEl) {
+    if (!specKey) return;
+    isCyberMode = false;
+    document.body?.classList.remove('cyber-theme');
+
+    const isSame = state.filters.spec === specKey;
+    state.filters.spec = isSame ? null : specKey;
+    state.currentPage = 1;
+
+    document.querySelectorAll('.component-tier-pill').forEach(pill => {
+        pill.classList.toggle('active', !isSame && pill.dataset.spec === specKey);
+    });
+
+    render();
+    if (!isSame && btnEl) {
+        showToast(`Filtrando por equipamiento: ${btnEl.textContent.trim()}`);
+    }
+};
+
+// --- FEATURE 5: SHARE COMPARISON VIA WHATSAPP & DIRECT LINK ---
+function getCompareShareUrl() {
+    const ids = (state.compare || []).slice(0, 3).join(',');
+    const url = new URL(window.location.href);
+    url.search = '';
+    url.hash = '';
+    if (ids) url.searchParams.set('compare', ids);
+    return url.toString();
+}
+
+copyCompareLink = window.copyCompareLink = async function() {
+    if (!state.compare || state.compare.length < 2) return;
+    const shareUrl = getCompareShareUrl();
+    try {
+        await navigator.clipboard.writeText(shareUrl);
+        showToast('Enlace directo de comparación copiado al portapapeles.');
+    } catch (e) {
+        window.prompt('Copia el enlace de comparación:', shareUrl);
+    }
+};
+
+shareCompareWhatsApp = window.shareCompareWhatsApp = function() {
+    const products = (state.compare || []).map(id => findProductById(id)).filter(Boolean);
+    if (products.length < 2) return;
+    const shareUrl = getCompareShareUrl();
+    const lines = products.map((p, i) => {
+        const best = getBestProductOffer(p) || { price: 0, store: 'Tienda' };
+        return `${i + 1}. ${p.brand} ${p.model} — Desde ${formatCLP(best.price)} (${best.store})`;
+    });
+    const text = `Mira esta comparación de bicicletas en BiciTodo.cl:\n\n${lines.join('\n')}\n\nComparativa completa aquí: ${shareUrl}`;
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+};
+
+async function openPendingCompareFromUrl() {
+    if (state.pendingCompareOpened) return;
+    const params = new URLSearchParams(window.location.search);
+    const compareParam = params.get('compare');
+    if (!compareParam) return;
+
+    state.pendingCompareOpened = true;
+    const ids = compareParam
+        .split(',')
+        .map(v => parseInt(v.trim(), 10))
+        .filter(n => Number.isFinite(n) && n > 0)
+        .slice(0, 3);
+
+    if (ids.length < 2) return;
+
+    for (const id of ids) {
+        if (!findProductById(id)) {
+            try {
+                const q = new URLSearchParams({ producto_id: String(id), page: '1', limit: '1' });
+                const resp = await fetch(`${API_BASE_URL}/api/productos?${q.toString()}`, { cache: 'no-store' });
+                if (resp.ok) {
+                    const data = await resp.json();
+                    const p = data.productos?.[0];
+                    if (p) {
+                        state.data.cache[p.id] = p;
+                    }
+                }
+            } catch (_) {}
+        }
+    }
+
+    const validIds = ids.filter(id => Boolean(findProductById(id)));
+    if (validIds.length >= 2) {
+        state.compare = validIds;
+        updateCompareBar();
+        setTimeout(() => openCompareModal(), 80);
+    }
+}
+
+// --- FEATURE 1: INTELLIGENT BIKE FIT CALCULATOR (BIOMECÁNICA REAL) ---
+const bikeFitState = {
+    discipline: 'mtb',
+    heightCm: 173,
+    inseamCm: ''
+};
+
+function calculateBikeFitRecommendation(heightCm, inseamRaw, discipline) {
+    const h = Math.max(120, Math.min(215, Number(heightCm) || 173));
+    const hasCustomInseam = inseamRaw !== null && inseamRaw !== undefined && String(inseamRaw).trim() !== '' && Number(inseamRaw) >= 45 && Number(inseamRaw) <= 110;
+    const inseam = hasCustomInseam
+        ? Number(inseamRaw)
+        : Math.round(h * 0.455 * 10) / 10;
+
+    // Índice antropométrico pierna/estatura (promedio humano ~0.455)
+    const apeRatio = inseam / h;
+    let morphologyNote = 'Proporción estándar equilibrada entre torso y piernas.';
+    if (apeRatio > 0.47) {
+        morphologyNote = 'Piernas largas respecto al torso: te favorece una geometría Endurance (mayor Stack y tee 10 mm más corta).';
+    } else if (apeRatio < 0.44) {
+        morphologyNote = 'Torso largo respecto a las piernas: prioriza el Reach (alcance horizontal) para no quedar comprimido.';
+    }
+
+    // Estatura efectiva ponderada con la entrepierna real (60% entrepierna + 40% estatura)
+    const effectiveHeight = hasCustomInseam ? Math.round((h * 0.45) + ((inseam / 0.455) * 0.55)) : h;
+
+    // Fórmulas biomecánicas clásicas:
+    // - Ruta / Gravel / Urbana: Entrepierna × 0.65 (cm centro-a-centro / Stack-Reach eq.)
+    // - MTB: Entrepierna × 0.226 (pulgadas de tubo de sillín)
+    // - Altura de sillín (Greg LeMond): Entrepierna × 0.883 (cm desde centro del eje motor al tope del sillín)
+    const exactRoadCm = Math.round(inseam * 0.655);
+    const exactMtbIn = (inseam * 0.226).toFixed(1);
+    const saddleHeightCm = (inseam * 0.883).toFixed(1);
+
+    // Largo de bielas biomecánico según entrepierna
+    let crankLengthMm = '170 mm';
+    if (inseam < 74) crankLengthMm = '165 mm';
+    else if (inseam < 81) crankLengthMm = '170 mm';
+    else if (inseam < 86) crankLengthMm = '172.5 mm';
+    else crankLengthMm = '175 mm';
+
+    // Reach de cuadro estimado (mm) y potencia/tee recomendada
+    const reachMm = discipline === 'mtb'
+        ? Math.round(255 + (effectiveHeight - 135) * 3.15)
+        : Math.round(340 + (effectiveHeight - 135) * 0.92);
+    const stemMm = discipline === 'mtb'
+        ? (effectiveHeight < 168 ? '45 – 50 mm' : '50 – 65 mm')
+        : (effectiveHeight < 165 ? '80 mm' : (effectiveHeight < 180 ? '90 – 100 mm' : '100 – 110 mm'));
+
+    let frameCode = 'M';
+    let mtbInches = `${exactMtbIn}" (17" – 18")`;
+    let roadCm = `${exactRoadCm} cm (53 – 55 cm)`;
+    let wheelSize = '29';
+    let wheelLabel = 'Aro 29"';
+
+    if (effectiveHeight < 148) {
+        frameCode = 'Infantil / Jr';
+        mtbInches = `12" – 13.5"`;
+        roadCm = `43 – 46 cm`;
+        wheelSize = effectiveHeight < 135 ? '20' : '24';
+        wheelLabel = effectiveHeight < 135 ? 'Aro 20"' : 'Aro 24"';
+    } else if (effectiveHeight < 160) {
+        frameCode = 'XS';
+        mtbInches = `${exactMtbIn}" (13.5" – 15")`;
+        roadCm = `${exactRoadCm} cm (47 – 49 cm)`;
+        wheelSize = discipline === 'mtb' ? '27.5' : '700c';
+        wheelLabel = discipline === 'mtb' ? 'Aro 27.5"' : '700c';
+    } else if (effectiveHeight < 169) {
+        frameCode = 'S';
+        mtbInches = `${exactMtbIn}" (15" – 16.5")`;
+        roadCm = `${exactRoadCm} cm (50 – 52 cm)`;
+        wheelSize = discipline === 'mtb' ? '29' : '700c';
+        wheelLabel = discipline === 'mtb' ? 'Aro 27.5" / 29"' : '700c';
+    } else if (effectiveHeight < 178) {
+        frameCode = 'M';
+        mtbInches = `${exactMtbIn}" (17" – 18")`;
+        roadCm = `${exactRoadCm} cm (53 – 55 cm)`;
+        wheelSize = discipline === 'mtb' ? '29' : '700c';
+        wheelLabel = discipline === 'mtb' ? 'Aro 29"' : '700c';
+    } else if (effectiveHeight < 186) {
+        frameCode = 'L';
+        mtbInches = `${exactMtbIn}" (18.5" – 19.5")`;
+        roadCm = `${exactRoadCm} cm (56 – 58 cm)`;
+        wheelSize = discipline === 'mtb' ? '29' : '700c';
+        wheelLabel = discipline === 'mtb' ? 'Aro 29"' : '700c';
+    } else {
+        frameCode = 'XL';
+        mtbInches = `${exactMtbIn}" (20" – 21.5")`;
+        roadCm = `${exactRoadCm} cm (59 – 62 cm)`;
+        wheelSize = discipline === 'mtb' ? '29' : '700c';
+        wheelLabel = discipline === 'mtb' ? 'Aro 29"' : '700c';
+    }
+
+    const measureDetail = (discipline === 'ruta' || discipline === 'gravel') ? roadCm : mtbInches;
+
+    return {
+        frameCode,
+        measureDetail,
+        wheelSize,
+        wheelLabel,
+        inseam,
+        saddleHeightCm,
+        crankLengthMm,
+        reachMm,
+        stemMm,
+        morphologyNote
+    };
+}
+
+openBikeFitModal = window.openBikeFitModal = function(event) {
+    if (event) event.preventDefault();
+    const modal = document.getElementById('modal-overlay');
+    const content = document.getElementById('modal-content');
+    if (!modal || !content) return;
+
+    const rec = calculateBikeFitRecommendation(bikeFitState.heightCm, bikeFitState.inseamCm, bikeFitState.discipline);
+
+    content.innerHTML = `
+        <button class="modal-close" onclick="closeModal()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-minimal-shell">
+            <div class="modal-minimal-header">
+                <span class="modal-minimal-eyebrow">Biomecánica Aplicada · Método LeMond & Stack/Reach</span>
+                <h2 class="modal-minimal-title">Calculadora Bike Fit</h2>
+                <p class="modal-minimal-subtitle">
+                    Calcula tu talla real combinando tu estatura y longitud de entrepierna (fórmula biomecánica de Greg LeMond <code>0.883 × entrepierna</code> + conversión por geometría de cuadro).
+                </p>
+            </div>
+
+            <div class="bikefit-layout">
+                <div class="bikefit-controls">
+                    <div class="bikefit-field">
+                        <label class="bikefit-label">1. Geometría / Disciplina</label>
+                        <div class="bikefit-discipline-grid">
+                            <button type="button" class="bikefit-disc-btn ${bikeFitState.discipline === 'mtb' ? 'active' : ''}" onclick="updateBikeFitResult('mtb', null, null)">
+                                <i class="fa-solid fa-mountain-sun"></i> Montaña (MTB)
+                            </button>
+                            <button type="button" class="bikefit-disc-btn ${bikeFitState.discipline === 'ruta' ? 'active' : ''}" onclick="updateBikeFitResult('ruta', null, null)">
+                                <i class="fa-solid fa-road"></i> Ruta
+                            </button>
+                            <button type="button" class="bikefit-disc-btn ${bikeFitState.discipline === 'gravel' ? 'active' : ''}" onclick="updateBikeFitResult('gravel', null, null)">
+                                <i class="fa-solid fa-compass"></i> Gravel
+                            </button>
+                            <button type="button" class="bikefit-disc-btn ${bikeFitState.discipline === 'urbana' ? 'active' : ''}" onclick="updateBikeFitResult('urbana', null, null)">
+                                <i class="fa-solid fa-city"></i> Urbana
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bikefit-field">
+                        <div class="bikefit-label-row">
+                            <label class="bikefit-label" for="bikefit-height-range">2. Tu estatura total</label>
+                            <strong id="bikefit-height-display" class="bikefit-value-pill">${bikeFitState.heightCm} cm</strong>
+                        </div>
+                        <input type="range" id="bikefit-height-range" min="130" max="205" step="1" value="${bikeFitState.heightCm}"
+                               class="bikefit-slider" oninput="updateBikeFitResult(null, this.value, null)">
+                        <div class="bikefit-scale-labels">
+                            <span>130 cm</span>
+                            <span>170 cm</span>
+                            <span>205 cm</span>
+                        </div>
+                    </div>
+
+                    <div class="bikefit-field">
+                        <label class="bikefit-label" for="bikefit-inseam-input">3. Entrepierna en cm (descalzo del suelo a la ingle)</label>
+                        <div class="bikefit-inseam-row">
+                            <input type="number" id="bikefit-inseam-input" min="48" max="105" step="0.5" placeholder="Estimada: ${rec.inseam} cm (escribe la tuya para mayor precisión)"
+                                   value="${bikeFitState.inseamCm}" class="newsletter-minimal-input"
+                                   oninput="updateBikeFitResult(null, null, this.value)">
+                            <span class="bikefit-inseam-hint">Al ingresar tu entrepierna real, recalculamos tanto la talla de cuadro como la altura del sillín y largo de bielas.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bikefit-result-card" id="bikefit-result-box">
+                    <span class="bikefit-result-eyebrow">Resultado Biomecánico</span>
+                    <div class="bikefit-main-size">
+                        <span class="bikefit-size-letter" id="bf-letter">${rec.frameCode}</span>
+                        <div class="bikefit-size-sub">
+                            <strong id="bf-measure">Tubo: ${rec.measureDetail}</strong>
+                            <span id="bf-wheel">${rec.wheelLabel} recomendado</span>
+                        </div>
+                    </div>
+                    <div class="bikefit-metrics-grid">
+                        <div class="bikefit-metric-box">
+                            <span class="bikefit-metric-label">Altura de sillín (LeMond)</span>
+                            <strong class="bikefit-metric-val" id="bf-saddle">${rec.saddleHeightCm} cm</strong>
+                        </div>
+                        <div class="bikefit-metric-box">
+                            <span class="bikefit-metric-label">Reach / Potencia (Tee)</span>
+                            <strong class="bikefit-metric-val" id="bf-reach">~${rec.reachMm} mm · Tee ${rec.stemMm}</strong>
+                        </div>
+                        <div class="bikefit-metric-box">
+                            <span class="bikefit-metric-label">Largo de biela ideal</span>
+                            <strong class="bikefit-metric-val" id="bf-crank">${rec.crankLengthMm}</strong>
+                        </div>
+                        <div class="bikefit-metric-box">
+                            <span class="bikefit-metric-label">Entrepierna considerada</span>
+                            <strong class="bikefit-metric-val" id="bf-inseam">${rec.inseam} cm</strong>
+                        </div>
+                    </div>
+                    <p class="bikefit-tip" id="bf-morphology">${escapeHtml(rec.morphologyNote)}</p>
+                    <button type="button" class="btn-minimal-primary" style="width:100%;" onclick="applyBikeFitToCatalog()">
+                        Filtrar bicicletas compatibles en el catálogo <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+updateBikeFitResult = window.updateBikeFitResult = function(newDisc, newHeight, newInseam) {
+    if (newDisc) bikeFitState.discipline = newDisc;
+    if (newHeight !== null && newHeight !== undefined) bikeFitState.heightCm = Number(newHeight);
+    if (newInseam !== null && newInseam !== undefined) bikeFitState.inseamCm = newInseam;
+
+    document.querySelectorAll('.bikefit-disc-btn').forEach(btn => {
+        const onclickStr = btn.getAttribute('onclick') || '';
+        btn.classList.toggle('active', onclickStr.includes(`'${bikeFitState.discipline}'`));
+    });
+
+    const heightDisplay = document.getElementById('bikefit-height-display');
+    if (heightDisplay) heightDisplay.textContent = `${bikeFitState.heightCm} cm`;
+
+    const rec = calculateBikeFitRecommendation(bikeFitState.heightCm, bikeFitState.inseamCm, bikeFitState.discipline);
+    const elLetter = document.getElementById('bf-letter');
+    const elMeasure = document.getElementById('bf-measure');
+    const elWheel = document.getElementById('bf-wheel');
+    const elSaddle = document.getElementById('bf-saddle');
+    const elReach = document.getElementById('bf-reach');
+    const elCrank = document.getElementById('bf-crank');
+    const elInseam = document.getElementById('bf-inseam');
+    const elMorph = document.getElementById('bf-morphology');
+
+    if (elLetter) elLetter.textContent = rec.frameCode;
+    if (elMeasure) elMeasure.textContent = `Tubo: ${rec.measureDetail}`;
+    if (elWheel) elWheel.textContent = `${rec.wheelLabel} recomendado`;
+    if (elSaddle) elSaddle.textContent = `${rec.saddleHeightCm} cm`;
+    if (elReach) elReach.textContent = `~${rec.reachMm} mm · Tee ${rec.stemMm}`;
+    if (elCrank) elCrank.textContent = rec.crankLengthMm;
+    if (elInseam) elInseam.textContent = `${rec.inseam} cm`;
+    if (elMorph) elMorph.textContent = rec.morphologyNote;
+};
+
+applyBikeFitToCatalog = window.applyBikeFitToCatalog = function() {
+    const rec = calculateBikeFitRecommendation(bikeFitState.heightCm, bikeFitState.inseamCm, bikeFitState.discipline);
+    closeModal();
+    setCategory('bicicletas');
+
+    const isJunior = rec.frameCode.startsWith('Infantil');
+    const targetTypes = isJunior ? ['infantil'] : [bikeFitState.discipline];
+    state.filters.types = targetTypes;
+
+    document.querySelectorAll('#type-filter-list input').forEach(input => {
+        input.checked = targetTypes.includes(input.value);
+    });
+    const allBtn = document.getElementById('btn-all-bike-types');
+    if (allBtn) allBtn.classList.remove('active');
+
+    // En la base de datos:
+    // - MTB tiene 27.5 y 29 (y 20/24 en infantil)
+    // - Ruta tiene 700c
+    // - Gravel y Urbana tienen modelos con wheel_size vacío o 29/700c, por lo que no restringimos wheelSizes en gravel/urbana para no ocultar modelos válidos
+    if (isJunior) {
+        state.filters.wheelSizes = [rec.wheelSize];
+    } else if (bikeFitState.discipline === 'mtb') {
+        state.filters.wheelSizes = rec.frameCode === 'XS' ? ['27.5'] : (rec.frameCode === 'S' ? ['27.5', '29'] : ['29']);
+    } else if (bikeFitState.discipline === 'ruta') {
+        state.filters.wheelSizes = ['700c'];
+    } else {
+        state.filters.wheelSizes = [];
+    }
+
+    document.querySelectorAll('.wheel-pill').forEach(pill => {
+        pill.classList.toggle('active', state.filters.wheelSizes.includes(pill.dataset.size));
+    });
+
+    state.currentPage = 1;
+    render();
+    const catalogEl = document.getElementById('catalog');
+    if (catalogEl) window.scrollTo({ top: catalogEl.offsetTop - 72, behavior: 'smooth' });
+    showToast(`Bike Fit aplicado: Talla ${rec.frameCode} (${rec.measureDetail}) · Sillín a ${rec.saddleHeightCm} cm.`);
+};
+
+// --- FEATURE 4: 3-STEP INTERACTIVE BIKE ADVISOR ---
+const advisorState = {
+    terrain: 'mtb',
+    budget: '400-800',
+    priority: 'value'
+};
+
+openBikeAdvisorModal = window.openBikeAdvisorModal = function(event) {
+    if (event) event.preventDefault();
+    const modal = document.getElementById('modal-overlay');
+    const content = document.getElementById('modal-content');
+    if (!modal || !content) return;
+
+    content.innerHTML = `
+        <button class="modal-close" onclick="closeModal()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-minimal-shell">
+            <div class="modal-minimal-header">
+                <span class="modal-minimal-eyebrow">Asesor Interactivo · 3 Pasos</span>
+                <h2 class="modal-minimal-title">Encuentra tu Bicicleta Ideal</h2>
+                <p class="modal-minimal-subtitle">
+                    Responde estas 3 preguntas rápidas y nuestro algoritmo seleccionará las mejores opciones reales en stock hoy en Chile.
+                </p>
+            </div>
+
+            <div class="advisor-steps-grid">
+                <div class="advisor-step-box">
+                    <span class="advisor-step-num">Paso 1 · Terreno principal</span>
+                    <div class="advisor-options-col" data-group="terrain">
+                        <button type="button" class="advisor-opt-btn ${advisorState.terrain === 'mtb' ? 'active' : ''}" onclick="selectAdvisorOption('terrain', 'mtb', this)">
+                            <i class="fa-solid fa-mountain-sun"></i>
+                            <div>
+                                <strong>Cerro y Senderos (MTB)</strong>
+                                <span>Tierra, parques y montaña</span>
+                            </div>
+                        </button>
+                        <button type="button" class="advisor-opt-btn ${advisorState.terrain === 'ruta' ? 'active' : ''}" onclick="selectAdvisorOption('terrain', 'ruta', this)">
+                            <i class="fa-solid fa-road"></i>
+                            <div>
+                                <strong>Carretera y Asfalto (Ruta)</strong>
+                                <span>Velocidad y largas distancias</span>
+                            </div>
+                        </button>
+                        <button type="button" class="advisor-opt-btn ${advisorState.terrain === 'gravel' ? 'active' : ''}" onclick="selectAdvisorOption('terrain', 'gravel', this)">
+                            <i class="fa-solid fa-compass"></i>
+                            <div>
+                                <strong>Mixto y Ripio (Gravel)</strong>
+                                <span>Aventura en pavimento y tierra</span>
+                            </div>
+                        </button>
+                        <button type="button" class="advisor-opt-btn ${advisorState.terrain === 'urbana' ? 'active' : ''}" onclick="selectAdvisorOption('terrain', 'urbana', this)">
+                            <i class="fa-solid fa-city"></i>
+                            <div>
+                                <strong>Ciudad y Ciclovía (Urbana)</strong>
+                                <span>Transporte diario y paseo</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="advisor-step-box">
+                    <span class="advisor-step-num">Paso 2 · Presupuesto</span>
+                    <div class="advisor-options-col" data-group="budget">
+                        <button type="button" class="advisor-opt-btn ${advisorState.budget === 'sub400' ? 'active' : ''}" onclick="selectAdvisorOption('budget', 'sub400', this)">
+                            <i class="fa-solid fa-wallet"></i>
+                            <div>
+                                <strong>Hasta $400.000</strong>
+                                <span>Iniciación y uso recreativo</span>
+                            </div>
+                        </button>
+                        <button type="button" class="advisor-opt-btn ${advisorState.budget === '400-800' ? 'active' : ''}" onclick="selectAdvisorOption('budget', '400-800', this)">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                            <div>
+                                <strong>$400.000 – $800.000</strong>
+                                <span>Gama media y componentes fiables</span>
+                            </div>
+                        </button>
+                        <button type="button" class="advisor-opt-btn ${advisorState.budget === '800-1500' ? 'active' : ''}" onclick="selectAdvisorOption('budget', '800-1500', this)">
+                            <i class="fa-solid fa-medal"></i>
+                            <div>
+                                <strong>$800.000 – $1.500.000</strong>
+                                <span>Entrenamiento avanzado</span>
+                            </div>
+                        </button>
+                        <button type="button" class="advisor-opt-btn ${advisorState.budget === '1500plus' ? 'active' : ''}" onclick="selectAdvisorOption('budget', '1500plus', this)">
+                            <i class="fa-solid fa-trophy"></i>
+                            <div>
+                                <strong>Más de $1.500.000</strong>
+                                <span>Alta gama / Carbono / Competición</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="advisor-step-box">
+                    <span class="advisor-step-num">Paso 3 · Qué priorizas</span>
+                    <div class="advisor-options-col" data-group="priority">
+                        <button type="button" class="advisor-opt-btn ${advisorState.priority === 'value' ? 'active' : ''}" onclick="selectAdvisorOption('priority', 'value', this)">
+                            <i class="fa-solid fa-star"></i>
+                            <div>
+                                <strong>Mejor Calidad-Precio</strong>
+                                <span>Máximo equipamiento por tu dinero</span>
+                            </div>
+                        </button>
+                        <button type="button" class="advisor-opt-btn ${advisorState.priority === 'price-asc' ? 'active' : ''}" onclick="selectAdvisorOption('priority', 'price-asc', this)">
+                            <i class="fa-solid fa-tag"></i>
+                            <div>
+                                <strong>El menor precio posible</strong>
+                                <span>Opciones más económicas primero</span>
+                            </div>
+                        </button>
+                        <button type="button" class="advisor-opt-btn ${advisorState.priority === 'discount' ? 'active' : ''}" onclick="selectAdvisorOption('priority', 'discount', this)">
+                            <i class="fa-solid fa-bolt"></i>
+                            <div>
+                                <strong>Mayor descuento hoy</strong>
+                                <span>Liquidaciones y rebajas activas</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="advisor-results-area" class="advisor-results-area">
+                <button type="button" class="btn-minimal-primary" onclick="runBikeAdvisor()">
+                    Descubrir mis 3 bicicletas recomendadas <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </button>
+            </div>
+        </div>
+    `;
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    runBikeAdvisor();
+};
+
+selectAdvisorOption = window.selectAdvisorOption = function(group, value, btnEl) {
+    advisorState[group] = value;
+    const container = btnEl?.closest('.advisor-options-col');
+    if (container) {
+        container.querySelectorAll('.advisor-opt-btn').forEach(b => b.classList.remove('active'));
+    }
+    if (btnEl) btnEl.classList.add('active');
+    runBikeAdvisor();
+};
+
+runBikeAdvisor = window.runBikeAdvisor = async function() {
+    const resultsArea = document.getElementById('advisor-results-area');
+    if (!resultsArea) return;
+
+    resultsArea.innerHTML = `
+        <div class="news-minimal-loading" style="padding:1rem;">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <p>Analizando catálogo en tiempo real...</p>
+        </div>
+    `;
+
+    const budgetRanges = {
+        'sub400': [0, 400000],
+        '400-800': [400000, 800000],
+        '800-1500': [800000, 1500000],
+        '1500plus': [1500000, null]
+    };
+    const [pMin, pMax] = budgetRanges[advisorState.budget] || [0, null];
+
+    const params = new URLSearchParams({
+        page: '1',
+        limit: '24',
+        categoria: 'bicicletas',
+        tipo: advisorState.terrain,
+        sort_by: advisorState.priority === 'value' ? 'relevant' : advisorState.priority
+    });
+    if (pMin) params.set('price_min', String(pMin));
+    if (pMax) params.set('price_max', String(pMax));
+
+    try {
+        const resp = await fetch(`${API_BASE_URL}/api/productos?${params.toString()}`, { cache: 'no-store' });
+        const data = resp.ok ? await resp.json() : { productos: [] };
+        let items = (data.productos || []).filter(p => !isBlockedSyntheticProduct(p));
+
+        if (advisorState.priority === 'value') {
+            items.sort((a, b) => (calculateValueScore(b) || 0) - (calculateValueScore(a) || 0));
+        }
+
+        const top3 = items.slice(0, 3);
+        items.forEach(p => { state.data.cache[p.id] = p; });
+
+        if (top3.length === 0) {
+            resultsArea.innerHTML = `
+                <div class="advisor-empty">
+                    <p>No encontramos modelos exactos en ese rango específico, pero podemos mostrarte todas las opciones de esa categoría.</p>
+                    <button type="button" class="btn-minimal-primary" onclick="applyAdvisorToCatalog(true)">
+                        Ver todas las bicicletas ${advisorState.terrain.toUpperCase()}
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        const cardsHtml = top3.map((p, idx) => {
+            const best = getBestProductOffer(p) || { price: 0, store: 'Tienda' };
+            const score = calculateValueScore(p) || 82;
+            const rankLabels = ['Opción #1 Ideal', 'Alternativa Destacada', 'Gran Oportunidad'];
+            return `
+                <div class="advisor-rec-card" onclick="closeModal(); openProductDetail(${p.id});">
+                    <span class="advisor-rec-badge">${rankLabels[idx] || 'Recomendada'} · ${score}/100</span>
+                    <div class="advisor-rec-img">
+                        <img src="${getProductImage(p)}" alt="${escapeHtml(p.model)}" data-fallbacks="${getImageFallbacks(p).join('|')}" onerror="handleProductImageError(this)">
+                    </div>
+                    <span class="advisor-rec-brand">${escapeHtml(p.brand)}</span>
+                    <h4 class="advisor-rec-title">${escapeHtml(p.model)}</h4>
+                    <div class="advisor-rec-price">${formatCLP(best.price)}</div>
+                    <span class="advisor-rec-store">${getStoreDot(best.storeKey)} Disponible en ${escapeHtml(best.store)}</span>
+                </div>
+            `;
+        }).join('');
+
+        resultsArea.innerHTML = `
+            <div class="advisor-recs-header">
+                <span>Top ${top3.length} bicicletas recomendadas para ti (${data.total_count || items.length} encontradas)</span>
+                <button type="button" class="btn-minimal-primary" onclick="applyAdvisorToCatalog(false)">
+                    Ver las ${data.total_count || items.length} en el catálogo <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="advisor-recs-grid">
+                ${cardsHtml}
+            </div>
+        `;
+    } catch (e) {
+        resultsArea.innerHTML = `
+            <button type="button" class="btn-minimal-primary" onclick="applyAdvisorToCatalog(false)">
+                Aplicar filtros al catálogo <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        `;
+    }
+};
+
+applyAdvisorToCatalog = window.applyAdvisorToCatalog = function(ignoreBudget = false) {
+    const budgetRanges = {
+        'sub400': [0, 400000],
+        '400-800': [400000, 800000],
+        '800-1500': [800000, 1500000],
+        '1500plus': [1500000, null]
+    };
+    const [pMin, pMax] = ignoreBudget ? [null, null] : (budgetRanges[advisorState.budget] || [null, null]);
+
+    closeModal();
+    setCategory('bicicletas');
+
+    state.filters.types = [advisorState.terrain];
+    document.querySelectorAll('#type-filter-list input').forEach(input => {
+        input.checked = (input.value === advisorState.terrain);
+    });
+    const allBtn = document.getElementById('btn-all-bike-types');
+    if (allBtn) allBtn.classList.remove('active');
+
+    state.filters.priceMin = pMin;
+    state.filters.priceMax = pMax;
+    const minEl = document.getElementById('price-min');
+    const maxEl = document.getElementById('price-max');
+    if (minEl) minEl.value = pMin || '';
+    if (maxEl) maxEl.value = pMax || '';
+
+    state.sortBy = advisorState.priority === 'value' ? 'relevant' : advisorState.priority;
+    const sortEl = document.getElementById('sort-select');
+    if (sortEl) sortEl.value = state.sortBy;
+
+    state.currentPage = 1;
+    render();
+    const catalogEl = document.getElementById('catalog');
+    if (catalogEl) window.scrollTo({ top: catalogEl.offsetTop - 72, behavior: 'smooth' });
+    showToast('Recomendaciones del asesor aplicadas al catálogo.');
+};
+
+// --- FEATURE 3: INSTANT SEARCH COMMAND PALETTE (CTRL + K) ---
+let instantSearchTimer = null;
+
+function renderDefaultInstantDropdown() {
+    const dropdown = document.getElementById('search-instant-dropdown');
+    if (!dropdown) return;
+    dropdown.innerHTML = `
+        <div class="instant-search-section">
+            <span class="instant-search-label">Búsquedas populares en Chile</span>
+            <div class="instant-search-chips">
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Trek')">Trek</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Specialized')">Specialized</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Scott')">Scott</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Oxford')">Oxford</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Deore')">Shimano Deore</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Gravel')">Gravel</button>
+                <button type="button" class="instant-chip" onclick="applyInstantSearchTerm('Carbon')">Carbono</button>
+            </div>
+        </div>
+        <div class="instant-search-section instant-search-tools">
+            <button type="button" class="instant-tool-btn" onclick="document.getElementById('search-instant-dropdown')?.classList.remove('active'); openBikeAdvisorModal(event);">
+                <i class="fa-solid fa-compass"></i> Asesor: Encuentra tu bici en 3 pasos
+            </button>
+            <button type="button" class="instant-tool-btn" onclick="document.getElementById('search-instant-dropdown')?.classList.remove('active'); openBikeFitModal(event);">
+                <i class="fa-solid fa-ruler-horizontal"></i> Calculadora de Talla (Bike Fit)
+            </button>
+        </div>
+    `;
+}
+
+async function updateInstantSearchPreview(rawQuery) {
+    const dropdown = document.getElementById('search-instant-dropdown');
+    if (!dropdown) return;
+    const q = (rawQuery || '').trim();
+    if (q.length < 2) {
+        renderDefaultInstantDropdown();
+        return;
+    }
+
+    try {
+        const params = new URLSearchParams({
+            page: '1',
+            limit: '5',
+            search: q
+        });
+        const resp = await fetch(`${API_BASE_URL}/api/productos?${params.toString()}`, { cache: 'no-store' });
+        if (!resp.ok) return;
+        const data = await resp.json();
+        const items = (data.productos || []).filter(p => !isBlockedSyntheticProduct(p)).slice(0, 5);
+        items.forEach(p => { state.data.cache[p.id] = p; });
+
+        if (items.length === 0) {
+            dropdown.innerHTML = `
+                <div class="instant-search-empty">
+                    Sin coincidencias directas para "<strong>${escapeHtml(q)}</strong>".
+                </div>
+            `;
+            return;
+        }
+
+        const rowsHtml = items.map(p => {
+            const best = getBestProductOffer(p) || { price: 0, store: 'Tienda' };
+            return `
+                <button type="button" class="instant-result-row" onclick="selectInstantSearchItem(${p.id})">
+                    <div class="instant-result-thumb">
+                        <img src="${getProductImage(p)}" alt="${escapeHtml(p.model)}" data-fallbacks="${getImageFallbacks(p).join('|')}" onerror="handleProductImageError(this)">
+                    </div>
+                    <div class="instant-result-info">
+                        <span class="instant-result-brand">${escapeHtml(p.brand)} · ${escapeHtml(p.category || 'bicicletas')}</span>
+                        <span class="instant-result-model">${escapeHtml(p.model)}</span>
+                    </div>
+                    <div class="instant-result-price">
+                        <strong>${formatCLP(best.price)}</strong>
+                        <span>${(p.offers || []).length} tienda${(p.offers || []).length > 1 ? 's' : ''}</span>
+                    </div>
+                </button>
+            `;
+        }).join('');
+
+        dropdown.innerHTML = `
+            <div class="instant-search-section">
+                <span class="instant-search-label">Resultados instantáneos (${data.total_count || items.length})</span>
+                <div class="instant-results-list">
+                    ${rowsHtml}
+                </div>
+                <button type="button" class="instant-view-all" onclick="applyInstantSearchTerm('${escapeHtml(q)}')">
+                    Ver todos los resultados para "${escapeHtml(q)}" <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        `;
+    } catch (_) {}
+}
+
+selectInstantSearchItem = window.selectInstantSearchItem = function(productId) {
+    const dropdown = document.getElementById('search-instant-dropdown');
+    if (dropdown) dropdown.classList.remove('active');
+    openProductDetail(productId);
+};
+
+applyInstantSearchTerm = window.applyInstantSearchTerm = function(term) {
+    const input = document.getElementById('main-search');
+    const dropdown = document.getElementById('search-instant-dropdown');
+    if (input) input.value = term;
+    if (dropdown) dropdown.classList.remove('active');
+    state.filters.search = (term || '').toLowerCase();
+    state.currentPage = 1;
+    render();
+    const catalogEl = document.getElementById('catalog');
+    if (catalogEl && typeof window.scrollTo === 'function') {
+        window.scrollTo({ top: (catalogEl.offsetTop || 0) - 72, behavior: 'smooth' });
+    }
+};
+
+function initInstantSearch() {
+    const searchInput = document.getElementById('main-search');
+    const dropdown = document.getElementById('search-instant-dropdown');
+    if (!searchInput || !dropdown) return;
+
+    if (typeof searchInput.addEventListener === 'function') {
+        searchInput.addEventListener('focus', () => {
+            dropdown.classList.add('active');
+            updateInstantSearchPreview(searchInput.value);
+        });
+        searchInput.addEventListener('input', (e) => {
+            dropdown.classList.add('active');
+            clearTimeout(instantSearchTimer);
+            instantSearchTimer = setTimeout(() => {
+                updateInstantSearchPreview(e.target.value);
+            }, 140);
+        });
+    }
+
+    if (typeof document.addEventListener === 'function') {
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                if (typeof searchInput.focus === 'function') searchInput.focus();
+                dropdown.classList.add('active');
+                updateInstantSearchPreview(searchInput.value);
+            } else if (e.key === 'Escape') {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target && e.target.closest && !e.target.closest('#search-wrapper-box')) {
+                dropdown.classList.remove('active');
+            }
+        });
+    }
+}
+
 
 // Kickstart
 init();

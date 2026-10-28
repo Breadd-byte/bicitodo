@@ -12,3 +12,4 @@ fronted/netlify.toml
 backend/database/*backup*.db
 *.bak
 *.bak*
+backups/
