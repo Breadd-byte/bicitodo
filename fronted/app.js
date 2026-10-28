@@ -3238,10 +3238,17 @@ function initInteractiveChart(product) {
 toggleMobileFilters = window.toggleMobileFilters = function() {
     const sidebar = document.querySelector('.sidebar-filters');
     if (sidebar) {
-        sidebar.classList.toggle('mobile-open');
+        const isOpen = sidebar.classList.contains('active') || sidebar.classList.contains('mobile-open');
+        if (isOpen) {
+            sidebar.classList.remove('active', 'mobile-open');
+            document.body.classList.remove('filters-locked');
+        } else {
+            sidebar.classList.add('active', 'mobile-open');
+            document.body.classList.add('filters-locked');
+        }
         const overlay = document.getElementById('filters-overlay');
         if (overlay) {
-            overlay.classList.toggle('active');
+            overlay.classList.toggle('active', !isOpen);
         }
     }
 };
