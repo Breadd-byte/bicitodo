@@ -868,11 +868,7 @@ function syncCatalogUiState() {
         allTypesBtn.classList.toggle('active', (state.filters.types || []).length === 0);
     }
 
-    if (state.filters.spec) {
-            params.append('spec', state.filters.spec);
-        }
-
-        if (state.isInternationalMode) {
+    if (state.isInternationalMode) {
         document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
         const navInt = document.getElementById('nav-internacional');
         if (navInt) navInt.classList.add('active');
@@ -2799,6 +2795,10 @@ async function render(forceFetch = true) {
             params.append('sort_by', state.sortBy);
         }
         
+        if (state.filters.spec) {
+            params.append('spec', state.filters.spec);
+        }
+
         if (state.filters.discountMin !== null && state.filters.discountMin !== undefined) {
             params.append('discount_min', state.filters.discountMin);
         }
@@ -4776,9 +4776,29 @@ selectInstantSearchItem = window.selectInstantSearchItem = function(productId) {
 applyInstantSearchTerm = window.applyInstantSearchTerm = function(term) {
     const input = document.getElementById('main-search');
     const dropdown = document.getElementById('search-instant-dropdown');
-    if (input) input.value = term;
     if (dropdown) dropdown.classList.remove('active');
-    state.filters.search = (term || '').toLowerCase();
+
+    const cleanTerm = (term || '').trim();
+    const lowerTerm = cleanTerm.toLowerCase();
+
+    // Si el usuario estaba en modo internacional o tenía filtros que ocultaban resultados, limpiamos filtros restrictivos
+    if (state.isInternationalMode || /(bicicleta|bicicletas|bici|bicis)/.test(lowerTerm)) {
+        state.isInternationalMode = false;
+        state.category = 'bicicletas';
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        document.querySelector(`.pill[onclick="setCategory('bicicletas')"]`)?.classList.add('active');
+    }
+
+    state.filters.brands = [];
+    state.filters.stores = [];
+    state.filters.types = [];
+    state.filters.wheelSizes = [];
+    state.filters.spec = null;
+    document.querySelectorAll('.checkbox-list input, .brand-check, .dyn-type-check').forEach(i => { i.checked = false; });
+    document.querySelectorAll('.wheel-pill, .budget-pill, .component-tier-pill, .store-chip').forEach(p => p.classList.remove('active'));
+
+    if (input) input.value = cleanTerm;
+    state.filters.search = lowerTerm;
     state.currentPage = 1;
     render();
     const catalogEl = document.getElementById('catalog');
@@ -4807,6 +4827,13 @@ function initInstantSearch() {
     }
 
     if (typeof document.addEventListener === 'function') {
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                applyInstantSearchTerm(searchInput.value);
+            }
+        });
+
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key && e.key.toLowerCase() === 'k') {
                 e.preventDefault();

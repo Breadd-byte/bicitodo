@@ -354,36 +354,9 @@ def scrape_specialized():
             })
     return items
 
-# Oxford Store Magento Scraper
+# Oxford Store Shopify Scraper
 def scrape_oxford():
-    domain = "https://www.oxfordstore.cl"
-    soup = fetch_html(f"{domain}/bicicletas.html")
-    items = []
-    if not soup: return items
-    
-    cards = soup.select(".product-item-info")
-    for p in cards:
-        name_el = p.select_one(".product-item-link")
-        price_el = p.select_one(".price-wrapper .price")
-        old_el = p.select_one(".old-price .price")
-        img_el = p.select_one(".product-image-photo")
-        
-        if not name_el or not price_el: continue
-        name = clean_text(name_el.get_text())
-        price = clean_price(price_el.get_text())
-        old_price = clean_price(old_el.get_text()) if old_el else None
-        img = img_el.get("src") if img_el else ""
-        if img and "/cache/" in img:
-            img = re.sub(r'/cache/[^/]+/', '/', img)
-        href = name_el.get("href", "")
-        
-        items.append({
-            "name": name, "brand": "Oxford", "price_normal": price,
-            "price_card": old_price if old_price and old_price > price else None,
-            "url": href, "image_url": img, "store": "Oxford Store",
-            "store_key": "oxford", "category": "bicicletas"
-        })
-    return items
+    return scrape_shopify("Oxford Store", "oxford", "https://www.oxfordstore.cl", ["bicicletas"])
 
 # Decathlon Scraper
 def scrape_decathlon():

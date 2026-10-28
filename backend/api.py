@@ -300,11 +300,34 @@ async def get_productos(
             where_clauses.append("pco.price_normal <= ?")
             where_params.append(price_max)
             
-        # Filtro de búsqueda por texto (búsqueda de marca o modelo)
+        # Filtro de búsqueda por texto (búsqueda multi-token inteligente)
         if search:
-            search_query = f"%{search.lower()}%"
-            where_clauses.append("(LOWER(p.brand) LIKE ? OR LOWER(p.model) LIKE ? OR LOWER(COALESCE(p.specs, '')) LIKE ? OR LOWER(COALESCE(p.frame_type, '')) LIKE ?)")
-            where_params.extend([search_query, search_query, search_query, search_query])
+            raw_tokens = [tok.strip().lower() for tok in search.split() if tok.strip()]
+            stop_words = {"de", "la", "el", "los", "las", "en", "con", "para", "por", "una", "un"}
+            category_synonyms = {
+                "bicicleta": "bicicletas", "bicicletas": "bicicletas", "bici": "bicicletas", "bicis": "bicicletas", "bike": "bicicletas", "bikes": "bicicletas",
+                "accesorio": "accesorios", "accesorios": "accesorios",
+                "repuesto": "repuestos", "repuestos": "repuestos", "componente": "repuestos", "componentes": "repuestos"
+            }
+            filtered_tokens = [t for t in raw_tokens if t not in stop_words]
+            if not filtered_tokens:
+                filtered_tokens = raw_tokens
+
+            non_cat_tokens = [t for t in filtered_tokens if t not in category_synonyms]
+            cat_tokens = [t for t in filtered_tokens if t in category_synonyms]
+
+            if cat_tokens and not categoria:
+                inferred_cat = category_synonyms[cat_tokens[0]]
+                where_clauses.append("LOWER(p.category) = ?")
+                where_params.append(inferred_cat)
+
+            active_tokens = non_cat_tokens if non_cat_tokens else filtered_tokens
+            for tok in active_tokens:
+                tok_query = f"%{tok}%"
+                where_clauses.append(
+                    "(LOWER(p.brand) LIKE ? OR LOWER(p.model) LIKE ? OR LOWER(COALESCE(p.category, '')) LIKE ? OR LOWER(COALESCE(p.type, '')) LIKE ? OR LOWER(COALESCE(p.specs, '')) LIKE ? OR LOWER(COALESCE(p.frame_type, '')) LIKE ? OR LOWER(COALESCE(s.name, '')) LIKE ?)"
+                )
+                where_params.extend([tok_query, tok_query, tok_query, tok_query, tok_query, tok_query, tok_query])
 
         # Filtro por nivel de componente / especificación técnica
         if spec:
@@ -357,8 +380,8 @@ async def get_productos(
         if where_clauses:
             where_sql = "WHERE " + " AND ".join(where_clauses)
 
-        # Ordenamiento dinámico
-        order_sql = "ORDER BY rn, store_id"
+        # Ordenamiento dinámico (priorizando bicicletas y coincidencia exacta de marca/modelo al buscar)
+        order_sql = "ORDER BY CASE WHEN category = 'bicicletas' THEN 0 WHEN category = 'accesorios' THEN 1 ELSE 2 END, brand_match_rank ASC, rn ASC, store_id ASC"
         if sort_by == "price-asc":
             order_sql = "ORDER BY price_normal ASC"
         elif sort_by == "price-desc":
@@ -439,6 +462,11 @@ async def get_productos(
                 pco.store_id,
                 pco.price_normal,
                 pco.price_card,
+                CASE
+                    WHEN ? != '' AND LOWER(p.brand) LIKE ? THEN 0
+                    WHEN ? != '' AND LOWER(p.model) LIKE ? THEN 1
+                    ELSE 2
+                END as brand_match_rank,
                 (SELECT COUNT(*) FROM store_products spc WHERE spc.product_id = p.id) as offer_count,
                 ROW_NUMBER() OVER (PARTITION BY pco.store_id ORDER BY p.id DESC) as rn
             FROM products p
@@ -452,8 +480,13 @@ async def get_productos(
         {order_sql}
         LIMIT ? OFFSET ?;
         """
-        # Añadir limit y offset a los parámetros
-        main_params = list(where_params)
+        # Añadir parámetros de ranking de marca/modelo, limit y offset
+        primary_tok = ""
+        if search:
+            raw_t = [t.strip().lower() for t in search.split() if t.strip() and t.strip().lower() not in {"bicicleta", "bicicletas", "bici", "bicis", "bike", "bikes", "de", "la", "el"}]
+            primary_tok = raw_t[0] if raw_t else search.strip().lower()
+        primary_like = f"%{primary_tok}%" if primary_tok else ""
+        main_params = [primary_tok, primary_like, primary_tok, primary_like] + list(where_params)
         main_params.extend([limit, offset])
         
         cursor.execute(main_query, main_params)
@@ -569,19 +602,31 @@ async def get_productos(
             }
             productos_list.append(product_obj)
 
-        # Get brand counts for the active category (to keep filter panel accurate)
+        # Get brand counts for the active category (only counting products with active in-stock offers)
         brand_counts = {}
         is_intl_val = 1 if internacional is True else 0
         if categoria:
-            cursor.execute("SELECT brand, COUNT(*) as cnt FROM products WHERE category = ? AND is_international = ? GROUP BY brand", (categoria, is_intl_val))
+            cursor.execute('''
+                SELECT p.brand, COUNT(DISTINCT p.id) as cnt
+                FROM products p
+                JOIN store_products sp ON sp.product_id = p.id AND COALESCE(sp.stock, 1) = 1
+                WHERE p.category = ? AND COALESCE(p.is_international, 0) = ?
+                GROUP BY p.brand
+            ''', (categoria, is_intl_val))
             for r in cursor.fetchall():
                 if r["brand"]:
                     brand_counts[r["brand"]] = r["cnt"]
 
-        # Get subcategory/type counts
+        # Get subcategory/type counts (only counting products with active in-stock offers)
         type_counts = {}
         if categoria:
-            cursor.execute("SELECT type, COUNT(*) as cnt FROM products WHERE category = ? AND is_international = ? GROUP BY type", (categoria, is_intl_val))
+            cursor.execute('''
+                SELECT p.type, COUNT(DISTINCT p.id) as cnt
+                FROM products p
+                JOIN store_products sp ON sp.product_id = p.id AND COALESCE(sp.stock, 1) = 1
+                WHERE p.category = ? AND COALESCE(p.is_international, 0) = ?
+                GROUP BY p.type
+            ''', (categoria, is_intl_val))
             for r in cursor.fetchall():
                 if r["type"]:
                     type_counts[r["type"]] = r["cnt"]
