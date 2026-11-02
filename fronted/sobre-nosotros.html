@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros — BiciTodo Chile</title>
+    <meta name="description" content="Conoce la misión, equipo e independencia editorial de BiciTodo.cl, el primer comparador de precios y buscador inteligente de ciclismo en Chile.">
+    <link rel="canonical" href="https://bicitodo.cl/sobre-nosotros.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=tesla_cinematic_v16">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Tag Manager / Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PS6RQ713S5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PS6RQ713S5');
+    </script>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1456280662997557" crossorigin="anonymous"></script>
+    <style>
+        .editorial-container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 110px 1.5rem 5rem;
+        }
+        .editorial-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+        .editorial-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(32, 201, 104, 0.12);
+            color: var(--primary);
+            border: 1px solid rgba(32, 201, 104, 0.3);
+            border-radius: 999px;
+            padding: 0.35rem 0.95rem;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+        .editorial-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.18;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        .editorial-lead {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 720px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        .editorial-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2.25rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .editorial-section h2 {
+            font-family: var(--font-heading);
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+        .editorial-section h2 i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        .editorial-section p {
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+            line-height: 1.8;
+            margin-bottom: 1.15rem;
+        }
+        .editorial-section p:last-child {
+            margin-bottom: 0;
+        }
+        .grid-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+        .value-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 1.35rem;
+        }
+        .value-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .value-card h3 i {
+            color: var(--primary);
+        }
+        .value-card p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+        .stores-pill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .store-pill-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xs);
+            padding: 0.35rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .back-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.84rem;
+            font-weight: 600;
+            margin-bottom: 1.75rem;
+            transition: color var(--transition-fast);
+        }
+        .back-nav-link:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar Minimalista -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="assets/logo.png" alt="BiciTodo Logo" class="logo-img" width="30" height="30">
+                Bici<span>Todo</span>
+            </a>
+            <div class="nav-actions">
+                <a href="/" class="nav-link"><i class="fa-solid fa-house"></i> Inicio</a>
+                <a href="/blog/" class="nav-link"><i class="fa-solid fa-book-open"></i> Guías & Blog</a>
+                <a href="/bikefit.html" class="nav-link"><i class="fa-solid fa-ruler-combined"></i> BikeFit</a>
+                <a href="/contacto.html" class="nav-link"><i class="fa-solid fa-envelope"></i> Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="editorial-container">
+        <a href="/" class="back-nav-link"><i class="fa-solid fa-arrow-left"></i> Volver al comparador</a>
+
+        <header class="editorial-header">
+            <span class="editorial-badge"><i class="fa-solid fa-bicycle"></i> Transparencia e Inteligencia Ciclista</span>
+            <h1 class="editorial-title">Sobre BiciTodo</h1>
+            <p class="editorial-lead">
+                Democratizamos el acceso a la información del ciclismo en Chile. Centralizamos catálogos, monitoreamos precios en tiempo real y desarrollamos herramientas biomecánicas gratuitas para que nunca pagues de más por tu bicicleta.
+            </p>
+        </header>
+
+        <section class="editorial-section">
+            <h2><i class="fa-solid fa-bullseye"></i> Nuestra Misión y Propósito</h2>
+            <p>
+                En Chile, comprar una bicicleta o renovar sus componentes históricamente ha sido un proceso engorroso y fragmentado. Existen decenas de tiendas especializadas, importadores independientes y gigantes del retail compitiendo entre sí, con promociones temporales, descuentos con tarjetas comerciales y fluctuaciones de stock que el usuario común no tiene tiempo de rastrear de forma manual.
+            </p>
+            <p>
+                <strong>BiciTodo (bicitodo.cl)</strong> nació para solucionar este problema de raíz. Desarrollamos tecnología de recolección y normalización de datos para ofrecer un único punto de encuentro donde cualquier ciclista —desde quien busca su primera bicicleta urbana hasta competidores experimentados de ruta o descenso— pueda comparar precios reales, verificar el historial histórico de rebajas y tomar decisiones fundamentadas.
+            </p>
+        </section>
+
+        <section class="editorial-section">
+            <h2><i class="fa-solid fa-scale-balanced"></i> Independencia Editorial y Transparencia Absoluta</h2>
+            <p>
+                Creemos que la credibilidad es el activo más valioso de cualquier plataforma comparativa. Por ello, operamos bajo principios de estricta neutralidad:
+            </p>
+            <div class="grid-values">
+                <div class="value-card">
+                    <h3><i class="fa-solid fa-shop-slash"></i> No Somos una Tienda</h3>
+                    <p>No vendemos productos de forma directa ni tenemos bodegas propias. Nuestro único compromiso es con el usuario que busca la mejor alternativa disponible.</p>
+                </div>
+                <div class="value-card">
+                    <h3><i class="fa-solid fa-chart-line"></i> Datos Matemáticos</h3>
+                    <p>La posición de las ofertas y la insignia de "Mejor Precio" se determinan por algoritmos de comparación exacta en pesos chilenos (CLP), sin preferencias comerciales.</p>
+                </div>
+                <div class="value-card">
+                    <h3><i class="fa-solid fa-handshake"></i> Modelo Sostenible</h3>
+                    <p>Nos financiamos mediante publicidad automatizada de Google AdSense y enlaces de afiliación sin ningún recargo ni costo para el comprador final.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="editorial-section">
+            <h2><i class="fa-solid fa-toolbox"></i> Herramientas Gratuitas de Ingeniería Ciclista</h2>
+            <p>
+                BiciTodo es más que un comparador de precios; es un conjunto de herramientas tecnológicas diseñadas para asistir al ciclista antes y durante su compra:
+            </p>
+            <ul>
+                <li><strong>Calculadora de BikeFit Biomecánica:</strong> Basada en la metodología antropométrica de Greg LeMond combinada con análisis de Stack y Reach para orientar la talla exacta de marco y altura de sillín.</li>
+                <li><strong>Asesor Interactivo en 3 Pasos:</strong> Un asistente que filtra entre miles de alternativas según el presupuesto, tipo de superficie (asfalto, gravilla o cerro) y objetivos de uso.</li>
+                <li><strong>Historial Gráfico de Precios:</strong> Registra la evolución del precio de cada producto para que detectes liquidaciones genuinas en eventos CyberDays, Black Friday o cambios de temporada.</li>
+                <li><strong>Alertas Automáticas de Rebaja:</strong> Notificaciones directas a tu correo cuando el modelo que te interesa alcanza el umbral de precio que definas.</li>
+            </ul>
+        </section>
+
+        <section class="editorial-section">
+            <h2><i class="fa-solid fa-store"></i> Tiendas y Marcas Monitoreadas en Chile</h2>
+            <p>
+                Nuestro motor de búsqueda indexa diariamente los inventarios públicos de las principales tiendas y marcas presentes en el mercado chileno:
+            </p>
+            <div class="stores-pill-list">
+                <span class="store-pill-item">Oxford Store</span>
+                <span class="store-pill-item">Specialized Chile</span>
+                <span class="store-pill-item">Trek Chile</span>
+                <span class="store-pill-item">Decathlon</span>
+                <span class="store-pill-item">Giant Chile</span>
+                <span class="store-pill-item">Sparta</span>
+                <span class="store-pill-item">Faucon Bikes</span>
+                <span class="store-pill-item">CrossMountain</span>
+                <span class="store-pill-item">Full Bike</span>
+                <span class="store-pill-item">iBikes</span>
+                <span class="store-pill-item">DS Bikes</span>
+                <span class="store-pill-item">Copenhague</span>
+                <span class="store-pill-item">Sátiro Bikes</span>
+                <span class="store-pill-item">Sunpeed Chile</span>
+                <span class="store-pill-item">P3 Cycles</span>
+                <span class="store-pill-item">Canyon Chile</span>
+                <span class="store-pill-item">Falabella</span>
+                <span class="store-pill-item">Ripley</span>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <p class="footer-brand">© 2026 <strong>BiciTodo</strong> — El comparador de ciclismo más completo de Chile.</p>
+            <p class="footer-links">
+                <a href="/sobre-nosotros.html">Sobre Nosotros</a> ·
+                <a href="/politica-privacidad.html">Política de Privacidad</a> ·
+                <a href="/terminos-condiciones.html">Términos de Uso</a> ·
+                <a href="/contacto.html">Contacto</a> ·
+                <a href="/blog/">Blog y Guías</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

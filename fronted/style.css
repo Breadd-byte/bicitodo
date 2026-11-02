@@ -1656,16 +1656,82 @@ body:not(.light-mode) .product-card.elite:hover .btn-ver-ofertas {
 footer {
     background: var(--bg-secondary);
     border-top: 1px solid var(--border);
-    padding: 3rem 2rem;
+    padding: 3.5rem 1.5rem 2rem;
 }
 
 .footer-inner {
-    max-width: 1120px;
+    max-width: 1200px;
     margin: 0 auto;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+    text-align: left;
+}
+
+@media (max-width: 900px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 580px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.8rem;
+    }
+}
+
+.footer-col h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+}
+
+.footer-col p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.footer-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.footer-nav-list a {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.footer-nav-list a:hover {
+    color: var(--primary);
+    transform: translateX(2px);
+}
+
+.footer-bottom-bar {
+    border-top: 1px solid var(--border);
+    padding-top: 1.8rem;
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.8rem;
 }
 
 .footer-brand {
@@ -1676,20 +1742,8 @@ footer {
 .footer-disclaimer {
     font-size: 0.78rem;
     color: var(--text-muted);
-    max-width: 720px;
+    max-width: 760px;
     margin: 0 auto;
-}
-
-.footer-links {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.footer-links a:hover {
-    color: var(--primary);
 }
 
 .footer-stores {

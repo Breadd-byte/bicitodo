@@ -4371,6 +4371,11 @@ openBikeFitModal = window.openBikeFitModal = function(event) {
                     <button type="button" class="btn-minimal-primary" style="width:100%;" onclick="applyBikeFitToCatalog()">
                         Filtrar bicicletas compatibles en el catálogo <i class="fa-solid fa-arrow-right"></i>
                     </button>
+                    <div style="text-align:center; margin-top:0.6rem;">
+                        <a href="/bikefit.html" style="font-size:0.85rem; color:#20c968; text-decoration:none;" target="_blank">
+                            <i class="fa-solid fa-book-open"></i> Guía técnica completa (Fórmula LeMond, Reach & Bielas)
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

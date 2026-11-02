@@ -195,13 +195,27 @@ async def sitemap_xml():
             """
         ).fetchall()
 
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        static_pages = [
+            ("https://bicitodo.cl/", "daily", "1.0"),
+            ("https://bicitodo.cl/bikefit.html", "weekly", "0.9"),
+            ("https://bicitodo.cl/blog/", "daily", "0.9"),
+            ("https://bicitodo.cl/blog/guia-bicicleta-gravel-chile.html", "monthly", "0.85"),
+            ("https://bicitodo.cl/blog/shimano-gamas-transmisiones-ruta-mtb.html", "monthly", "0.85"),
+            ("https://bicitodo.cl/blog/como-elegir-talla-bicicleta-bikefit.html", "monthly", "0.85"),
+            ("https://bicitodo.cl/sobre-nosotros.html", "monthly", "0.8"),
+            ("https://bicitodo.cl/contacto.html", "monthly", "0.7"),
+            ("https://bicitodo.cl/politica-privacidad.html", "monthly", "0.6"),
+            ("https://bicitodo.cl/terminos-condiciones.html", "monthly", "0.6"),
+        ]
         urls = [
-            """
-  <url>
-    <loc>https://bicitodo.cl/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>""".strip()
+            f"""  <url>
+    <loc>{loc}</loc>
+    <lastmod>{today_str}</lastmod>
+    <changefreq>{freq}</changefreq>
+    <priority>{prio}</priority>
+  </url>"""
+            for loc, freq, prio in static_pages
         ]
         for row in rows:
             slug = slugify(f"{row['brand']} {row['model']}")

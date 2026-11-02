@@ -79,6 +79,8 @@
                 <a href="#catalog" class="nav-link active" id="nav-catalogo"
                     onclick="activateExplorar(event)">Explorar</a>
                 <a href="#catalog" class="nav-link" id="nav-ofertas" onclick="activateDeals(event)">Ofertas</a>
+                <a href="/bikefit.html" class="nav-link" id="nav-bikefit"><i class="fa-solid fa-ruler-combined" style="margin-right:4px;"></i>BikeFit</a>
+                <a href="/blog/" class="nav-link" id="nav-blog"><i class="fa-solid fa-book-open" style="margin-right:4px;"></i>Blog / Guías</a>
                 <a href="#tiendas" class="nav-link" id="nav-tiendas" onclick="scrollToStores(event)">Tiendas</a>
                 <a href="#catalog" class="nav-link" id="nav-novedades" onclick="openNovedadesModal(event)">Novedades</a>
                 <a href="#catalog" class="nav-link nav-link-intl" id="nav-internacional"
@@ -495,25 +497,61 @@
         </div>
     </div>
 
-    <footer>
-        <div class="footer-inner">
-            <p class="footer-brand">© 2026 <strong>BiciTodo</strong> — El comparador de ciclismo más completo de Chile.</p>
-            <p class="footer-disclaimer">
-                Los precios pueden variar. Siempre verifica en la tienda oficial antes de comprar. Actualizado diariamente.
-                Al hacer clic en los enlaces de las tiendas, podrías estar utilizando enlaces de afiliados.
-            </p>
-            <p class="footer-links">
-                <a href="privacidad.html">Política de Privacidad</a>
-                <span>·</span>
-                <a href="terminos.html">Términos de Uso</a>
-            </p>
-            <div class="footer-stores">
-                <span>Tiendas integradas:</span>
-                <strong>AliExpress • Copenhague • CrossMountain • Decathlon • DS Bikes • Falabella • Faucon Bikes •
-                    Full Bike • iBikes • Oxford Store • Paris • Ripley • Sátiro Bikes • Totem Chile • Sparta •
-                    Specialized Chile • Trek • Vidaurre Bikes</strong>
-            </div>
-        </div>
+        <footer>
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.8rem;">
+                        <img src="assets/logo.png" alt="BiciTodo" width="28" height="28">
+                        <strong style="font-family:'Poppins',sans-serif; font-size:1.15rem; color:#fff;">Bici<span style="color:#20c968;">Todo</span>.cl</strong>
+                    </div>
+                    <p>El comparador independiente de bicicletas, equipamiento y repuestos más completo de Chile. Ayudamos a la comunidad ciclista a tomar decisiones informadas y encontrar las mejores ofertas del mercado nacional.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Guías y Blog</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="/blog/"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i> Portada del Blog</a></li>
+                        <li><a href="/blog/guia-bicicleta-gravel-chile.html"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i> Guía Bicicletas Gravel</a></li>
+                        <li><a href="/blog/shimano-gamas-transmisiones-ruta-mtb.html"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i> Comparativa Shimano</a></li>
+                        <li><a href="/blog/como-elegir-talla-bicicleta-bikefit.html"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i> Cómo Elegir tu Talla</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Herramientas</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="/bikefit.html"><i class="fa-solid fa-ruler-combined" style="font-size:0.75rem;"></i> Calculadora BikeFit</a></li>
+                        <li><a href="#catalog" onclick="activateDeals(event)"><i class="fa-solid fa-tag" style="font-size:0.75rem;"></i> Ofertas Destacadas</a></li>
+                        <li><a href="#catalog" onclick="activateExplorar(event)"><i class="fa-solid fa-bicycle" style="font-size:0.75rem;"></i> Catálogo Completo</a></li>
+                        <li><a href="#tiendas" onclick="scrollToStores(event)"><i class="fa-solid fa-store" style="font-size:0.75rem;"></i> Tiendas Chilenas</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Legal e Información</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="/sobre-nosotros.html"><i class="fa-solid fa-users" style="font-size:0.75rem;"></i> Sobre Nosotros</a></li>
+                        <li><a href="/politica-privacidad.html"><i class="fa-solid fa-shield-halved" style="font-size:0.75rem;"></i> Política de Privacidad</a></li>
+                        <li><a href="/terminos-condiciones.html"><i class="fa-solid fa-file-contract" style="font-size:0.75rem;"></i> Términos y Condiciones</a></li>
+                        <li><a href="/contacto.html"><i class="fa-solid fa-envelope" style="font-size:0.75rem;"></i> Contacto y Soporte</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom-bar">
+                <p class="footer-disclaimer">
+                    BiciTodo.cl es una plataforma informativa independiente. Los precios, disponibilidad de stock y promociones corresponden exclusivamente a las tiendas externas enlazadas y pueden variar sin previo aviso.
+                </p>
+                <div class="footer-stores">
+                    <span>Tiendas indexadas en Chile:</span>
+                    <strong>Oxford Store · Specialized Chile · Trek Bikes · Decathlon · Giant · Falabella · Paris · Ripley · CrossMountain · Faucon Bikes · Full Bike · iBikes · DS Bikes · Vidaurre Bikes · Sparta</strong>
+                </div>
+                <p class="footer-brand" style="margin-top:0.4rem; color:#64748b; font-size:0.8rem;">
+                    © 2026 BiciTodo.cl — Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
     </footer>
 
     <!-- Auth Modal -->

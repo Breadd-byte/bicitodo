@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog y Guías de Ciclismo — BiciTodo.cl</title>
+    <meta name="description" content="Guías de compra, comparativas técnicas de transmisiones, biomecánica y consejos para ciclistas en Chile. Aprende a elegir tu bicicleta y equipamiento al mejor precio.">
+    <link rel="canonical" href="https://bicitodo.cl/blog/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css?v=20261102">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .blog-container {
+            min-height: 85vh;
+            padding: 130px 1.5rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .blog-hero {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+        .blog-badge-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(32, 201, 104, 0.12);
+            border: 1px solid rgba(32, 201, 104, 0.3);
+            color: #20c968;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.4rem 1.1rem;
+            border-radius: 999px;
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .blog-hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #20c968, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+        .blog-hero p {
+            color: #94a3b8;
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .blog-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 3rem;
+        }
+        .blog-filter-btn {
+            background: rgba(18, 24, 38, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 0.6rem 1.2rem;
+            border-radius: 999px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .blog-filter-btn:hover {
+            border-color: #20c968;
+            color: #20c968;
+        }
+        .blog-filter-btn.active {
+            background: #20c968;
+            color: #061109;
+            border-color: #20c968;
+        }
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .blog-card {
+            background: rgba(18, 24, 38, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            backdrop-filter: blur(12px);
+            text-decoration: none;
+        }
+        .blog-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(32, 201, 104, 0.4);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+        }
+        .card-banner {
+            height: 190px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 1.2rem;
+        }
+        .banner-gravel {
+            background: linear-gradient(180deg, rgba(15,23,42,0.2) 0%, rgba(10,14,23,0.95) 100%),
+                        radial-gradient(circle at top right, #38bdf8 0%, #0369a1 40%, #0f172a 100%);
+        }
+        .banner-shimano {
+            background: linear-gradient(180deg, rgba(15,23,42,0.2) 0%, rgba(10,14,23,0.95) 100%),
+                        radial-gradient(circle at top right, #20c968 0%, #15803d 40%, #0f172a 100%);
+        }
+        .banner-bikefit {
+            background: linear-gradient(180deg, rgba(15,23,42,0.2) 0%, rgba(10,14,23,0.95) 100%),
+                        radial-gradient(circle at top right, #a855f7 0%, #6b21a8 40%, #0f172a 100%);
+        }
+        .card-tag {
+            background: rgba(32, 201, 104, 0.2);
+            border: 1px solid #20c968;
+            color: #86efac;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 0.3rem 0.75rem;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .card-body {
+            padding: 1.6rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #64748b;
+            font-size: 0.82rem;
+            margin-bottom: 0.8rem;
+        }
+        .card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .card-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f8fafc;
+            line-height: 1.4;
+            margin-bottom: 0.8rem;
+            transition: color 0.2s;
+        }
+        .blog-card:hover .card-title {
+            color: #20c968;
+        }
+        .card-excerpt {
+            color: #94a3b8;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: #20c968;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">
+            <span class="logo-accent">Bici</span>Todo<span class="logo-dot">.cl</span>
+        </a>
+        <nav class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Comparador</a>
+            <a href="/bikefit.html"><i class="fas fa-ruler-combined"></i> BikeFit</a>
+            <a href="/blog/" class="active"><i class="fas fa-book-open"></i> Guías & Blog</a>
+            <a href="/sobre-nosotros.html"><i class="fas fa-users"></i> Nosotros</a>
+            <a href="/contacto.html"><i class="fas fa-envelope"></i> Contacto</a>
+        </nav>
+    </header>
+
+    <main class="blog-container">
+        <div class="blog-hero">
+            <div class="blog-badge-top"><i class="fas fa-newspaper"></i> Centro de Conocimiento Ciclista</div>
+            <h1>Guías, Comparativas y Biomecánica</h1>
+            <p>Artículos técnicos en profundidad creados por ciclistas locales para ayudarte a comprar con criterio, optimizar componentes y ahorrar dinero en Chile.</p>
+        </div>
+
+        <div class="blog-filters">
+            <button class="blog-filter-btn active" onclick="filterBlog('all')">Todos los Artículos</button>
+            <button class="blog-filter-btn" onclick="filterBlog('gravel')">Gravel</button>
+            <button class="blog-filter-btn" onclick="filterBlog('taller')">Taller & Transmisiones</button>
+            <button class="blog-filter-btn" onclick="filterBlog('biomecanica')">Biomecánica</button>
+        </div>
+
+        <div class="blog-grid" id="blogGrid">
+            <!-- Article 1: Gravel -->
+            <a href="/blog/guia-bicicleta-gravel-chile.html" class="blog-card" data-category="gravel">
+                <div class="card-banner banner-gravel">
+                    <span class="card-tag">Gravel & Aventura</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span><i class="far fa-calendar-alt"></i> Noviembre 2026</span>
+                        <span><i class="far fa-clock"></i> 7 min lectura</span>
+                    </div>
+                    <h2 class="card-title">Guía definitiva para elegir bicicleta de gravel en Chile: geometrías, transmisiones y presupuestos en CLP</h2>
+                    <p class="card-excerpt">Monoplato (1x) vs Biplato (2x), frenos hidráulicos vs mecánicos, aluminio vs carbono y cómo elegir el modelo ideal para la geografía y senderos de Chile.</p>
+                    <div class="card-footer">
+                        <span>Leer guía completa</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Article 2: Shimano Groupsets -->
+            <a href="/blog/shimano-gamas-transmisiones-ruta-mtb.html" class="blog-card" data-category="taller">
+                <div class="card-banner banner-shimano">
+                    <span class="card-tag">Taller & Componentes</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span><i class="far fa-calendar-alt"></i> Noviembre 2026</span>
+                        <span><i class="far fa-clock"></i> 8 min lectura</span>
+                    </div>
+                    <h2 class="card-title">Comparativa de transmisiones Shimano: De Tourney a 105 y XT. Cuál necesitas realmente y costos de mantención</h2>
+                    <p class="card-excerpt">Análisis exhaustivo de gamas Shimano para Ruta y MTB en Chile. Qué grupo vale cada peso, disponibilidad de repuestos en talleres locales y cuándo dar el salto a 12 velocidades.</p>
+                    <div class="card-footer">
+                        <span>Leer comparativa</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Article 3: BikeFit & Sizing -->
+            <a href="/blog/como-elegir-talla-bicicleta-bikefit.html" class="blog-card" data-category="biomecanica">
+                <div class="card-banner banner-bikefit">
+                    <span class="card-tag">Biomecánica & Ergonomía</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span><i class="far fa-calendar-alt"></i> Noviembre 2026</span>
+                        <span><i class="far fa-clock"></i> 6 min lectura</span>
+                    </div>
+                    <h2 class="card-title">Cómo calcular tu talla exacta de bicicleta: biomecánica, medición de entrepierna y ajuste de sillín</h2>
+                    <p class="card-excerpt">Aprende a medirte correctamente con el método LeMond, calcular Reach y Stack según tu disciplina, evitar dolores lumbares y elegir el largo de biela adecuado.</p>
+                    <div class="card-footer">
+                        <span>Leer artículo</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bottom" style="text-align:center; padding: 2.5rem 1rem; color: #64748b; font-size: 0.88rem; border-top: 1px solid rgba(255,255,255,0.06);">
+            <p>© 2026 BiciTodo.cl — Comparador de Precios y Equipamiento de Ciclismo en Chile.</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="/sobre-nosotros.html" style="color: #94a3b8; margin: 0 8px;">Sobre Nosotros</a> •
+                <a href="/politica-privacidad.html" style="color: #94a3b8; margin: 0 8px;">Política de Privacidad</a> •
+                <a href="/terminos-condiciones.html" style="color: #94a3b8; margin: 0 8px;">Términos y Condiciones</a> •
+                <a href="/contacto.html" style="color: #94a3b8; margin: 0 8px;">Contacto</a> •
+                <a href="/bikefit.html" style="color: #94a3b8; margin: 0 8px;">BikeFit</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function filterBlog(category) {
+            document.querySelectorAll('.blog-filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const cards = document.querySelectorAll('.blog-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

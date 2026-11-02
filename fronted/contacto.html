@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto y Soporte — BiciTodo.cl</title>
+    <meta name="description" content="Ponte en contacto con el equipo de BiciTodo.cl. Dudas sobre comparador de precios, alianzas de tiendas, sugerencias de productos o soporte general.">
+    <link rel="canonical" href="https://bicitodo.cl/contacto.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261102">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .contact-container {
+            min-height: 80vh;
+            padding: 130px 1.5rem 5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .contact-hero {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+        .contact-hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary, #20c968), #00e5ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        .contact-hero p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            max-width: 620px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+        @media (max-width: 860px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .contact-info-card {
+            background: rgba(18, 24, 38, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2.2rem;
+            backdrop-filter: blur(14px);
+        }
+        .contact-info-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 1.5rem;
+        }
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.1rem;
+            margin-bottom: 1.8rem;
+        }
+        .info-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(32, 201, 104, 0.12);
+            color: #20c968;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(32, 201, 104, 0.25);
+        }
+        .info-content h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 0.25rem;
+        }
+        .info-content p, .info-content a {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .info-content a:hover {
+            color: #20c968;
+        }
+        .contact-badge-list {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .contact-badge-list h5 {
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #64748b;
+            margin-bottom: 0.8rem;
+        }
+        .badge-pill {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 0.35rem 0.85rem;
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            margin: 0.2rem 0.2rem 0.2rem 0;
+        }
+        .contact-form-card {
+            background: rgba(18, 24, 38, 0.85);
+            border: 1px solid rgba(32, 201, 104, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+        }
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.85rem 1.1rem;
+            background: rgba(10, 14, 23, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: #f8fafc;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #20c968;
+            box-shadow: 0 0 0 3px rgba(32, 201, 104, 0.18);
+            background: rgba(10, 14, 23, 0.95);
+        }
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 0.95rem 1.5rem;
+            background: linear-gradient(135deg, #20c968, #16a34a);
+            color: #061109;
+            font-weight: 800;
+            font-size: 1rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(32, 201, 104, 0.35);
+        }
+        .alert-success {
+            display: none;
+            background: rgba(32, 201, 104, 0.12);
+            border: 1px solid #20c968;
+            color: #86efac;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">
+            <span class="logo-accent">Bici</span>Todo<span class="logo-dot">.cl</span>
+        </a>
+        <nav class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Comparador</a>
+            <a href="/bikefit.html"><i class="fas fa-ruler-combined"></i> BikeFit</a>
+            <a href="/blog/"><i class="fas fa-book-open"></i> Guías & Blog</a>
+            <a href="/sobre-nosotros.html"><i class="fas fa-users"></i> Nosotros</a>
+            <a href="/contacto.html" class="active"><i class="fas fa-envelope"></i> Contacto</a>
+        </nav>
+    </header>
+
+    <main class="contact-container">
+        <div class="contact-hero">
+            <h1>Contáctanos</h1>
+            <p>¿Tienes dudas, sugerencias para el comparador o representas a una tienda de ciclismo en Chile? Estamos para ayudarte.</p>
+        </div>
+
+        <div class="contact-grid">
+            <aside class="contact-info-card">
+                <h3>Información de Contacto</h3>
+                
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="info-content">
+                        <h4>Correo Directo</h4>
+                        <a href="mailto:contacto@bicitodo.cl">contacto@bicitodo.cl</a>
+                        <p style="font-size:0.8rem; color:#64748b; margin-top:2px;">Respuesta habitual en menos de 24 horas hábiles.</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-store"></i></div>
+                    <div class="info-content">
+                        <h4>Para Tiendas de Ciclismo</h4>
+                        <p>Si eres distribuidor o tienda en Chile y deseas integrar tu catálogo público a nuestro rastreador de ofertas, escríbenos con el asunto <strong>Alianza Tienda</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-clock"></i></div>
+                    <div class="info-content">
+                        <h4>Horario de Atención</h4>
+                        <p>Lunes a Viernes: 09:00 - 18:30 hrs<br>(Hora de Santiago de Chile, GMT-3)</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="info-content">
+                        <h4>Aviso sobre Compras</h4>
+                        <p style="font-size:0.82rem;">Recordamos que BiciTodo no vende bicicletas ni procesa cobros directamente. Si tienes una consulta sobre el estado de un envío o garantía, debes comunicarte con la tienda donde compraste.</p>
+                    </div>
+                </div>
+
+                <div class="contact-badge-list">
+                    <h5>Monitoreamos marcas en Chile</h5>
+                    <span class="badge-pill">Trek</span>
+                    <span class="badge-pill">Specialized</span>
+                    <span class="badge-pill">Giant</span>
+                    <span class="badge-pill">Oxford</span>
+                    <span class="badge-pill">Cannondale</span>
+                    <span class="badge-pill">Shimano</span>
+                    <span class="badge-pill">SRAM</span>
+                </div>
+            </aside>
+
+            <section class="contact-form-card">
+                <div id="alertSuccess" class="alert-success">
+                    <i class="fas fa-check-circle"></i> <strong>¡Mensaje recibido con éxito!</strong><br>
+                    Gracias por comunicarte con BiciTodo.cl. Un miembro de nuestro equipo técnico revisará tu consulta y te responderá a la brevedad.
+                </div>
+
+                <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                    <div class="form-group">
+                        <label for="contactName"><i class="fas fa-user"></i> Nombre completo *</label>
+                        <input type="text" id="contactName" name="name" class="form-control" placeholder="Ej. Camila Morales" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactEmail"><i class="fas fa-envelope"></i> Correo electrónico *</label>
+                        <input type="email" id="contactEmail" name="email" class="form-control" placeholder="nombre@ejemplo.cl" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactSubject"><i class="fas fa-tag"></i> Asunto *</label>
+                        <select id="contactSubject" name="subject" class="form-control" required>
+                            <option value="">Selecciona el motivo de tu mensaje</option>
+                            <option value="Sugerencia de tienda o producto">Sugerencia de nueva tienda o producto</option>
+                            <option value="Error en precio o enlace">Reportar precio desactualizado o enlace roto</option>
+                            <option value="Duda sobre Calculadora BikeFit">Duda sobre la Calculadora BikeFit</option>
+                            <option value="Propuesta comercial o Alianza">Integración de catálogo / Alianza comercial</option>
+                            <option value="Privacidad o Datos">Solicitud sobre privacidad o datos personales</option>
+                            <option value="Otro">Otro motivo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactMessage"><i class="fas fa-comment-dots"></i> Mensaje detallado *</label>
+                        <textarea id="contactMessage" name="message" class="form-control" placeholder="Escribe aquí tu consulta o comentario con el mayor detalle posible..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btnSubmit">
+                        <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                    </button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bottom" style="text-align:center; padding: 2.5rem 1rem; color: #64748b; font-size: 0.88rem; border-top: 1px solid rgba(255,255,255,0.06);">
+            <p>© 2026 BiciTodo.cl — Comparador de Precios y Equipamiento de Ciclismo en Chile.</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="/sobre-nosotros.html" style="color: #94a3b8; margin: 0 8px;">Sobre Nosotros</a> •
+                <a href="/politica-privacidad.html" style="color: #94a3b8; margin: 0 8px;">Política de Privacidad</a> •
+                <a href="/terminos-condiciones.html" style="color: #94a3b8; margin: 0 8px;">Términos y Condiciones</a> •
+                <a href="/contacto.html" style="color: #20c968; margin: 0 8px;">Contacto</a> •
+                <a href="/blog/" style="color: #94a3b8; margin: 0 8px;">Guías & Blog</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const btn = document.getElementById('btnSubmit');
+            const alert = document.getElementById('alertSuccess');
+            const form = document.getElementById('contactForm');
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert.style.display = 'block';
+                form.reset();
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Mensaje';
+                btn.disabled = false;
+                alert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 750);
+        }
+    </script>
+</body>
+</html>

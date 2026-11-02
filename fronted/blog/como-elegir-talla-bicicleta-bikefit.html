@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cómo Calcular tu Talla Exacta de Bicicleta y Ajustar el Sillín (2026) — BiciTodo.cl</title>
+    <meta name="description" content="Guía biomecánica completa para elegir tu talla de bicicleta en Chile. Método LeMond de entrepierna, retroceso de sillín (KOPS), Reach, Stack y prevención de dolores.">
+    <link rel="canonical" href="https://bicitodo.cl/blog/como-elegir-talla-bicicleta-bikefit.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css?v=20261102">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .article-container {
+            min-height: 85vh;
+            padding: 130px 1.5rem 5rem;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .article-header {
+            margin-bottom: 2.5rem;
+        }
+        .article-tag {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+            font-size: 0.82rem;
+            font-weight: 800;
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+        .article-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2rem, 4.5vw, 3rem);
+            font-weight: 800;
+            line-height: 1.25;
+            color: #f8fafc;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            padding-bottom: 1.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .article-content {
+            color: #cbd5e1;
+            font-size: 1.05rem;
+            line-height: 1.85;
+        }
+        .article-content h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-top: 2.6rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.3);
+            padding-bottom: 0.5rem;
+        }
+        .article-content h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #c084fc;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .article-content p {
+            margin-bottom: 1.4rem;
+        }
+        .article-content ul, .article-content ol {
+            margin: 1rem 0 1.6rem 1.5rem;
+        }
+        .article-content li {
+            margin-bottom: 0.6rem;
+        }
+        .article-content strong {
+            color: #f8fafc;
+        }
+        .highlight-box {
+            background: rgba(18, 24, 38, 0.85);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 16px;
+            padding: 1.6rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        .highlight-box h4 {
+            color: #c084fc;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+        .article-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.95rem;
+        }
+        .article-table th, .article-table td {
+            padding: 0.9rem 1.1rem;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .article-table th {
+            background: rgba(255, 255, 255, 0.04);
+            color: #c084fc;
+            font-weight: 700;
+        }
+        .article-table tr:nth-child(even) td {
+            background: rgba(255, 255, 255, 0.015);
+        }
+        .cta-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(32, 201, 104, 0.1));
+            border: 1px solid #c084fc;
+            border-radius: 20px;
+            padding: 2.2rem;
+            margin: 3.5rem 0 2rem;
+            text-align: center;
+        }
+        .cta-box h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #f8fafc;
+            margin-bottom: 0.8rem;
+        }
+        .cta-box p {
+            color: #cbd5e1;
+            font-size: 1rem;
+            max-width: 620px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.6;
+        }
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #20c968;
+            color: #061109;
+            font-weight: 800;
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(32, 201, 104, 0.35);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">
+            <span class="logo-accent">Bici</span>Todo<span class="logo-dot">.cl</span>
+        </a>
+        <nav class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Comparador</a>
+            <a href="/bikefit.html"><i class="fas fa-ruler-combined"></i> BikeFit</a>
+            <a href="/blog/" class="active"><i class="fas fa-book-open"></i> Guías & Blog</a>
+            <a href="/sobre-nosotros.html"><i class="fas fa-users"></i> Nosotros</a>
+            <a href="/contacto.html"><i class="fas fa-envelope"></i> Contacto</a>
+        </nav>
+    </header>
+
+    <main class="article-container">
+        <header class="article-header">
+            <span class="article-tag">Biomecánica · Ergonomía</span>
+            <h1 class="article-title">Cómo Calcular tu Talla Exacta de Bicicleta: Biomecánica, Medición de Entrepierna y Ajuste de Sillín</h1>
+            <div class="article-meta">
+                <span><i class="far fa-user"></i> Equipo Biomecánico BiciTodo</span>
+                <span><i class="far fa-calendar-alt"></i> Noviembre 2026</span>
+                <span><i class="far fa-clock"></i> 8 min de lectura (1.380 palabras)</span>
+            </div>
+        </header>
+
+        <article class="article-content">
+            <p>Muchos ciclistas asumen con resignación que el dolor de rodillas, el entumecimiento de las manos o las molestias lumbares tras dos horas de pedaleo son "parte normal" de montar en bicicleta. En realidad, en más del 90% de los casos, estas dolencias son el síntoma directo de un cuadro con dimensiones incompatibles o de un sillín mal posicionado.</p>
+
+            <p>Una bicicleta no es un mueble estático: es una máquina ergonómica donde el cuerpo humano se acopla a través de tres puntos de contacto fundamentales: los pedales, el sillín y el manubrio. En este artículo explicamos paso a paso cómo determinar tu talla matemática perfecta, cómo ajustar milimétricamente la altura y el retroceso de tu sillín y qué parámetros considerar al comprar en tiendas chilenas.</p>
+
+            <h2>1. El Mito de la Estatura Total vs la Longitud de Entrepierna</h2>
+            <p>El error más generalizado en las bicicleterías de Santiago, Concepción o Valparaíso es preguntarle al cliente: <em>"¿Cuánto mides?"</em> y entregarle una bicicleta basándose únicamente en esa cifra. Dos personas de 178 cm de estatura pueden requerir tallas y configuraciones radicalmente distintas:</p>
+            <ul>
+                <li><strong>Ciclista A (Tronco largo y piernas cortas):</strong> Entrepierna de 80 cm. Requiere un cuadro más bajo (talla S o M pequeña) para no golpearse la pelvis con el tubo superior, pero con un tubo superior o potencia más larga para acomodar su torso.</li>
+                <li><strong>Ciclista B (Piernas largas y tronco corto):</strong> Entrepierna de 86 cm. Requiere un cuadro más alto (talla M/L o 54-56 cm) para mantener la tija del sillín dentro de los límites de inserción seguros y evitar un desnivel sillín-manubrio excesivamente agresivo.</li>
+            </ul>
+
+            <div class="highlight-box">
+                <h4>Procedimiento de Medición Casera con Precisión Milimétrica</h4>
+                <ol>
+                    <li>Descalzo y vistiendo tu calza ciclista habitual, apoya los talones, glúteos y hombros contra una pared lisa.</li>
+                    <li>Sujeta un libro de tapa dura o una escuadra y colócalo entre las piernas, ejerciendo una presión ascendente firme sobre la ingle similar a la que ejerce el sillín en orden de marcha.</li>
+                    <li>Asegúrate de que el lomo del libro esté completamente perpendicular a la pared.</li>
+                    <li>Con una cinta métrica metálica, mide desde el borde superior del lomo del libro hasta el suelo. Esa cifra en centímetros es tu <strong>longitud de entrepierna</strong>.</li>
+                </ol>
+            </div>
+
+            <h2>2. Cálculo de la Talla del Marco por Disciplina</h2>
+            <p>Una vez obtenida tu medida de entrepierna exacta, las fórmulas biomecánicas tradicionales permiten calcular el tamaño teórico del tubo de sillín:</p>
+
+            <table class="article-table">
+                <thead>
+                    <tr>
+                        <th>Disciplina</th>
+                        <th>Fórmula Matemática</th>
+                        <th>Ejemplo con 82 cm de Entrepierna</th>
+                        <th>Talla Comercial Típica</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Bicicleta de Ruta</strong></td>
+                        <td>Entrepierna (cm) × 0.65</td>
+                        <td>82 × 0.65 = <strong>53.3 cm</strong></td>
+                        <td>Talla 53 / 54 (M)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bicicleta de Gravel</strong></td>
+                        <td>Entrepierna (cm) × 0.63</td>
+                        <td>82 × 0.63 = <strong>51.6 cm</strong></td>
+                        <td>Talla 52 / 54 (S / M)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Montaña (MTB)</strong></td>
+                        <td>(Entrepierna en cm × 0.226) en pulgadas</td>
+                        <td>82 × 0.226 = <strong>18.5 pulgadas</strong></td>
+                        <td>Talla M / L (17.5" a 18.5")</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>3. Altura de Sillín: El Método LeMond y el Ángulo de Extensión de Rodilla</h2>
+            <p>La altura del sillín es el ajuste individual con mayor impacto biomecánico en el pedaleo. Un sillín demasiado bajo sobrecarga el tendón rotuliano y los cuádriceps, mientras que un sillín excesivamente alto provoca balanceo de caderas sobre la pelvis, inflamación del nervio ciático y tendinitis en la parte posterior de la rodilla (bíceps femoral).</p>
+
+            <h3>La Fórmula de Greg LeMond</h3>
+            <p>Popularizada por el triple campeón del Tour de France, la fórmula establece:</p>
+            <p><code>Altura de Sillín (cm) = Entrepierna (cm) × 0.883</code></p>
+            <p>Esta medida se traslada con una cinta métrica desde el <strong>centro del eje de pedalier</strong> (motor) a lo largo del tubo de sillín hasta la <strong>parte central superior del sillín</strong>. Representa un excelente punto de partida.</p>
+
+            <h3>Verificación Dinámica del Ángulo de Rodilla</h3>
+            <p>En una sesión de BikeFit profesional, el estándar de oro consiste en evaluar el ángulo de extensión de rodilla cuando el pedal se encuentra en el punto muerto inferior (a las 6 del reloj con la biela alineada al tubo de sillín). El rango óptimo de flexión de rodilla se sitúa entre <strong>25° y 35°</strong>. Si tu pierna queda completamente trabada o extendida (0° a 15°), tu sillín está demasiado alto; si la flexión supera los 40°, te encuentras pedaleando demasiado bajo.</p>
+
+            <h2>4. Retroceso de Sillín (KOPS: Knee Over Pedal Spindle)</h2>
+            <p>El sillín no solo se mueve verticalmente: los rieles permiten deslizarlo hacia adelante o hacia atrás. Para determinar el retroceso horizontal adecuado:</p>
+            <ul>
+                <li>Coloca las bielas en posición perfectamente horizontal (a las 3 y a las 9 del reloj).</li>
+                <li>Utiliza una plomada o un trozo de hilo con una tuerca pesada sostenido justo debajo de la rótula de la rodilla delantera.</li>
+                <li>En una posición equilibrada, la línea vertical debe caer exactamente sobre el <strong>eje del pedal</strong> (método KOPS).</li>
+                <li>Deslizar el sillín hacia adelante transfiere más peso a las manos y favorece un pedaleo de alta cadencia; deslizarlo hacia atrás recluta con mayor fuerza la cadena posterior (glúteos e isquiotibiales), ideal para escaladores en puertos de montaña como Farellones o Cuesta Chacabuco.</li>
+            </ul>
+
+            <h2>5. La Longitud de Biela y su Impacto en la Cadera</h2>
+            <p>Históricamente, los fabricantes instalaban bielas de 175 mm en prácticamente todas las bicicletas tallas M y L vendidas en Chile. Sin embargo, la investigación biomecánica moderna ha demostrado que bielas más cortas (<strong>165 mm a 170 mm</strong>) abren el ángulo femoroacetabular en la parte superior del ciclo de pedaleo. Esto no solo elimina dolores en la ingle y la parte baja de la espalda, sino que permite adoptar una posición más aerodinámica sin comprimir el diafragma.</p>
+
+            <div class="cta-box">
+                <h3>Calcula tu talla exacta de forma interactiva</h3>
+                <p>Usa nuestra herramienta online gratuita de BikeFit para obtener en segundos tu talla de marco, altura de sillín y recomendaciones de geometría por disciplina.</p>
+                <a href="/bikefit.html" class="btn-cta">
+                    <i class="fas fa-ruler-combined"></i> Abrir Calculadora de BikeFit Gratuita
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bottom" style="text-align:center; padding: 2.5rem 1rem; color: #64748b; font-size: 0.88rem; border-top: 1px solid rgba(255,255,255,0.06);">
+            <p>© 2026 BiciTodo.cl — Comparador de Precios y Equipamiento de Ciclismo en Chile.</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="/sobre-nosotros.html" style="color: #94a3b8; margin: 0 8px;">Sobre Nosotros</a> •
+                <a href="/politica-privacidad.html" style="color: #94a3b8; margin: 0 8px;">Política de Privacidad</a> •
+                <a href="/terminos-condiciones.html" style="color: #94a3b8; margin: 0 8px;">Términos y Condiciones</a> •
+                <a href="/contacto.html" style="color: #94a3b8; margin: 0 8px;">Contacto</a> •
+                <a href="/blog/" style="color: #20c968; margin: 0 8px;">Guías & Blog</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Talla y BikeFit Online — BiciTodo.cl</title>
+    <meta name="description" content="Calcula gratis tu talla ideal de bicicleta (Ruta, MTB, Gravel y Urbana), altura de sillín según fórmula LeMond, reach y largo de biela recomendado en Chile.">
+    <link rel="canonical" href="https://bicitodo.cl/bikefit.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261102">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .bikefit-page-container {
+            min-height: 85vh;
+            padding: 130px 1.5rem 5rem;
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+        .bikefit-hero {
+            text-align: center;
+            margin-bottom: 2.8rem;
+        }
+        .bikefit-badge-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(32, 201, 104, 0.12);
+            border: 1px solid rgba(32, 201, 104, 0.3);
+            color: #20c968;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .bikefit-hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #20c968, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        .bikefit-hero p {
+            color: #94a3b8;
+            font-size: 1.12rem;
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .bikefit-tool-shell {
+            background: rgba(18, 24, 38, 0.85);
+            border: 1px solid rgba(32, 201, 104, 0.22);
+            border-radius: 24px;
+            padding: 2.5rem;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            margin-bottom: 4rem;
+        }
+        @media (max-width: 640px) {
+            .bikefit-tool-shell {
+                padding: 1.5rem;
+            }
+        }
+        .bikefit-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 2.5rem;
+            align-items: stretch;
+        }
+        @media (max-width: 900px) {
+            .bikefit-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .calc-panel h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .calc-panel h3 i {
+            color: #20c968;
+        }
+        .field-group {
+            margin-bottom: 1.8rem;
+        }
+        .field-group label {
+            display: block;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 0.6rem;
+        }
+        .discipline-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.6rem;
+        }
+        .disc-btn {
+            background: rgba(10, 14, 23, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.2s ease;
+        }
+        .disc-btn:hover {
+            border-color: rgba(32, 201, 104, 0.5);
+            background: rgba(32, 201, 104, 0.05);
+        }
+        .disc-btn.active {
+            background: rgba(32, 201, 104, 0.16);
+            border-color: #20c968;
+            color: #20c968;
+            box-shadow: 0 0 16px rgba(32, 201, 104, 0.2);
+        }
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+        }
+        .val-badge {
+            background: rgba(32, 201, 104, 0.15);
+            color: #20c968;
+            font-weight: 800;
+            font-size: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(32, 201, 104, 0.3);
+        }
+        .range-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.12);
+            outline: none;
+            -webkit-appearance: none;
+            accent-color: #20c968;
+        }
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #20c968;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(32, 201, 104, 0.6);
+        }
+        .range-scales {
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 0.78rem;
+            margin-top: 0.4rem;
+        }
+        .number-input-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .number-input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: rgba(10, 14, 23, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: #f8fafc;
+            font-size: 0.95rem;
+            font-weight: 600;
+            box-sizing: border-box;
+        }
+        .number-input:focus {
+            outline: none;
+            border-color: #20c968;
+            box-shadow: 0 0 0 3px rgba(32, 201, 104, 0.2);
+        }
+        .input-hint {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+        .result-panel {
+            background: linear-gradient(145deg, rgba(10, 15, 26, 0.95), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(32, 201, 104, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .result-header {
+            margin-bottom: 1.5rem;
+        }
+        .result-header span {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #64748b;
+            font-weight: 700;
+        }
+        .result-main-box {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+        .frame-letter {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.8rem;
+            font-weight: 900;
+            color: #20c968;
+            line-height: 1;
+            text-shadow: 0 0 25px rgba(32, 201, 104, 0.4);
+        }
+        .frame-details h4 {
+            font-size: 1.15rem;
+            color: #f8fafc;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+        .frame-details p {
+            color: #94a3b8;
+            font-size: 0.88rem;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+        .metric-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            padding: 0.9rem;
+        }
+        .metric-card span {
+            display: block;
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+        .metric-card strong {
+            color: #f1f5f9;
+            font-size: 1.05rem;
+        }
+        .morphology-note {
+            background: rgba(56, 189, 248, 0.08);
+            border-left: 3px solid #38bdf8;
+            padding: 0.8rem 1rem;
+            border-radius: 0 10px 10px 0;
+            color: #bae6fd;
+            font-size: 0.86rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        .btn-filter-catalog {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 0.95rem 1.5rem;
+            background: linear-gradient(135deg, #20c968, #16a34a);
+            color: #061109;
+            font-weight: 800;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        .btn-filter-catalog:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(32, 201, 104, 0.35);
+        }
+
+        /* Rich Content Guide Section */
+        .bikefit-guide {
+            background: rgba(18, 24, 38, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            backdrop-filter: blur(14px);
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+        @media (max-width: 640px) {
+            .bikefit-guide {
+                padding: 2rem 1.4rem;
+            }
+        }
+        .bikefit-guide h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+            font-weight: 800;
+            color: #f8fafc;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(32, 201, 104, 0.3);
+            padding-bottom: 0.8rem;
+        }
+        .bikefit-guide h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #20c968;
+            margin-top: 2.2rem;
+            margin-bottom: 0.8rem;
+        }
+        .bikefit-guide p {
+            margin-bottom: 1.2rem;
+            font-size: 1.02rem;
+        }
+        .bikefit-guide ul {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+        .bikefit-guide li {
+            margin-bottom: 0.6rem;
+            font-size: 1rem;
+        }
+        .bikefit-guide strong {
+            color: #f8fafc;
+        }
+        .formula-callout {
+            background: rgba(10, 14, 23, 0.8);
+            border: 1px solid rgba(32, 201, 104, 0.25);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin: 1.8rem 0;
+        }
+        .formula-callout code {
+            font-family: monospace;
+            background: rgba(32, 201, 104, 0.15);
+            color: #20c968;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+        .discipline-compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.8rem 0;
+            font-size: 0.92rem;
+        }
+        .discipline-compare-table th, .discipline-compare-table td {
+            padding: 0.85rem 1rem;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .discipline-compare-table th {
+            background: rgba(255, 255, 255, 0.04);
+            color: #20c968;
+            font-weight: 700;
+        }
+        .discipline-compare-table tr:nth-child(even) td {
+            background: rgba(255, 255, 255, 0.015);
+        }
+        .disclaimer-box {
+            margin-top: 2.5rem;
+            padding: 1.4rem;
+            background: rgba(245, 158, 11, 0.08);
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 12px 12px 0;
+            color: #fde68a;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">
+            <span class="logo-accent">Bici</span>Todo<span class="logo-dot">.cl</span>
+        </a>
+        <nav class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Comparador</a>
+            <a href="/bikefit.html" class="active"><i class="fas fa-ruler-combined"></i> BikeFit</a>
+            <a href="/blog/"><i class="fas fa-book-open"></i> Guías & Blog</a>
+            <a href="/sobre-nosotros.html"><i class="fas fa-users"></i> Nosotros</a>
+            <a href="/contacto.html"><i class="fas fa-envelope"></i> Contacto</a>
+        </nav>
+    </header>
+
+    <main class="bikefit-page-container">
+        <div class="bikefit-hero">
+            <div class="bikefit-badge-top"><i class="fas fa-bolt"></i> Herramienta Biomecánica 100% Gratuita</div>
+            <h1>Calculadora de Talla y BikeFit</h1>
+            <p>Determina la talla exacta de marco para tu bicicleta, altura óptima del sillín y sugerencia de bielas combinando tu estatura y largo de entrepierna.</p>
+        </div>
+
+        <!-- Interactive Calculator Tool Shell -->
+        <section class="bikefit-tool-shell">
+            <div class="bikefit-grid">
+                <!-- Controls Panel -->
+                <div class="calc-panel">
+                    <h3><i class="fas fa-sliders-h"></i> Parámetros de Medición</h3>
+
+                    <div class="field-group">
+                        <label>1. Disciplina / Tipo de Geometría</label>
+                        <div class="discipline-selector">
+                            <button type="button" class="disc-btn active" data-disc="mtb" onclick="selectDiscipline('mtb')">
+                                <i class="fas fa-mountain"></i> Montaña (MTB)
+                            </button>
+                            <button type="button" class="disc-btn" data-disc="ruta" onclick="selectDiscipline('ruta')">
+                                <i class="fas fa-road"></i> Ruta / Carrera
+                            </button>
+                            <button type="button" class="disc-btn" data-disc="gravel" onclick="selectDiscipline('gravel')">
+                                <i class="fas fa-route"></i> Gravel
+                            </button>
+                            <button type="button" class="disc-btn" data-disc="urbana" onclick="selectDiscipline('urbana')">
+                                <i class="fas fa-bicycle"></i> Urbana / Paseo
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <div class="slider-header">
+                            <label for="heightRange">2. Tu estatura total</label>
+                            <span class="val-badge" id="heightBadge">175 cm</span>
+                        </div>
+                        <input type="range" id="heightRange" class="range-slider" min="140" max="205" step="1" value="175" oninput="updateHeight(this.value)">
+                        <div class="range-scales">
+                            <span>140 cm</span>
+                            <span>175 cm</span>
+                            <span>205 cm</span>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="inseamInput">3. Longitud de entrepierna en cm (opcional)</label>
+                        <div class="number-input-wrap">
+                            <input type="number" id="inseamInput" class="number-input" min="50" max="105" step="0.5" placeholder="Estimada automáticamente..." oninput="updateInseam(this.value)">
+                            <span class="input-hint">Mide descalzo apoyado en la pared con un libro firme en la ingle hasta el suelo. Si lo dejas vacío, calculamos el promedio antropométrico.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Panel -->
+                <div class="result-panel">
+                    <div>
+                        <div class="result-header">
+                            <span>Recomendación Personalizada</span>
+                            <div class="result-main-box">
+                                <div class="frame-letter" id="resLetter">M</div>
+                                <div class="frame-details">
+                                    <h4 id="resMeasure">Talla 17" - 18" (43-46 cm)</h4>
+                                    <p id="resWheel">Aro 29" recomendado</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <span>Altura Sillín (LeMond)</span>
+                                <strong id="resSaddle">73.2 cm</strong>
+                            </div>
+                            <div class="metric-card">
+                                <span>Largo de Biela Ideal</span>
+                                <strong id="resCrank">170 mm</strong>
+                            </div>
+                            <div class="metric-card">
+                                <span>Reach Estimado</span>
+                                <strong id="resReach">~430 mm</strong>
+                            </div>
+                            <div class="metric-card">
+                                <span>Potencia / Tee</span>
+                                <strong id="resStem">60 mm</strong>
+                            </div>
+                        </div>
+
+                        <div class="morphology-note" id="resMorphology">
+                            <i class="fas fa-info-circle"></i> Tu proporción corporal se encuentra en el rango estándar. Te recomendamos probar el cuadro con una potencia intermedia.
+                        </div>
+                    </div>
+
+                    <a href="/#catalog" class="btn-filter-catalog" id="btnFilterCatalog" onclick="filterCatalogBySize()">
+                        <i class="fas fa-search"></i> Ver bicicletas talla M en BiciTodo.cl
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rich Content Guide Section (Preventing Thin Content & AdSense Compliance) -->
+        <section class="bikefit-guide">
+            <h2>Guía Técnica de Biomecánica: Cómo Elegir la Talla y Ajustar tu Bicicleta</h2>
+
+            <p>Adquirir una bicicleta con la talla incorrecta es el error más costoso y recurrente que cometen tanto ciclistas principiantes como experimentados en Chile. Un marco demasiado grande provocará hiperextensión lumbar, sobrecarga cervical y dolor en las palmas de las manos debido a un <em>reach</em> excesivo; mientras que un marco demasiado pequeño forzará una flexión extrema de rodilla, reduciendo drásticamente la potencia de pedaleo y aumentando el riesgo de tendinitis rotuliana.</p>
+
+            <p>Nuestra calculadora online de <strong>BikeFit</strong> no se basa en simples tablas genéricas de fabricantes, sino que integra los principios biomecánicos validados por la medicina deportiva internacional y la escuela francesa de ciclismo, adaptados a la oferta real de bicicletas de ruta, montaña y gravel disponibles en tiendas chilenas como Oxford Store, Trek Bikes Chile, Specialized, Giant y Decathlon.</p>
+
+            <h3>1. La Fórmula de Greg LeMond y la Medición Exacta de Entrepierna</h3>
+            <p>Muchos compradores se guían exclusivamente por la estatura total indicada en la cédula de identidad. Sin embargo, dos personas que miden 175 cm pueden tener proporciones morfológicas completamente opuestas: una puede tener piernas largas y torso corto, mientras que la otra puede poseer un fémur más compacto con un tronco alargado. Por esta razón, el parámetro más crítico para determinar tanto la talla vertical del marco como la altura de sillín es la <strong>longitud de entrepierna</strong> (<em>inseam</em>).</p>
+
+            <div class="formula-callout">
+                <p><strong>Fórmula Biomecánica Clásica de LeMond:</strong></p>
+                <p><code>Altura de Sillín (cm) = Entrepierna (cm) × 0.883</code></p>
+                <p style="margin-top:0.6rem; font-size: 0.9rem; color: #94a3b8;">La distancia resultante se mide en línea recta desde el centro del eje del motor (pedalier) hasta la superficie superior del sillín, pasando por el centro de la tija. Si utilizas pedales de plataforma y zapatillas urbanas de suela gruesa, puedes restar entre 3 y 5 mm al valor resultante.</p>
+            </div>
+
+            <p>Para medir tu entrepierna con precisión en casa:</p>
+            <ul>
+                <li>Colócate descalzo, apoyando los talones y la espalda contra una pared lisa.</li>
+                <li>Separa los pies unos 15 a 18 cm (la misma distancia que existe entre los pedales o factor Q de tu bicicleta).</li>
+                <li>Coloca un libro de lomo duro o una escuadra entre tus piernas, empujando suavemente hacia arriba hasta hacer contacto firme con los huesos de la pelvis (isquiones), simulando la presión del sillín.</li>
+                <li>Con una cinta métrica o flexómetro, mide la distancia en centímetros desde el borde superior del lomo del libro hasta el suelo.</li>
+            </ul>
+
+            <h3>2. Reach y Stack: Entendiendo las Geometrías Modernas por Disciplina</h3>
+            <p>Antiguamente, los cuadros de acero se catalogaban por la longitud del tubo de sillín en centímetros (ej. 52, 54, 56 cm). Con la llegada de los diseños <em>sloping</em> (tubo superior inclinado) y las bicicletas de doble suspensión en MTB, esa medida tradicional perdió vigencia. La industria moderna utiliza dos coordenadas universales: <strong>Stack</strong> (la altura vertical desde el centro del motor hasta la parte superior del tubo de dirección) y <strong>Reach</strong> (la distancia horizontal desde el eje del motor hasta el centro superior del tubo de dirección).</p>
+
+            <table class="discipline-compare-table">
+                <thead>
+                    <tr>
+                        <th>Disciplina</th>
+                        <th>Relación Stack / Reach</th>
+                        <th>Largo de Potencia (Tee)</th>
+                        <th>Postura y Terreno Chileno Ideal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ruta / Carrera</strong></td>
+                        <td>Bajo (1.35 - 1.45) · Agresiva</td>
+                        <td>90 mm a 120 mm</td>
+                        <td>Aero y reactiva para ascensos de montaña (Farellones, Cuesta Mallarauco) y pelotón en pavimento liso.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gravel</strong></td>
+                        <td>Equilibrado (1.45 - 1.55)</td>
+                        <td>70 mm a 90 mm</td>
+                        <td>Estabilidad y comodidad para absorber calamina y ripio suelto (Carretera Austral, valles de la VII y VIII región).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Montaña (MTB XC)</strong></td>
+                        <td>Reach largo / Stack moderado</td>
+                        <td>50 mm a 80 mm</td>
+                        <td>Control ágil en senderos técnicos de tierra suelta y piedras (Cerro San Cristóbal, Las Varas, Valdivia).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MTB Trail / Enduro</strong></td>
+                        <td>Reach ultra largo / Ángulo relajado</td>
+                        <td>35 mm a 50 mm</td>
+                        <td>Manubrios de 780-800 mm y máxima tracción en descensos empinados de cordillera.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3. Cómo Interpretar la Longitud de Biela (165 mm, 170 mm, 175 mm)</h3>
+            <p>Durante décadas existió la creencia popular de que las bielas de 175 mm eran superiores por generar mayor "brazo de palanca". La evidencia biomecánica y los estudios ergométricos actuales han desmentido este mito. Una biela excesivamente larga obliga a la rodilla a subir más en la parte alta de la pedalada (punto muerto superior, TDC), cerrando el ángulo entre el fémur y la cadera. Esto provoca compresión excesiva en el cartílago de la rótula y fatiga prematura en los flexores de la cadera.</p>
+
+            <p>La tendencia contemporánea favorece el uso de bielas de <strong>165 mm a 170 mm</strong> para ciclistas de estatura media (165 cm a 178 cm). Esta reducción permite abrir el ángulo coxofemoral, mantener una cadencia más fluida (85-95 RPM), pedalear de forma más aerodinámica sin comprometer la respiración y, en el caso del MTB, evitar golpes del pedal contra rocas y raíces en senderos estrechos.</p>
+
+            <div class="disclaimer-box">
+                <i class="fas fa-exclamation-triangle"></i> <strong>Descargo de Responsabilidad Biomecánica:</strong>
+                Las mediciones, tallas y sugerencias provistas por esta calculadora son cálculos referenciales de precisión matemática basados en proporciones antropométricas promedio. Factores individuales como flexibilidad lumbar, lesiones previas, asimetrías pélvicas o el uso de plantillas ortopédicas pueden modificar la posición idónea. Si experimentas dolor crónico o buscas maximizar tu rendimiento competitivo, te recomendamos agendar una sesión de BikeFit profesional presencial con sistemas 3D (como Retül o Shimano Dynamics Lab) en talleres especializados de Chile.
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bottom" style="text-align:center; padding: 2.5rem 1rem; color: #64748b; font-size: 0.88rem; border-top: 1px solid rgba(255,255,255,0.06);">
+            <p>© 2026 BiciTodo.cl — Comparador de Precios y Equipamiento de Ciclismo en Chile.</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="/sobre-nosotros.html" style="color: #94a3b8; margin: 0 8px;">Sobre Nosotros</a> •
+                <a href="/politica-privacidad.html" style="color: #94a3b8; margin: 0 8px;">Política de Privacidad</a> •
+                <a href="/terminos-condiciones.html" style="color: #94a3b8; margin: 0 8px;">Términos y Condiciones</a> •
+                <a href="/contacto.html" style="color: #94a3b8; margin: 0 8px;">Contacto</a> •
+                <a href="/blog/" style="color: #94a3b8; margin: 0 8px;">Guías & Blog</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        let currentDiscipline = 'mtb';
+        let currentHeight = 175;
+        let userInseam = null;
+
+        function selectDiscipline(disc) {
+            currentDiscipline = disc;
+            document.querySelectorAll('.disc-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-disc') === disc);
+            });
+            calculate();
+        }
+
+        function updateHeight(val) {
+            currentHeight = parseInt(val, 10);
+            document.getElementById('heightBadge').textContent = currentHeight + ' cm';
+            calculate();
+        }
+
+        function updateInseam(val) {
+            userInseam = val && parseFloat(val) > 0 ? parseFloat(val) : null;
+            calculate();
+        }
+
+        function calculate() {
+            const estimatedInseam = Math.round(currentHeight * 0.47 * 10) / 10;
+            const inseam = userInseam || estimatedInseam;
+            const saddleHeight = Math.round(inseam * 0.883 * 10) / 10;
+
+            let frameCode = 'M';
+            let measureDetail = 'Talla 17" - 18" (43-46 cm)';
+            let wheelLabel = 'Aro 29" recomendado';
+            let crankLength = '170 mm';
+            let reachMm = 430;
+            let stemMm = 60;
+            let note = 'Tu proporción corporal se encuentra en el rango estándar. Te recomendamos una potencia intermedia.';
+
+            if (currentDiscipline === 'mtb') {
+                if (currentHeight < 162) {
+                    frameCode = 'XS / S';
+                    measureDetail = 'Talla 14" - 15" (35-38 cm)';
+                    wheelLabel = 'Aro 27.5" o 29"';
+                    crankLength = '165 mm';
+                    reachMm = 395;
+                    stemMm = 45;
+                } else if (currentHeight < 172) {
+                    frameCode = 'S';
+                    measureDetail = 'Talla 15.5" - 16.5" (39-42 cm)';
+                    wheelLabel = 'Aro 29"';
+                    crankLength = '170 mm';
+                    reachMm = 415;
+                    stemMm = 50;
+                } else if (currentHeight < 182) {
+                    frameCode = 'M';
+                    measureDetail = 'Talla 17" - 18" (43-46 cm)';
+                    wheelLabel = 'Aro 29"';
+                    crankLength = '170 mm o 172.5 mm';
+                    reachMm = 435;
+                    stemMm = 60;
+                } else if (currentHeight < 190) {
+                    frameCode = 'L';
+                    measureDetail = 'Talla 19" - 20" (48-51 cm)';
+                    wheelLabel = 'Aro 29"';
+                    crankLength = '175 mm';
+                    reachMm = 460;
+                    stemMm = 70;
+                } else {
+                    frameCode = 'XL';
+                    measureDetail = 'Talla 21"+ (53+ cm)';
+                    wheelLabel = 'Aro 29"';
+                    crankLength = '175 mm';
+                    reachMm = 485;
+                    stemMm = 75;
+                }
+            } else if (currentDiscipline === 'ruta' || currentDiscipline === 'gravel') {
+                if (currentHeight < 160) {
+                    frameCode = 'XXS / 47';
+                    measureDetail = 'Tubo 46-48 cm';
+                    wheelLabel = 'Aro 700c (o 650b para gravel)';
+                    crankLength = '165 mm';
+                    reachMm = 365;
+                    stemMm = 80;
+                } else if (currentHeight < 168) {
+                    frameCode = 'XS / 49-50';
+                    measureDetail = 'Tubo 49-51 cm';
+                    wheelLabel = 'Aro 700c';
+                    crankLength = '165 mm o 170 mm';
+                    reachMm = 375;
+                    stemMm = 90;
+                } else if (currentHeight < 176) {
+                    frameCode = 'S / 52-53';
+                    measureDetail = 'Tubo 52-53 cm';
+                    wheelLabel = 'Aro 700c';
+                    crankLength = '170 mm';
+                    reachMm = 383;
+                    stemMm = 90;
+                } else if (currentHeight < 183) {
+                    frameCode = 'M / 54-55';
+                    measureDetail = 'Tubo 54-55 cm';
+                    wheelLabel = 'Aro 700c';
+                    crankLength = '172.5 mm';
+                    reachMm = 388;
+                    stemMm = 100;
+                } else if (currentHeight < 189) {
+                    frameCode = 'L / 56-57';
+                    measureDetail = 'Tubo 56-57 cm';
+                    wheelLabel = 'Aro 700c';
+                    crankLength = '172.5 mm o 175 mm';
+                    reachMm = 395;
+                    stemMm = 110;
+                } else {
+                    frameCode = 'XL / 58-60';
+                    measureDetail = 'Tubo 58-61 cm';
+                    wheelLabel = 'Aro 700c';
+                    crankLength = '175 mm';
+                    reachMm = 405;
+                    stemMm = 120;
+                }
+            } else {
+                // Urbana
+                if (currentHeight < 165) {
+                    frameCode = 'S';
+                    measureDetail = 'Talla Pequeña';
+                    wheelLabel = 'Aro 26" o 700c';
+                    crankLength = '170 mm';
+                    reachMm = 390;
+                    stemMm = 60;
+                } else if (currentHeight < 180) {
+                    frameCode = 'M';
+                    measureDetail = 'Talla Mediana';
+                    wheelLabel = 'Aro 27.5" o 700c';
+                    crankLength = '170 mm';
+                    reachMm = 410;
+                    stemMm = 70;
+                } else {
+                    frameCode = 'L';
+                    measureDetail = 'Talla Grande';
+                    wheelLabel = 'Aro 700c';
+                    crankLength = '175 mm';
+                    reachMm = 430;
+                    stemMm = 80;
+                }
+            }
+
+            // Ratio morphology
+            const ratio = inseam / currentHeight;
+            if (ratio > 0.49) {
+                note = 'Tienes extremidades inferiores más largas respecto al torso. Te convendría priorizar un marco con Reach más corto o reducir 10 mm el largo de la potencia (tee).';
+            } else if (ratio < 0.45) {
+                note = 'Tienes torso más largo respecto a tus piernas. Puedes usar una potencia 10 mm más larga para lograr una extensión adecuada sin sobrecargar los hombros.';
+            }
+
+            document.getElementById('resLetter').textContent = frameCode;
+            document.getElementById('resMeasure').textContent = measureDetail;
+            document.getElementById('resWheel').textContent = wheelLabel;
+            document.getElementById('resSaddle').textContent = saddleHeight + ' cm';
+            document.getElementById('resCrank').textContent = crankLength;
+            document.getElementById('resReach').textContent = '~' + reachMm + ' mm';
+            document.getElementById('resStem').textContent = stemMm + ' mm';
+            document.getElementById('resMorphology').innerHTML = '<i class="fas fa-info-circle"></i> ' + note;
+
+            const filterBtn = document.getElementById('btnFilterCatalog');
+            filterBtn.innerHTML = `<i class="fas fa-search"></i> Ver bicicletas talla ${frameCode} en BiciTodo.cl`;
+            filterBtn.href = `/?category=bicicletas&search=${encodeURIComponent(frameCode)}#catalog`;
+        }
+
+        function filterCatalogBySize() {
+            // Handled via href query param
+        }
+
+        // Initialize on load
+        calculate();
+    </script>
+</body>
+</html>
