@@ -1450,6 +1450,98 @@ body:not(.light-mode) .product-card.elite:hover .btn-ver-ofertas {
     color: var(--primary);
 }
 
+/* ==========================================================================
+   Google AdSense & Sponsor Placements (Tesla Aesthetic)
+   ========================================================================== */
+.ad-placement-slot {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.ad-catalog-top {
+    margin: 0.5rem 0 1.25rem;
+    padding: 0.5rem 0;
+    min-height: 90px;
+}
+
+.ad-pre-footer {
+    max-width: 1380px;
+    margin: 3.5rem auto 2rem;
+    padding: 0 1.5rem;
+}
+
+.ad-pre-footer-inner {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: border-color var(--transition-fast);
+}
+
+.ad-label-tag {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0.75;
+    margin-bottom: 0.35rem;
+    user-select: none;
+}
+
+.ad-unit-inner {
+    width: 100%;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* In-Feed Native Card inside Grid */
+.product-card.ad-card-native {
+    min-height: 380px;
+    background: var(--bg-card);
+    border: 1px dashed var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem 1rem;
+    cursor: default;
+}
+
+.product-card.ad-card-native:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--border-hover);
+}
+
+.ad-card-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+}
+
+.ad-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+    width: 100%;
+}
+
 /* Skeleton Loading States */
 .skeleton-card {
     pointer-events: none;

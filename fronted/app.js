@@ -3121,8 +3121,34 @@ async function render(forceFetch = true) {
                 }
             });
             fragment.appendChild(card);
+
+            if (index === 5 && pageItems.length >= 7) {
+                const adCard = document.createElement('article');
+                adCard.className = 'product-card elite ad-card-native';
+                adCard.innerHTML = `
+                    <div class="ad-card-header">
+                        <span class="ad-label-tag">Publicidad</span>
+                    </div>
+                    <div class="ad-card-content">
+                        <ins class="adsbygoogle"
+                             style="display:block; width:100%; min-height:250px;"
+                             data-ad-client="ca-pub-1456280662997557"
+                             data-ad-slot="auto"
+                             data-ad-format="rectangle"
+                             data-full-width-responsive="true"></ins>
+                    </div>
+                `;
+                fragment.appendChild(adCard);
+            }
         });
         grid.appendChild(fragment);
+
+        try {
+            const unpushedAds = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status])');
+            unpushedAds.forEach(() => {
+                try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+            });
+        } catch (e) {}
         openPendingProductFromUrl();
         openPendingCompareFromUrl();
     } catch (e) {

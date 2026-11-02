@@ -168,6 +168,11 @@ async def robots_txt():
     content = "User-agent: *\nAllow: /\nSitemap: https://bicitodo.cl/sitemap.xml\n"
     return Response(content=content, media_type="text/plain")
 
+@app.get("/ads.txt")
+async def ads_txt():
+    content = "google.com, pub-1456280662997557, DIRECT, f08c47fec0942fa0\n"
+    return Response(content=content, media_type="text/plain")
+
 @app.get("/sitemap.xml")
 async def sitemap_xml():
     conn = get_db_connection()
