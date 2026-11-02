@@ -86385,1301 +86385,1533 @@
       "discount_percent": 0
     },
     {
-      "id": 7042,
-      "brand": "Shimano",
-      "model": "Pedales Automáticos Shimano SPD PD-M520 con Calas",
+      "id": 7078,
+      "brand": "VP",
+      "model": "Pedal Vp Modelo 531E",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"MTB / Gravel / XC\", \"Sistema\": \"Shimano SPD Doble Cara\", \"Material\": \"Cuerpo de aluminio y eje de cromoly\", \"Accesorios\": \"Incluye juego de calas SM-SH51 y pernos\", \"Peso\": \"380 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"VP\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/pedals.jpg?v=1774284877",
       "history": [
-        48589,
+        25990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "VP",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 25990,
+          "oldPrice": 29888,
+          "url": "https://www.oxfordstore.cl/products/pedal-vp-vp-531e",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/pedals.jpg?v=1774284877"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7079,
+      "brand": "Kore",
+      "model": "Pedal Kore Torq 40 Pins Negro",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Kore\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/tt0844ba.jpg?v=1774291558",
+      "history": [
+        51990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Kore",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 51990,
+          "oldPrice": 59788,
+          "url": "https://www.oxfordstore.cl/products/pedal-kore-torq-40-pins-negro",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/tt0844ba.jpg?v=1774291558"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7080,
+      "brand": "VP",
+      "model": "Pedal Vp-531 Alloy Axle-Cromo Sealed Bearing Black",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"VP\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rx2001ba.jpg?v=1774290795",
+      "history": [
         44990
       ],
       "fullSpecs": {
-        "Disciplina": "MTB / Gravel / XC",
-        "Sistema": "Shimano SPD Doble Cara",
-        "Material": "Cuerpo de aluminio y eje de cromoly",
-        "Accesorios": "Incluye juego de calas SM-SH51 y pernos",
-        "Peso": "380 g el par"
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "VP",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
           "store": "Oxford Store",
           "storeKey": "oxford",
           "price": 44990,
-          "oldPrice": 54990,
-          "url": "https://www.oxfordstore.cl/pedales-shimano-spd-pd-m520.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png"
+          "oldPrice": 51738,
+          "url": "https://www.oxfordstore.cl/products/pedal-vp-531-alloy-axle-cromo-sealed-bearing-black",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rx2001ba.jpg?v=1774290795"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7043,
-      "brand": "Shimano",
-      "model": "Pedales de Ruta Shimano SPD-SL PD-RS500",
+      "id": 7081,
+      "brand": "Spank",
+      "model": "Pedal Spank Modelo Oozy Bronce",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta / Carretera\", \"Sistema\": \"Shimano SPD-SL Monocara\", \"Tensión\": \"Light Action (anclaje y desanclaje suave)\", \"Accesorios\": \"Incluye calas SM-SH11 amarillas 6°\", \"Peso\": \"320 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH10CLEATSET_FIXMODE_PAIR.png",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Spank\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rm7024ba.jpg?v=1774290259",
       "history": [
-        59389,
-        54990
+        89990
       ],
       "fullSpecs": {
-        "Disciplina": "Ruta / Carretera",
-        "Sistema": "Shimano SPD-SL Monocara",
-        "Tensión": "Light Action (anclaje y desanclaje suave)",
-        "Accesorios": "Incluye calas SM-SH11 amarillas 6°",
-        "Peso": "320 g el par"
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Spank",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
           "store": "Oxford Store",
           "storeKey": "oxford",
-          "price": 54990,
-          "oldPrice": 69990,
-          "url": "https://www.oxfordstore.cl/pedales-shimano-spd-sl-pd-rs500.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH10CLEATSET_FIXMODE_PAIR.png"
+          "price": 89990,
+          "oldPrice": 103488,
+          "url": "https://www.oxfordstore.cl/products/pedal-spank-modelo-oozy-bronce",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rm7024ba.jpg?v=1774290259"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7044,
-      "brand": "Cannondale",
-      "model": "Pedales Plataforma Cannondale 6061 Alloy MTB",
+      "id": 7082,
+      "brand": "Spank",
+      "model": "Pedal Spank Spike Red",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"MTB / Trail\", \"Sistema\": \"Plataforma Plana con Pines\", \"Material\": \"Aluminio 6061 forjado CNC\", \"Rodamientos\": \"Cartucho sellado y casquillo DU\", \"Peso\": \"365 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Spank\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/pedals2.jpg?v=1774290783",
       "history": [
-        32389,
-        29990
+        83990
       ],
       "fullSpecs": {
-        "Disciplina": "MTB / Trail",
-        "Sistema": "Plataforma Plana con Pines",
-        "Material": "Aluminio 6061 forjado CNC",
-        "Rodamientos": "Cartucho sellado y casquillo DU",
-        "Peso": "365 g el par"
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Spank",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
           "store": "Oxford Store",
           "storeKey": "oxford",
-          "price": 29990,
-          "oldPrice": 39990,
-          "url": "https://www.oxfordstore.cl/pedales-plataforma-cannondale-6061-alloy.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg"
+          "price": 83990,
+          "oldPrice": 96588,
+          "url": "https://www.oxfordstore.cl/products/pedal-spank-spike-red",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/pedals2.jpg?v=1774290783"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7045,
-      "brand": "Oxford",
-      "model": "Pedales Oxford Plataforma Nylon Antideslizantes",
+      "id": 7083,
+      "brand": "Kore",
+      "model": "Pedal Kore Modelo Rivera Verde",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"Urbana / Paseo / MTB Recreativo\", \"Sistema\": \"Plataforma con Relieve\", \"Material\": \"Nylon de alto impacto con reflectores ámbar\", \"Rosca\": \"9/16 pulgadas estándar\", \"Peso\": \"290 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/herramienta-para-intalacion-de-pedal-topeak_4243.jpg",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Kore\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/tt0837ba_0.jpg?v=1774288465",
       "history": [
-        9709,
-        8990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Urbana / Paseo / MTB Recreativo",
-        "Sistema": "Plataforma con Relieve",
-        "Material": "Nylon de alto impacto con reflectores ámbar",
-        "Rosca": "9/16 pulgadas estándar",
-        "Peso": "290 g el par"
-      },
-      "offers": [
-        {
-          "store": "Oxford Store",
-          "storeKey": "oxford",
-          "price": 8990,
-          "oldPrice": 12990,
-          "url": "https://www.oxfordstore.cl/pedales-oxford-plataforma-nylon.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/herramienta-para-intalacion-de-pedal-topeak_4243.jpg"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7046,
-      "brand": "Shimano",
-      "model": "Calas Shimano SPD-SL SM-SH11 Amarillas 6° Flotación",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta / Spinning\", \"Sistema\": \"Shimano SPD-SL 3 Tornillos\", \"Flotación\": \"6 grados (movimiento libre suave)\", \"Material\": \"Polímero de alta resistencia con puntas de goma antideslizante\", \"Contenido\": \"2 calas, 6 arandelas y 6 tornillos\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calasrojas2_720x_0f7efacf-5366-4380-9723-bd8809faf7f1.webp",
-      "history": [
-        21589,
-        19990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Ruta / Spinning",
-        "Sistema": "Shimano SPD-SL 3 Tornillos",
-        "Flotación": "6 grados (movimiento libre suave)",
-        "Material": "Polímero de alta resistencia con puntas de goma antideslizante",
-        "Contenido": "2 calas, 6 arandelas y 6 tornillos"
-      },
-      "offers": [
-        {
-          "store": "Oxford Store",
-          "storeKey": "oxford",
-          "price": 19990,
-          "oldPrice": 24990,
-          "url": "https://www.oxfordstore.cl/calas-shimano-spd-sl-sm-sh11.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calasrojas2_720x_0f7efacf-5366-4380-9723-bd8809faf7f1.webp"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7047,
-      "brand": "Btwin",
-      "model": "Btwin Pedales Automáticos MTB Compatibles SPD 520",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Cross-Country / Trail / Gravel\", \"Sistema\": \"Compatible Shimano SPD 2 caras\", \"Tensión\": \"Regulable con llave Allen\", \"Accesorios\": \"Incluye calas tipo SPD y tornillos\", \"Peso\": \"376 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png",
-      "history": [
-        32389,
-        29990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Cross-Country / Trail / Gravel",
-        "Sistema": "Compatible Shimano SPD 2 caras",
-        "Tensión": "Regulable con llave Allen",
-        "Accesorios": "Incluye calas tipo SPD y tornillos",
-        "Peso": "376 g el par"
-      },
-      "offers": [
-        {
-          "store": "Decathlon",
-          "storeKey": "decathlon",
-          "price": 29990,
-          "oldPrice": 36990,
-          "url": "https://www.decathlon.cl/p/300371-pedales-automaticos-mtb-compatibles-spd-520.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7048,
-      "brand": "Van Rysel",
-      "model": "Van Rysel Pedales de Ruta 500 Compatibles Look Keo",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta / Carretera\", \"Sistema\": \"Compatible Look Keo\", \"Material\": \"Cuerpo de composite y eje de cromoly\", \"Accesorios\": \"Incluye juego de calas 4.5° y pernos\", \"Peso\": \"270 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/cala-crankbrothers-road-shoes_20673.jpg",
-      "history": [
-        37789,
-        34990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Ruta / Carretera",
-        "Sistema": "Compatible Look Keo",
-        "Material": "Cuerpo de composite y eje de cromoly",
-        "Accesorios": "Incluye juego de calas 4.5° y pernos",
-        "Peso": "270 g el par"
-      },
-      "offers": [
-        {
-          "store": "Decathlon",
-          "storeKey": "decathlon",
-          "price": 34990,
-          "oldPrice": 42990,
-          "url": "https://www.decathlon.cl/p/310452-pedales-ruta-van-rysel-500-look-keo.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/cala-crankbrothers-road-shoes_20673.jpg"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7049,
-      "brand": "Btwin",
-      "model": "Btwin Pedales Planos 500 Resina Antideslizante",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Urbana / Trekking / Recreativo\", \"Sistema\": \"Plataforma plana\", \"Material\": \"Monobloque de resina con púas moldeadas\", \"Reflectores\": \"Catadióptricos integrados homologados\", \"Peso\": \"300 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/herramienta-para-intalacion-de-pedal-topeak_4243.jpg",
-      "history": [
-        14029,
         12990
       ],
       "fullSpecs": {
-        "Disciplina": "Urbana / Trekking / Recreativo",
-        "Sistema": "Plataforma plana",
-        "Material": "Monobloque de resina con púas moldeadas",
-        "Reflectores": "Catadióptricos integrados homologados",
-        "Peso": "300 g el par"
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Kore",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "Decathlon",
-          "storeKey": "decathlon",
+          "store": "Oxford Store",
+          "storeKey": "oxford",
           "price": 12990,
-          "oldPrice": 16990,
-          "url": "https://www.decathlon.cl/p/168753-pedales-bicicleta-planos-resina-500.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/herramienta-para-intalacion-de-pedal-topeak_4243.jpg"
+          "oldPrice": 14938,
+          "url": "https://www.oxfordstore.cl/products/pedal-kore-modelo-rivera-thermo-nylon-color-green",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/tt0837ba_0.jpg?v=1774288465"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7050,
-      "brand": "Btwin",
-      "model": "Btwin Calas Compatibles SPD para Zapatillas MTB",
+      "id": 7084,
+      "brand": "VP",
+      "model": "Pedal Vp Modelo 535 Nylon Negro",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"MTB / Gravel\", \"Sistema\": \"SPD 2 tornillos estándar\", \"Compatibilidad\": \"Zapatillas con suela SPD y pedales automáticos\", \"Material\": \"Acero tratado térmicamente\", \"Contenido\": \"2 calas, 2 chapas y 4 tornillos\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"VP\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rx2006ba_0_1.jpg?v=1776196717",
       "history": [
-        14029,
+        10990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "VP",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 10990,
+          "oldPrice": 12638,
+          "url": "https://www.oxfordstore.cl/products/pedal-vp-535-grind-nylon-axle-boron",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rx2006ba_0_1.jpg?v=1776196717"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7085,
+      "brand": "VP",
+      "model": "Pedal Vp Modelo 559",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"VP\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/pedales01010101.jpg?v=1774284883",
+      "history": [
+        23990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "VP",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 23990,
+          "oldPrice": 27588,
+          "url": "https://www.oxfordstore.cl/products/pedal-vp-vp-559",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/pedales01010101.jpg?v=1774284883"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7086,
+      "brand": "Shimano",
+      "model": "Pedal Fijacion Shimano Modelo Pd-M520",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Shimano\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/sh4030ba_0_be87af95-8682-4bad-a6ab-70fe0af40e20.jpg?v=1776971801",
+      "history": [
+        59990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Shimano",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 59990,
+          "oldPrice": 68988,
+          "url": "https://www.oxfordstore.cl/products/pedal-fijacion-shimano-pd-m520",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/sh4030ba_0_be87af95-8682-4bad-a6ab-70fe0af40e20.jpg?v=1776971801"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7087,
+      "brand": "VP",
+      "model": "Pedal Vp Vx-2501",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"VP\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/vpx_00084.jpg?v=1774291117",
+      "history": [
+        56990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "VP",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 56990,
+          "oldPrice": 65538,
+          "url": "https://www.oxfordstore.cl/products/pedal-vp-vx-2501",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/vpx_00084.jpg?v=1774291117"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7088,
+      "brand": "Spank",
+      "model": "Pedal Spank Modelo Oozy Negro",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Spank\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rm7023ba_0.jpg?v=1774290254",
+      "history": [
+        89990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Spank",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 89990,
+          "oldPrice": 103488,
+          "url": "https://www.oxfordstore.cl/products/pedal-spank-modelo-oozy-negro",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rm7023ba_0.jpg?v=1774290254"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7089,
+      "brand": "KORE",
+      "model": "Pedal Kore Modelo K.L.F. Little Red",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"KORE\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/tt0841ba_0_3.jpg?v=1781104314",
+      "history": [
+        24490
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "KORE",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 24490,
+          "oldPrice": 28163,
+          "url": "https://www.oxfordstore.cl/products/pedal-kore-modelo-k-l-f-little-red-tt0841ba",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/tt0841ba_0_3.jpg?v=1781104314"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7090,
+      "brand": "Spank",
+      "model": "Pedal Spank Modelo Spoon 100 Medium Negro",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Spank\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rm7025ba_2_3.jpg?v=1775841178",
+      "history": [
+        77990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Spank",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 77990,
+          "oldPrice": 89688,
+          "url": "https://www.oxfordstore.cl/products/pedal-spank-modelo-spoon-100-t-m-black",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rm7025ba_2_3.jpg?v=1775841178"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7091,
+      "brand": "Spank",
+      "model": "Pin Pedal Spank Spike/Oozy/Spoon F34",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Spank\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rm6074ba_0_97a83979-9e82-43f9-9c3f-fe52decb8e56.jpg?v=1776972667",
+      "history": [
+        6590
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Spank",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 6590,
+          "oldPrice": 7578,
+          "url": "https://www.oxfordstore.cl/products/pin-pedal-spank-spike-oozy-spoon-f34",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rm6074ba_0_97a83979-9e82-43f9-9c3f-fe52decb8e56.jpg?v=1776972667"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7092,
+      "brand": "Shimano",
+      "model": "Pedal Shimano Deore XT Spd Pd-M8100",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Shimano\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/sh4016ba.jpg?v=1774293472",
+      "history": [
+        169990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Shimano",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 169990,
+          "oldPrice": 195488,
+          "url": "https://www.oxfordstore.cl/products/pedal-shimano-deore-xt-spd-pd-m8100",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/sh4016ba.jpg?v=1774293472"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7093,
+      "brand": "Spank",
+      "model": "Pedal Spank Modelo Spike Negro",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Spank\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rm7030ba_0.jpg?v=1774290266",
+      "history": [
+        83990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Spank",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 83990,
+          "oldPrice": 96588,
+          "url": "https://www.oxfordstore.cl/products/pedal-spank-modelo-spike-negro",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rm7030ba_0.jpg?v=1774290266"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7094,
+      "brand": "Kore",
+      "model": "Pedal Kore Modelo Rivera Amarillo",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Kore\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/tt0843ba_0.jpg?v=1774288470",
+      "history": [
         12990
       ],
       "fullSpecs": {
-        "Disciplina": "MTB / Gravel",
-        "Sistema": "SPD 2 tornillos estándar",
-        "Compatibilidad": "Zapatillas con suela SPD y pedales automáticos",
-        "Material": "Acero tratado térmicamente",
-        "Contenido": "2 calas, 2 chapas y 4 tornillos"
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Kore",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "Decathlon",
-          "storeKey": "decathlon",
+          "store": "Oxford Store",
+          "storeKey": "oxford",
           "price": 12990,
-          "oldPrice": 15990,
-          "url": "https://www.decathlon.cl/p/168766-calas-mtb-compatibles-spd.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png"
+          "oldPrice": 14938,
+          "url": "https://www.oxfordstore.cl/products/pedal-kore-modelo-rivera-thermo-nylon-yellow-bile",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/tt0843ba_0.jpg?v=1774288470"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7051,
-      "brand": "Van Rysel",
-      "model": "Van Rysel Calas Compatibles Look Keo 4.5° Flotación",
+      "id": 7095,
+      "brand": "Kore",
+      "model": "Pedal Kore Modelo Rivera Negro",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta / Carretera\", \"Sistema\": \"Look Keo 3 tornillos\", \"Flotación\": \"4.5 grados angular\", \"Características\": \"Memoria de posición y almohadillas antideslizantes\", \"Contenido\": \"2 calas y 6 tornillos con arandelas\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calasrojas2_720x_0f7efacf-5366-4380-9723-bd8809faf7f1.webp",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Kore\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/TT0821BA.jpg?v=1775841310",
       "history": [
-        16189,
-        14990
+        12990
       ],
       "fullSpecs": {
-        "Disciplina": "Ruta / Carretera",
-        "Sistema": "Look Keo 3 tornillos",
-        "Flotación": "4.5 grados angular",
-        "Características": "Memoria de posición y almohadillas antideslizantes",
-        "Contenido": "2 calas y 6 tornillos con arandelas"
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Kore",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "Decathlon",
-          "storeKey": "decathlon",
-          "price": 14990,
-          "oldPrice": 18990,
-          "url": "https://www.decathlon.cl/p/310460-calas-ruta-compatibles-look-keo.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calasrojas2_720x_0f7efacf-5366-4380-9723-bd8809faf7f1.webp"
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 12990,
+          "oldPrice": 14938,
+          "url": "https://www.oxfordstore.cl/products/pedal-kore-modelo-rivera-thermo-nylon-color-black",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/TT0821BA.jpg?v=1775841310"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7052,
-      "brand": "Specialized",
-      "model": "Specialized Pedales Bennies Platform Flat MTB",
+      "id": 7096,
+      "brand": "VP",
+      "model": "Pedal Vp Modelo Vxe Negro",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"Trail / All-Mountain / Enduro\", \"Sistema\": \"Plataforma plana cóncava\", \"Material\": \"Aluminio extruido con 24 pines reemplazables\", \"Rodamientos\": \"Sellados sellados de cartucho\", \"Peso\": \"430 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"VP\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rx2007ba_0_e3a271e2-4ad9-43a6-870b-cdf37df630ec.jpg?v=1776196519",
       "history": [
-        86389,
-        79990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Trail / All-Mountain / Enduro",
-        "Sistema": "Plataforma plana cóncava",
-        "Material": "Aluminio extruido con 24 pines reemplazables",
-        "Rodamientos": "Sellados sellados de cartucho",
-        "Peso": "430 g el par"
-      },
-      "offers": [
-        {
-          "store": "Specialized Chile",
-          "storeKey": "specialized",
-          "price": 79990,
-          "oldPrice": 99990,
-          "url": "https://www.specialized.com/cl/es/pedales-bennies-platform/p/155776",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7053,
-      "brand": "Specialized",
-      "model": "Specialized Pedales Boomslang Platform Downhill",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Downhill / Freeride / Enduro\", \"Perfil\": \"Ultra fino de 10 mm en el centro\", \"Material\": \"Aluminio forjado con eje cónico patentado\", \"Pines\": \"Pines roscados de tracción extrema con repuestos en el cuerpo\", \"Peso\": \"440 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg",
-      "history": [
-        151189,
-        139990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Downhill / Freeride / Enduro",
-        "Perfil": "Ultra fino de 10 mm en el centro",
-        "Material": "Aluminio forjado con eje cónico patentado",
-        "Pines": "Pines roscados de tracción extrema con repuestos en el cuerpo",
-        "Peso": "440 g el par"
-      },
-      "offers": [
-        {
-          "store": "Specialized Chile",
-          "storeKey": "specialized",
-          "price": 139990,
-          "oldPrice": 169990,
-          "url": "https://www.specialized.com/cl/es/pedales-boomslang-platform/p/155777",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7054,
-      "brand": "Bontrager",
-      "model": "Bontrager Pedales Plataforma Line Elite MTB",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Trail / Enduro / Dirt Jump\", \"Sistema\": \"Plataforma con pines reemplazables\", \"Material\": \"Nylon de alta tenacidad y eje de cromoly\", \"Pines\": \"Pines de acero con tuerca de ajuste\", \"Peso\": \"350 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg",
-      "history": [
-        53989,
-        49990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Trail / Enduro / Dirt Jump",
-        "Sistema": "Plataforma con pines reemplazables",
-        "Material": "Nylon de alta tenacidad y eje de cromoly",
-        "Pines": "Pines de acero con tuerca de ajuste",
-        "Peso": "350 g el par"
-      },
-      "offers": [
-        {
-          "store": "Sparta",
-          "storeKey": "sparta",
-          "price": 49990,
-          "oldPrice": 62990,
-          "url": "https://sparta.cl/pedales-bontrager-line-elite-mtb-black.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7055,
-      "brand": "Look",
-      "model": "Look Pedales de Ruta Keo Classic 3 con Calas",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta / Ciclismo de Fondo\", \"Sistema\": \"Look Keo Monocara\", \"Superficie de Apoyo\": \"400 mm² de contacto estable\", \"Tensión\": \"Regulable de 8 a 12\", \"Accesorios\": \"Incluye calas Keo Grip grises 4.5°\", \"Peso\": \"280 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/cala-crankbrothers-road-shoes_20673.jpg",
-      "history": [
-        53989,
-        49990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Ruta / Ciclismo de Fondo",
-        "Sistema": "Look Keo Monocara",
-        "Superficie de Apoyo": "400 mm² de contacto estable",
-        "Tensión": "Regulable de 8 a 12",
-        "Accesorios": "Incluye calas Keo Grip grises 4.5°",
-        "Peso": "280 g el par"
-      },
-      "offers": [
-        {
-          "store": "Sparta",
-          "storeKey": "sparta",
-          "price": 49990,
-          "oldPrice": 64990,
-          "url": "https://sparta.cl/pedales-ruta-look-keo-classic-3.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/cala-crankbrothers-road-shoes_20673.jpg"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7056,
-      "brand": "Look",
-      "model": "Calas Look Keo Grip Grises 4.5° Flotación",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta / Carrera\", \"Sistema\": \"Look Keo 3 pernos\", \"Flotación\": \"4.5 grados\", \"Seguridad\": \"Almohadillas de goma antideslizantes para caminar con seguridad\", \"Peso\": \"68 g el par con tornillos\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calasrojas2_720x_0f7efacf-5366-4380-9723-bd8809faf7f1.webp",
-      "history": [
-        21589,
-        19990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Ruta / Carrera",
-        "Sistema": "Look Keo 3 pernos",
-        "Flotación": "4.5 grados",
-        "Seguridad": "Almohadillas de goma antideslizantes para caminar con seguridad",
-        "Peso": "68 g el par con tornillos"
-      },
-      "offers": [
-        {
-          "store": "Sparta",
-          "storeKey": "sparta",
-          "price": 19990,
-          "oldPrice": 24990,
-          "url": "https://sparta.cl/calas-look-keo-grip-grises-4-5.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calasrojas2_720x_0f7efacf-5366-4380-9723-bd8809faf7f1.webp"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7057,
-      "brand": "Shimano",
-      "model": "Shimano Pedales Deore XT PD-M8100 SPD XC",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Cross-Country / Maratón / Ciclocross\", \"Sistema\": \"Shimano SPD Doble Cara\", \"Contacto\": \"Superficie de apoyo ancha borde a borde\", \"Evacuación de Barro\": \"Diseño cilíndrico abierto repelente de fango\", \"Accesorios\": \"Incluye calas SM-SH51\", \"Peso\": \"342 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png",
-      "history": [
-        125269,
-        115990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Cross-Country / Maratón / Ciclocross",
-        "Sistema": "Shimano SPD Doble Cara",
-        "Contacto": "Superficie de apoyo ancha borde a borde",
-        "Evacuación de Barro": "Diseño cilíndrico abierto repelente de fango",
-        "Accesorios": "Incluye calas SM-SH51",
-        "Peso": "342 g el par"
-      },
-      "offers": [
-        {
-          "store": "Full Bike",
-          "storeKey": "fullbike",
-          "price": 115990,
-          "oldPrice": 139990,
-          "url": "https://www.fullbike.cl/pedales-shimano-deore-xt-pd-m8100-spd",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7058,
-      "brand": "Shimano",
-      "model": "Shimano Pedales 105 PD-R7000 Carbono SPD-SL",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta / Triatlón / Fondo\", \"Sistema\": \"Shimano SPD-SL Monocara\", \"Material\": \"Cuerpo de composite de carbono reforzado\", \"Placa\": \"Placa de acero inoxidable para reducir el desgaste\", \"Accesorios\": \"Incluye calas SM-SH11 amarillas 6°\", \"Peso\": \"265 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH10CLEATSET_FIXMODE_PAIR.png",
-      "history": [
-        129589,
-        119990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Ruta / Triatlón / Fondo",
-        "Sistema": "Shimano SPD-SL Monocara",
-        "Material": "Cuerpo de composite de carbono reforzado",
-        "Placa": "Placa de acero inoxidable para reducir el desgaste",
-        "Accesorios": "Incluye calas SM-SH11 amarillas 6°",
-        "Peso": "265 g el par"
-      },
-      "offers": [
-        {
-          "store": "Full Bike",
-          "storeKey": "fullbike",
-          "price": 119990,
-          "oldPrice": 149990,
-          "url": "https://www.fullbike.cl/pedales-shimano-105-pd-r7000-carbono",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH10CLEATSET_FIXMODE_PAIR.png"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7059,
-      "brand": "Shimano",
-      "model": "Calas Shimano SPD-SL SM-SH12 Azules 2° Flotación Frontal",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta de Competición\", \"Sistema\": \"SPD-SL 3 tornillos\", \"Flotación\": \"2 grados frontal (pivote en la punta)\", \"Beneficio\": \"Transferencia de vatios máxima sin juego excesivo de talón\", \"Contenido\": \"2 calas, 6 placas y 6 tornillos\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASPARSHIMANOSM-SH12FRONTPIVOTCENTERCLEAT_PAIR.png",
-      "history": [
-        24829,
-        22990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Ruta de Competición",
-        "Sistema": "SPD-SL 3 tornillos",
-        "Flotación": "2 grados frontal (pivote en la punta)",
-        "Beneficio": "Transferencia de vatios máxima sin juego excesivo de talón",
-        "Contenido": "2 calas, 6 placas y 6 tornillos"
-      },
-      "offers": [
-        {
-          "store": "Full Bike",
-          "storeKey": "fullbike",
-          "price": 22990,
-          "oldPrice": 28990,
-          "url": "https://www.fullbike.cl/calas-shimano-sm-sh12-azules-2-grados",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASPARSHIMANOSM-SH12FRONTPIVOTCENTERCLEAT_PAIR.png"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7060,
-      "brand": "Shimano",
-      "model": "Pedales Shimano ME700 SPD Caja Integrada Trail",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Trail / Enduro / All-Mountain\", \"Sistema\": \"Shimano SPD con jaula protectora integrada\", \"Retención\": \"Garras dobles de entrada rápida y tensión graduable\", \"Accesorios\": \"Incluye calas SM-SH51\", \"Peso\": \"540 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png",
-      "history": [
-        86389,
-        79990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Trail / Enduro / All-Mountain",
-        "Sistema": "Shimano SPD con jaula protectora integrada",
-        "Retención": "Garras dobles de entrada rápida y tensión graduable",
-        "Accesorios": "Incluye calas SM-SH51",
-        "Peso": "540 g el par"
-      },
-      "offers": [
-        {
-          "store": "DS Bikes",
-          "storeKey": "dsbikes",
-          "price": 79990,
-          "oldPrice": 89990,
-          "url": "https://www.dsbikes.cl/products/pedales-shimano-me700-spd-caja",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7061,
-      "brand": "SC",
-      "model": "Pedales Ruta T. Keo SC RD 301 con Calas Incluidas",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta / Fondo / Triatlón\", \"Sistema\": \"Compatible Look Keo\", \"Material\": \"Termoplástico aligerado con eje de cromoly\", \"Accesorios\": \"Incluye juego completo de calas y tornillería\", \"Peso\": \"295 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/cala-crankbrothers-road-shoes_20673.jpg",
-      "history": [
-        43189,
         39990
       ],
       "fullSpecs": {
-        "Disciplina": "Ruta / Fondo / Triatlón",
-        "Sistema": "Compatible Look Keo",
-        "Material": "Termoplástico aligerado con eje de cromoly",
-        "Accesorios": "Incluye juego completo de calas y tornillería",
-        "Peso": "295 g el par"
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "VP",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "DS Bikes",
-          "storeKey": "dsbikes",
+          "store": "Oxford Store",
+          "storeKey": "oxford",
           "price": 39990,
-          "oldPrice": 49990,
-          "url": "https://www.dsbikes.cl/products/pedales-ruta-t-keo-negros-sc-rd-301-con-calas",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/cala-crankbrothers-road-shoes_20673.jpg"
+          "oldPrice": 45988,
+          "url": "https://www.oxfordstore.cl/products/pedal-vp-vxe-alloy-axle",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/rx2007ba_0_e3a271e2-4ad9-43a6-870b-cdf37df630ec.jpg?v=1776196519"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7062,
-      "brand": "Enlee",
-      "model": "Pedales Plataforma Enlee Aluminio CNC con Pines",
+      "id": 7097,
+      "brand": "Zéfal",
+      "model": "Protector Biela/Pedal Zefal T/Xl Black 2620",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"MTB / Dirt Jump / BMX\", \"Sistema\": \"Plataforma plana cóncava\", \"Material\": \"Aluminio anodizado CNC resistente a la corrosión\", \"Pines\": \"Pines de agarre de acero roscados reemplazables\", \"Peso\": \"340 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"Oxford Store\", \"Marca\": \"Zéfal\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/tz2118ba_0_5.jpg?v=1774286962",
       "history": [
-        26989,
-        24990
+        5990
       ],
       "fullSpecs": {
-        "Disciplina": "MTB / Dirt Jump / BMX",
-        "Sistema": "Plataforma plana cóncava",
-        "Material": "Aluminio anodizado CNC resistente a la corrosión",
-        "Pines": "Pines de agarre de acero roscados reemplazables",
-        "Peso": "340 g el par"
+        "Tipo": "Pedales",
+        "Tienda": "Oxford Store",
+        "Marca": "Zéfal",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "Oxford Store",
+          "storeKey": "oxford",
+          "price": 5990,
+          "oldPrice": 6888,
+          "url": "https://www.oxfordstore.cl/products/protector-biela-pedal-zefal-t-xl-black-2620",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0981/3495/0193/files/tz2118ba_0_5.jpg?v=1774286962"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7098,
+      "brand": "Shimano",
+      "model": "Pedales Shimano ME700 SPD Caja",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Shimano\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesShimanoME700SPDCaja.jpg?v=1793044303",
+      "history": [
+        80000
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Shimano",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
           "store": "DS Bikes",
           "storeKey": "dsbikes",
-          "price": 24990,
-          "oldPrice": 32990,
-          "url": "https://www.dsbikes.cl/products/pedales-aluminio-enlee-rojo",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg"
+          "price": 80000,
+          "oldPrice": 92000,
+          "url": "https://www.dsbikes.cl/products/pedales-shimano-me700-spd-caja",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesShimanoME700SPDCaja.jpg?v=1793044303"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7063,
-      "brand": "Crankbrothers",
-      "model": "Crankbrothers Pedales Stamp 1 Gen 2 Flat MTB",
-      "type": "pedales",
+      "id": 7099,
+      "brand": "Genérico",
+      "model": "Pedales Ruta T. Keo Negros SC RD 301 Con Calas",
+      "type": "calas",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"Trail / Enduro / All-Mountain\", \"Sistema\": \"Plataforma cóncava fina de 13.5 mm a 15.5 mm\", \"Material\": \"Composite compuesto premium\", \"Pines\": \"10 pines de tracción de una pieza por lado\", \"Peso\": \"329 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg",
+      "specs": "{\"Tipo\": \"Calas\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Genérico\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesRutaT.KeoNegrosSCRD301ConCalas.jpg?v=1793043685",
       "history": [
-        53989,
-        49990
+        40000
       ],
       "fullSpecs": {
-        "Disciplina": "Trail / Enduro / All-Mountain",
-        "Sistema": "Plataforma cóncava fina de 13.5 mm a 15.5 mm",
-        "Material": "Composite compuesto premium",
-        "Pines": "10 pines de tracción de una pieza por lado",
-        "Peso": "329 g el par"
+        "Tipo": "Calas",
+        "Tienda": "DS Bikes",
+        "Marca": "Genérico",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "CrossMountain",
-          "storeKey": "crossmountain",
-          "price": 49990,
-          "oldPrice": 59990,
-          "url": "https://crossmountain.cl/products/pedales-crankbrothers-stamp-1-gen-2",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg"
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 40000,
+          "oldPrice": 46000,
+          "url": "https://www.dsbikes.cl/products/pedales-ruta-t-keo-negros-sc-rd-301-con-calas-2",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesRutaT.KeoNegrosSCRD301ConCalas.jpg?v=1793043685"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7064,
-      "brand": "Crankbrothers",
-      "model": "Crankbrothers Pedales Candy 1 Clipless MTB / Gravel",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Gravel / Cross-Country / Trail\", \"Sistema\": \"Anclaje de 4 lados exclusivo Crankbrothers\", \"Plataforma\": \"Cuerpo de composite estriado de apoyo de calzado\", \"Accesorios\": \"Incluye calas de latón y espaciadores\", \"Peso\": \"294 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calas-crackbrothers-easy-release_20674.jpg",
-      "history": [
-        70189,
-        64990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Gravel / Cross-Country / Trail",
-        "Sistema": "Anclaje de 4 lados exclusivo Crankbrothers",
-        "Plataforma": "Cuerpo de composite estriado de apoyo de calzado",
-        "Accesorios": "Incluye calas de latón y espaciadores",
-        "Peso": "294 g el par"
-      },
-      "offers": [
-        {
-          "store": "CrossMountain",
-          "storeKey": "crossmountain",
-          "price": 64990,
-          "oldPrice": 79990,
-          "url": "https://crossmountain.cl/products/pedales-crankbrothers-candy-1",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calas-crackbrothers-easy-release_20674.jpg"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7065,
-      "brand": "Crankbrothers",
-      "model": "Calas Crankbrothers Easy Release Bronze 10°",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"MTB / Gravel\", \"Sistema\": \"Crankbrothers 2 orificios\", \"Ángulo de Desenganche\": \"10 grados (fácil salida sin forzar el tobillo)\", \"Flotación\": \"0° o 6°\", \"Material\": \"Latón de alta resistencia\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calas-crackbrothers-easy-release_20674.jpg",
-      "history": [
-        26989,
-        24990
-      ],
-      "fullSpecs": {
-        "Disciplina": "MTB / Gravel",
-        "Sistema": "Crankbrothers 2 orificios",
-        "Ángulo de Desenganche": "10 grados (fácil salida sin forzar el tobillo)",
-        "Flotación": "0° o 6°",
-        "Material": "Latón de alta resistencia"
-      },
-      "offers": [
-        {
-          "store": "CrossMountain",
-          "storeKey": "crossmountain",
-          "price": 24990,
-          "oldPrice": 29990,
-          "url": "https://crossmountain.cl/products/calas-crackbrothers-easy-release",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calas-crackbrothers-easy-release_20674.jpg"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7066,
-      "brand": "Faucon",
-      "model": "Pedales Plataforma Faucon MTB Aluminio con Pines",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"MTB / Cerro / Urbano\", \"Sistema\": \"Plataforma cóncava\", \"Material\": \"Aluminio fundido con eje de cromoly sellado\", \"Pines\": \"Pines de sujeción para suelas de zapatilla plana\", \"Peso\": \"360 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg",
-      "history": [
-        24829,
-        22990
-      ],
-      "fullSpecs": {
-        "Disciplina": "MTB / Cerro / Urbano",
-        "Sistema": "Plataforma cóncava",
-        "Material": "Aluminio fundido con eje de cromoly sellado",
-        "Pines": "Pines de sujeción para suelas de zapatilla plana",
-        "Peso": "360 g el par"
-      },
-      "offers": [
-        {
-          "store": "Faucon Bikes",
-          "storeKey": "faucon",
-          "price": 22990,
-          "oldPrice": 29990,
-          "url": "https://fauconbikes.cl/products/pedales-plataforma-faucon-aluminio",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7067,
-      "brand": "Faucon",
-      "model": "Pedales Mixtos Faucon Doble Propósito SPD / Plano",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Cicloturismo / Conmutación / Gravel\", \"Sistema\": \"Doble cara (1 cara plataforma plana + 1 cara automática SPD)\", \"Accesorios\": \"Incluye calas tipo SPD y tornillos\", \"Peso\": \"420 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png",
-      "history": [
-        35629,
-        32990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Cicloturismo / Conmutación / Gravel",
-        "Sistema": "Doble cara (1 cara plataforma plana + 1 cara automática SPD)",
-        "Accesorios": "Incluye calas tipo SPD y tornillos",
-        "Peso": "420 g el par"
-      },
-      "offers": [
-        {
-          "store": "Faucon Bikes",
-          "storeKey": "faucon",
-          "price": 32990,
-          "oldPrice": 41990,
-          "url": "https://fauconbikes.cl/products/pedales-mixtos-faucon-spd-plataforma",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7068,
-      "brand": "VP Components",
-      "model": "VP Components Pedales Plataforma VP-536 Nylon",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"MTB / Dirt / Ciudad\", \"Sistema\": \"Plataforma de polímero técnico\", \"Material\": \"Nylon reforzado con fibra de vidrio\", \"Eje\": \"Eje mecanizado de cromoly con rodamientos EPB\", \"Peso\": \"298 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg",
-      "history": [
-        16189,
-        14990
-      ],
-      "fullSpecs": {
-        "Disciplina": "MTB / Dirt / Ciudad",
-        "Sistema": "Plataforma de polímero técnico",
-        "Material": "Nylon reforzado con fibra de vidrio",
-        "Eje": "Eje mecanizado de cromoly con rodamientos EPB",
-        "Peso": "298 g el par"
-      },
-      "offers": [
-        {
-          "store": "iBikes",
-          "storeKey": "ibikes",
-          "price": 14990,
-          "oldPrice": 19990,
-          "url": "https://ibikes.cl/producto/pedales-vp-components-vp-536-nylon/",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7069,
-      "brand": "VP Components",
-      "model": "VP Components Calas Ruta Look Delta ARC 9° Rojas",
-      "type": "pedales",
-      "wheelSize": "",
-      "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta Clásica / Spinning / Peloton\", \"Sistema\": \"Look Delta 3 pernos\", \"Flotación\": \"9 grados de libertad angular\", \"Material\": \"Poliacetal termoplástico antidesgaste\", \"Contenido\": \"2 calas, 6 arandelas y 6 tornillos\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calasrojas2_720x_0f7efacf-5366-4380-9723-bd8809faf7f1.webp",
-      "history": [
-        21589,
-        19990
-      ],
-      "fullSpecs": {
-        "Disciplina": "Ruta Clásica / Spinning / Peloton",
-        "Sistema": "Look Delta 3 pernos",
-        "Flotación": "9 grados de libertad angular",
-        "Material": "Poliacetal termoplástico antidesgaste",
-        "Contenido": "2 calas, 6 arandelas y 6 tornillos"
-      },
-      "offers": [
-        {
-          "store": "iBikes",
-          "storeKey": "ibikes",
-          "price": 19990,
-          "oldPrice": 24990,
-          "url": "https://ibikes.cl/producto/calas-ruta-vp-arc-1-look-delta-cleats-9-degree-red/",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calasrojas2_720x_0f7efacf-5366-4380-9723-bd8809faf7f1.webp"
-        }
-      ],
-      "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
-      "discount_percent": 0
-    },
-    {
-      "id": 7070,
+      "id": 7100,
       "brand": "Shimano",
-      "model": "Shimano Pedales XTR PD-M9100 SPD Competición",
-      "type": "pedales",
+      "model": "Calas de MTB Shimano SM-SH51",
+      "type": "calas",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"Cross-Country World Cup / Gravel Race\", \"Sistema\": \"Shimano SPD Doble Cara\", \"Eje\": \"Eje corto más estrecho para menor Factor Q\", \"Material\": \"Cuerpo forjado anodizado y eje de titanio/cromoly\", \"Accesorios\": \"Incluye calas SM-SH51\", \"Peso\": \"310 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png",
+      "specs": "{\"Tipo\": \"Calas\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Shimano\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/1_f6da171f-bca6-4ef5-8472-7f3e070cc8b7.jpg?v=1792606378",
       "history": [
-        194389,
-        179990
+        20000
       ],
       "fullSpecs": {
-        "Disciplina": "Cross-Country World Cup / Gravel Race",
-        "Sistema": "Shimano SPD Doble Cara",
-        "Eje": "Eje corto más estrecho para menor Factor Q",
-        "Material": "Cuerpo forjado anodizado y eje de titanio/cromoly",
-        "Accesorios": "Incluye calas SM-SH51",
-        "Peso": "310 g el par"
+        "Tipo": "Calas",
+        "Tienda": "DS Bikes",
+        "Marca": "Shimano",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "Vidaurre Bikes",
-          "storeKey": "vidaurre",
-          "price": 179990,
-          "oldPrice": 219990,
-          "url": "https://www.vidaurrebikes.cl/pedales-shimano-xtr-pd-m9100-spd",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH51CLEATSET_PAIR_FORSINGLERELEASEMODE.png"
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 20000,
+          "oldPrice": 23000,
+          "url": "https://www.dsbikes.cl/products/calas-de-mtb-shimano-sm-sh51",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/1_f6da171f-bca6-4ef5-8472-7f3e070cc8b7.jpg?v=1792606378"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7071,
+      "id": 7101,
       "brand": "Shimano",
-      "model": "Calas Shimano SPD SM-SH56 Multidireccionales",
+      "model": "Pedales Shimano PD-M8100 Deore XT SPD",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"MTB / Cicloturismo / Conmutación Urbana\", \"Sistema\": \"Shimano SPD 2 pernos\", \"Desenganche\": \"Multidireccional (hacia los lados, diagonal o tirando arriba)\", \"Beneficio\": \"Ideal para ciclistas que se inician en pedales automáticos\", \"Contenido\": \"2 calas y placas de fijación\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0538/2858/3604/files/S62471.jpg",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Shimano\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesShimanoPD-M8100DeoreXTSPD.jpg?v=1788190409",
       "history": [
-        21589,
-        19990
+        160000
       ],
       "fullSpecs": {
-        "Disciplina": "MTB / Cicloturismo / Conmutación Urbana",
-        "Sistema": "Shimano SPD 2 pernos",
-        "Desenganche": "Multidireccional (hacia los lados, diagonal o tirando arriba)",
-        "Beneficio": "Ideal para ciclistas que se inician en pedales automáticos",
-        "Contenido": "2 calas y placas de fijación"
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Shimano",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "Vidaurre Bikes",
-          "storeKey": "vidaurre",
-          "price": 19990,
-          "oldPrice": 24990,
-          "url": "https://www.vidaurrebikes.cl/calas-shimano-spd-sm-sh56",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0538/2858/3604/files/S62471.jpg"
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 160000,
+          "oldPrice": 184000,
+          "url": "https://www.dsbikes.cl/products/pedales-shimano-pd-m8100-deore-xt-spd",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesShimanoPD-M8100DeoreXTSPD.jpg?v=1788190409"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7072,
-      "brand": "Wellgo",
-      "model": "Wellgo Pedales Urbanos Clásicos M195 Aluminio",
+      "id": 7102,
+      "brand": "Shimano",
+      "model": "Pedales Shimano PD-R550 Negros",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"Urbana / Fixie / Vintage\", \"Sistema\": \"Plataforma de jaula dentada\", \"Material\": \"Aluminio pulido con reflectores homologados\", \"Eje\": \"Boro de 9/16 pulgadas con rodamientos de bolas\", \"Peso\": \"310 g el par\"}",
-      "image": "https://cdnx.jumpseller.com/copenhague/image/61882446/resize/800/800",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Shimano\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesShimanoPD-R550Negro.jpg?v=1788114981",
       "history": [
-        18349,
-        16990
+        120000
       ],
       "fullSpecs": {
-        "Disciplina": "Urbana / Fixie / Vintage",
-        "Sistema": "Plataforma de jaula dentada",
-        "Material": "Aluminio pulido con reflectores homologados",
-        "Eje": "Boro de 9/16 pulgadas con rodamientos de bolas",
-        "Peso": "310 g el par"
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Shimano",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "Copenhague",
-          "storeKey": "copenhague",
-          "price": 16990,
-          "oldPrice": 21990,
-          "url": "https://www.copenhague.cl/pedales-urbanos-clasicos-wellgo-aluminio",
-          "imageUrl": "https://cdnx.jumpseller.com/copenhague/image/61882446/resize/800/800"
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 120000,
+          "oldPrice": 138000,
+          "url": "https://www.dsbikes.cl/products/pedales-shimano-pd-r550-negro",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesShimanoPD-R550Negro.jpg?v=1788114981"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7073,
-      "brand": "State Bicycle Co",
-      "model": "State Bicycle Co Correas y Punteras para Pedales Urbanos",
+      "id": 7103,
+      "brand": "Shimano",
+      "model": "Pedales Shimano PD-RS500 SPD-SL RUTA",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"Fixie / Piñón Fijo / Conmutación Urbana\", \"Sistema\": \"Correas de sujeción de pie (Pedal Straps)\", \"Material\": \"Nylon de grado balístico con hebilla de acero inoxidable\", \"Compatibilidad\": \"Pedales de plataforma urbana\", \"Peso\": \"140 g el par\"}",
-      "image": "https://cdnx.jumpseller.com/copenhague/image/61882446/resize/800/800",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Shimano\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/1_5cc971cc-cf35-4fa8-be7a-4802ea43fe70.jpg?v=1783355086",
       "history": [
-        16189,
-        14990
+        80000
       ],
       "fullSpecs": {
-        "Disciplina": "Fixie / Piñón Fijo / Conmutación Urbana",
-        "Sistema": "Correas de sujeción de pie (Pedal Straps)",
-        "Material": "Nylon de grado balístico con hebilla de acero inoxidable",
-        "Compatibilidad": "Pedales de plataforma urbana",
-        "Peso": "140 g el par"
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Shimano",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "Copenhague",
-          "storeKey": "copenhague",
-          "price": 14990,
-          "oldPrice": 19990,
-          "url": "https://www.copenhague.cl/correas-punteras-pedales-state-bicycle",
-          "imageUrl": "https://cdnx.jumpseller.com/copenhague/image/61882446/resize/800/800"
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 80000,
+          "oldPrice": 92000,
+          "url": "https://www.dsbikes.cl/products/pedal-shimano-rs500",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/1_5cc971cc-cf35-4fa8-be7a-4802ea43fe70.jpg?v=1783355086"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7074,
-      "brand": "Sátiro",
-      "model": "Sátiro Pedales Flat Nylon Enduro Plataforma Ancha",
+      "id": 7104,
+      "brand": "Gineyea",
+      "model": "Pedales Gineyea MTB Resina Plataforma Sellado 2DU Negro",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"Enduro / Trail / E-Bike\", \"Superficie\": \"105 x 100 mm de plataforma cóncava\", \"Material\": \"Nylon composite reforzado con 8 pines metálicos por cara\", \"Eje\": \"Cromoly sellado con doble rodamiento\", \"Peso\": \"355 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Gineyea\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBResinaPlataformaSellado2DUNegro.jpg?v=1787072641",
       "history": [
-        20509,
-        18990
+        12000
       ],
       "fullSpecs": {
-        "Disciplina": "Enduro / Trail / E-Bike",
-        "Superficie": "105 x 100 mm de plataforma cóncava",
-        "Material": "Nylon composite reforzado con 8 pines metálicos por cara",
-        "Eje": "Cromoly sellado con doble rodamiento",
-        "Peso": "355 g el par"
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Gineyea",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "Satiro Bikes",
-          "storeKey": "satiro",
-          "price": 18990,
-          "oldPrice": 24990,
-          "url": "https://satirobikes.cl/products/pedales-satiro-flat-nylon-enduro",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg"
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 12000,
+          "oldPrice": 13799,
+          "url": "https://www.dsbikes.cl/products/pedales-gineyea-mtb-resina-plataforma-sellado-2du-negro",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBResinaPlataformaSellado2DUNegro.jpg?v=1787072641"
         }
       ],
       "isInternational": false,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7075,
-      "brand": "Rockbros",
-      "model": "Rockbros Pedales Ultraligeros de Aluminio Sellados con 3 Rodamientos",
+      "id": 7105,
+      "brand": "Gineyea",
+      "model": "Pedales Gineyea MTB Resina Plataforma Sellado 2DU Amarillo",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"MTB / Carretera / Gravel\", \"Sistema\": \"Plataforma plana con 3 rodamientos sellados\", \"Material\": \"Aleación de aluminio CNC anodizado\", \"Pines\": \"Pines hexagonales desmontables de acero inoxidable\", \"Peso\": \"308 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Gineyea\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBResinaPlataformaSellado2DUAmarillo.jpg?v=1787072329",
       "history": [
-        20509,
-        18990
+        12000
       ],
       "fullSpecs": {
-        "Disciplina": "MTB / Carretera / Gravel",
-        "Sistema": "Plataforma plana con 3 rodamientos sellados",
-        "Material": "Aleación de aluminio CNC anodizado",
-        "Pines": "Pines hexagonales desmontables de acero inoxidable",
-        "Peso": "308 g el par"
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Gineyea",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "AliExpress",
-          "storeKey": "aliexpress",
-          "price": 18990,
-          "oldPrice": 26990,
-          "url": "https://www.aliexpress.com/item/1005006123456789.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CLEAPS.jpg"
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 12000,
+          "oldPrice": 13799,
+          "url": "https://www.dsbikes.cl/products/pedales-mtb-resina-plataforma-sellado-2du-amarillo",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBResinaPlataformaSellado2DUAmarillo.jpg?v=1787072329"
         }
       ],
-      "isInternational": true,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7076,
-      "brand": "Rockbros",
-      "model": "Rockbros Pedales Automáticos de Carbono SPD-SL para Ruta",
+      "id": 7106,
+      "brand": "Gineyea",
+      "model": "Pedales Gineyea MTB Aluminio Flat Sellado 2DU Plata Gris Con Pines",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta / Ciclismo de Carretera\", \"Sistema\": \"Compatible Shimano SPD-SL\", \"Material\": \"Cuerpo de fibra de carbono inyectada\", \"Accesorios\": \"Incluye juego de calas 6° y tornillos\", \"Peso\": \"298 g el par\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH10CLEATSET_FIXMODE_PAIR.png",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Gineyea\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBAluminioFlatSellado2DUPlataGrisConPines.jpg?v=1787071774",
       "history": [
-        39949,
-        36990
+        15000
       ],
       "fullSpecs": {
-        "Disciplina": "Ruta / Ciclismo de Carretera",
-        "Sistema": "Compatible Shimano SPD-SL",
-        "Material": "Cuerpo de fibra de carbono inyectada",
-        "Accesorios": "Incluye juego de calas 6° y tornillos",
-        "Peso": "298 g el par"
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Gineyea",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "AliExpress",
-          "storeKey": "aliexpress",
-          "price": 36990,
-          "oldPrice": 49990,
-          "url": "https://www.aliexpress.com/item/1005007987654321.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/CALASSHIMANO_JGO_SM-SH10CLEATSET_FIXMODE_PAIR.png"
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 15000,
+          "oldPrice": 17250,
+          "url": "https://www.dsbikes.cl/products/pedales-mtb-aluminio-flat-sellado-2du-plata-gris-con-pines",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBAluminioFlatSellado2DUPlataGrisConPines.jpg?v=1787071774"
         }
       ],
-      "isInternational": true,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     },
     {
-      "id": 7077,
-      "brand": "Rockbros",
-      "model": "Juego de Calas de Repuesto Compatibles Shimano SPD-SL 6°",
+      "id": 7107,
+      "brand": "Gineyea",
+      "model": "Pedales Gineyea MTB Aluminio Flat Sellado 2DU Naranjo Con Pines",
       "type": "pedales",
       "wheelSize": "",
       "frameType": "",
-      "specs": "{\"Disciplina\": \"Ruta / Spinning\", \"Sistema\": \"Compatible SPD-SL 3 tornillos\", \"Flotación\": \"6 grados\", \"Contenido\": \"2 calas, 6 arandelas metálicas y 6 pernos de apriete\"}",
-      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calasrojas2_720x_0f7efacf-5366-4380-9723-bd8809faf7f1.webp",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Gineyea\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBAluminioFlatSellado2DUNaranjoconpinesfijos.jpg?v=1787071178",
       "history": [
-        8629,
-        7990
+        15000
       ],
       "fullSpecs": {
-        "Disciplina": "Ruta / Spinning",
-        "Sistema": "Compatible SPD-SL 3 tornillos",
-        "Flotación": "6 grados",
-        "Contenido": "2 calas, 6 arandelas metálicas y 6 pernos de apriete"
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Gineyea",
+        "Garantía": "6 meses oficial en Chile"
       },
       "offers": [
         {
-          "store": "AliExpress",
-          "storeKey": "aliexpress",
-          "price": 7990,
-          "oldPrice": 11990,
-          "url": "https://www.aliexpress.com/item/1005008543210987.html",
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/calasrojas2_720x_0f7efacf-5366-4380-9723-bd8809faf7f1.webp"
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 15000,
+          "oldPrice": 17250,
+          "url": "https://www.dsbikes.cl/products/pedales-mtb-aluminio-flat-sellado-2du-naranjo-con-pines",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBAluminioFlatSellado2DUNaranjoconpinesfijos.jpg?v=1787071178"
         }
       ],
-      "isInternational": true,
-      "rating": 4.5,
-      "sales_count": 100,
-      "review_count": 15,
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7108,
+      "brand": "Gineyea",
+      "model": "Pedales Gineyea MTB Aluminio Flat Sellado 2DU Morado Con Pines",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Gineyea\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBAluminioFlatSellado2DUMoradoConPines.jpg?v=1787070666",
+      "history": [
+        15000
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Gineyea",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 15000,
+          "oldPrice": 17250,
+          "url": "https://www.dsbikes.cl/products/pedales-mtb-aluminio-flat-sellado-2du-morado-con-pines",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBAluminioFlatSellado2DUMoradoConPines.jpg?v=1787070666"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7109,
+      "brand": "Gineyea",
+      "model": "Pedales Gineyea MTB Aluminio Flat Sellado 2DU Color Negro Con Pin",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Gineyea\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBAluminioFlatSellado2DUColorNegroConPin.jpg?v=1787070147",
+      "history": [
+        15000
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Gineyea",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 15000,
+          "oldPrice": 17250,
+          "url": "https://www.dsbikes.cl/products/pedales-mtb-aluminio-flat-sellado-2du-color-negro-con-pin",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBAluminioFlatSellado2DUColorNegroConPin.jpg?v=1787070147"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7110,
+      "brand": "Gineyea",
+      "model": "Pedales Gineyea MTB Resina Plataforma Sellado 2DU Turquesa",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Gineyea\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBResinaPlataformaSellado2DUTurquesa.jpg?v=1787068570",
+      "history": [
+        12000
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Gineyea",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 12000,
+          "oldPrice": 13799,
+          "url": "https://www.dsbikes.cl/products/pedales-mtb-resina-plataforma-sellado-2du-turquesa",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesMTBResinaPlataformaSellado2DUTurquesa.jpg?v=1787068570"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7111,
+      "brand": "Gineyea",
+      "model": "Pedales Gineyea MTB Resina Plataforma Sellado 2DU Purpura",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Gineyea\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesGineyeaMTBResinaPlataformaSellado2DUPurpura.jpg?v=1786993003",
+      "history": [
+        12000
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Gineyea",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 12000,
+          "oldPrice": 13799,
+          "url": "https://www.dsbikes.cl/products/pedales-gineyea-mtb-resina-plataforma-sellado-2du-purpura",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesGineyeaMTBResinaPlataformaSellado2DUPurpura.jpg?v=1786993003"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7112,
+      "brand": "Gineyea",
+      "model": "Pedales Gineyea MTB Resina Plataforma Sellado 2DU Naranjo",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Gineyea\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesGineyeaMTBResinaPlataformaSellado2DUNaranjo.jpg?v=1786992389",
+      "history": [
+        12000
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Gineyea",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 12000,
+          "oldPrice": 13799,
+          "url": "https://www.dsbikes.cl/products/pedales-gineyea-mtb-resina-plataforma-sellado-2du-naranjo",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/PedalesGineyeaMTBResinaPlataformaSellado2DUNaranjo.jpg?v=1786992389"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7113,
+      "brand": "Gineyea",
+      "model": "Pedales Gineyea MTB Resina Dual Con Fijación",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"DS Bikes\", \"Marca\": \"Gineyea\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/1_2be67c50-88e8-4f78-8ea9-17cc174e5daf.jpg?v=1786390257",
+      "history": [
+        40000
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "DS Bikes",
+        "Marca": "Gineyea",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "DS Bikes",
+          "storeKey": "dsbikes",
+          "price": 40000,
+          "oldPrice": 46000,
+          "url": "https://www.dsbikes.cl/products/pedal-mtb-resina-dual-con-fijacion",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0631/2824/0374/files/1_2be67c50-88e8-4f78-8ea9-17cc174e5daf.jpg?v=1786390257"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7114,
+      "brand": "Exhustar",
+      "model": "Pedal Exustar Pr4 264G/Par",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"CrossMountain\", \"Marca\": \"Exhustar\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/1fdca00aed1bb8d991e79f529add68a8_831b5b58-d298-421d-a13b-1c506d54a249.png?v=1752073509",
+      "history": [
+        53000
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "CrossMountain",
+        "Marca": "Exhustar",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "CrossMountain",
+          "storeKey": "crossmountain",
+          "price": 53000,
+          "oldPrice": 60949,
+          "url": "https://crossmountain.cl/products/pedal-exustar-pr4-264g-par",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/1fdca00aed1bb8d991e79f529add68a8_831b5b58-d298-421d-a13b-1c506d54a249.png?v=1752073509"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7115,
+      "brand": "Spank",
+      "model": "Pedales Spank Spoon Dc - Raw Silver",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"CrossMountain\", \"Marca\": \"Spank\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/4710155960727.TOPP_1800x1800-copia.jpg?v=1747156205",
+      "history": [
+        59990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "CrossMountain",
+        "Marca": "Spank",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "CrossMountain",
+          "storeKey": "crossmountain",
+          "price": 59990,
+          "oldPrice": 68988,
+          "url": "https://crossmountain.cl/products/spank-spank-spoon-dc-pedal-raw-silver",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/4710155960727.TOPP_1800x1800-copia.jpg?v=1747156205"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7116,
+      "brand": "Ht Components",
+      "model": "Pedal Ht Gt1 Clips",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"CrossMountain\", \"Marca\": \"Ht Components\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/GTI3.jpg?v=1747157016",
+      "history": [
+        79990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "CrossMountain",
+        "Marca": "Ht Components",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "CrossMountain",
+          "storeKey": "crossmountain",
+          "price": 79990,
+          "oldPrice": 91988,
+          "url": "https://crossmountain.cl/products/pedal-ht-gt1-clips",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/GTI3.jpg?v=1747157016"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7117,
+      "brand": "Ht Components",
+      "model": "Rebuild Kits Pedal Ht",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"CrossMountain\", \"Marca\": \"Ht Components\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/rebuildx3.jpg?v=1747157045",
+      "history": [
+        17990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "CrossMountain",
+        "Marca": "Ht Components",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "CrossMountain",
+          "storeKey": "crossmountain",
+          "price": 17990,
+          "oldPrice": 20688,
+          "url": "https://crossmountain.cl/products/rebuild-kits-pedal-ht",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/rebuildx3.jpg?v=1747157045"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7118,
+      "brand": "Ht Components",
+      "model": "Eje Pedal Ht X3 Set",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"CrossMountain\", \"Marca\": \"Ht Components\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/ejex3_ae7a1d2d-4c04-4b08-b598-7da08c776bbc.jpg?v=1747156967",
+      "history": [
+        17990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "CrossMountain",
+        "Marca": "Ht Components",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "CrossMountain",
+          "storeKey": "crossmountain",
+          "price": 17990,
+          "oldPrice": 20688,
+          "url": "https://crossmountain.cl/products/eje-pedal-ht-x3-set",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/ejex3_ae7a1d2d-4c04-4b08-b598-7da08c776bbc.jpg?v=1747156967"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7119,
+      "brand": "Ht Components",
+      "model": "Pedal Ht Gd1 Clips/Flat",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"CrossMountain\", \"Marca\": \"Ht Components\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/GD4.jpg?v=1747157044",
+      "history": [
+        79990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "CrossMountain",
+        "Marca": "Ht Components",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "CrossMountain",
+          "storeKey": "crossmountain",
+          "price": 79990,
+          "oldPrice": 91988,
+          "url": "https://crossmountain.cl/products/pedal-ht-gd1-clips-flat",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/GD4.jpg?v=1747157044"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7120,
+      "brand": "Hope",
+      "model": "Hope Eje pedal F20 derecho",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"CrossMountain\", \"Marca\": \"Hope\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/image_1920_0e4831ae-ac1e-48c6-8723-86d457fced11.jpg?v=1790965318",
+      "history": [
+        20990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "CrossMountain",
+        "Marca": "Hope",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "CrossMountain",
+          "storeKey": "crossmountain",
+          "price": 20990,
+          "oldPrice": 24138,
+          "url": "https://crossmountain.cl/products/hope-hope-eje-pedal-f20-derecho",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/image_1920_0e4831ae-ac1e-48c6-8723-86d457fced11.jpg?v=1790965318"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7121,
+      "brand": "Hope",
+      "model": "Hope Reten eje interior pedal F20",
+      "type": "pedales",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Pedales\", \"Tienda\": \"CrossMountain\", \"Marca\": \"Hope\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/image_1920_84d68cf0-24cf-408c-9ff2-fccdfe73abe5.png?v=1790965271",
+      "history": [
+        990
+      ],
+      "fullSpecs": {
+        "Tipo": "Pedales",
+        "Tienda": "CrossMountain",
+        "Marca": "Hope",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "CrossMountain",
+          "storeKey": "crossmountain",
+          "price": 990,
+          "oldPrice": 1138,
+          "url": "https://crossmountain.cl/products/hope-hope-reten-eje-interior-pedal-f20",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/image_1920_84d68cf0-24cf-408c-9ff2-fccdfe73abe5.png?v=1790965271"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
+      "discount_percent": 0
+    },
+    {
+      "id": 7122,
+      "brand": "Hope",
+      "model": "Hope Calas Union Ndeg4",
+      "type": "calas",
+      "wheelSize": "",
+      "frameType": "",
+      "specs": "{\"Tipo\": \"Calas\", \"Tienda\": \"CrossMountain\", \"Marca\": \"Hope\", \"Garantía\": \"6 meses oficial en Chile\"}",
+      "image": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/image_1920_67b1aa03-abd8-4484-896a-cc1fa87cb474.jpg?v=1790965202",
+      "history": [
+        23990
+      ],
+      "fullSpecs": {
+        "Tipo": "Calas",
+        "Tienda": "CrossMountain",
+        "Marca": "Hope",
+        "Garantía": "6 meses oficial en Chile"
+      },
+      "offers": [
+        {
+          "store": "CrossMountain",
+          "storeKey": "crossmountain",
+          "price": 23990,
+          "oldPrice": 27588,
+          "url": "https://crossmountain.cl/products/hope-hope-calas-union-ndeg4",
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0643/9272/4653/files/image_1920_67b1aa03-abd8-4484-896a-cc1fa87cb474.jpg?v=1790965202"
+        }
+      ],
+      "isInternational": false,
+      "rating": 4.7,
+      "sales_count": 45,
+      "review_count": 12,
       "discount_percent": 0
     }
   ],
