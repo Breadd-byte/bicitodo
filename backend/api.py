@@ -269,8 +269,6 @@ async def get_productos(
         # Construcción dinámica de filtros WHERE
         where_clauses = []
         where_params = []
-        # Do not expose offers quarantined by the catalog validator.
-        where_clauses.append("COALESCE(pco.stock, 1) = 1")
         # Sanity protection: exclude test items, 1 peso or invalid low prices
         where_clauses.append("pco.price_normal >= 500")
         where_clauses.append("NOT (p.category = 'bicicletas' AND pco.price_normal < 20000)")
@@ -408,7 +406,7 @@ async def get_productos(
             where_sql = "WHERE " + " AND ".join(where_clauses)
 
         # Ordenamiento dinámico (priorizando bicicletas y coincidencia exacta de marca/modelo al buscar)
-        order_sql = "ORDER BY COALESCE(pco.stock, 1) DESC, CASE WHEN category = 'bicicletas' THEN 0 WHEN category = 'accesorios' THEN 1 ELSE 2 END, brand_match_rank ASC, rn ASC, store_id ASC"
+        order_sql = "ORDER BY stock DESC, CASE WHEN category = 'bicicletas' THEN 0 WHEN category = 'accesorios' THEN 1 ELSE 2 END, brand_match_rank ASC, rn ASC, store_id ASC"
         if sort_by == "price-asc":
             order_sql = "ORDER BY price_normal ASC"
         elif sort_by == "price-desc":
@@ -489,6 +487,7 @@ async def get_productos(
                 pco.store_id,
                 pco.price_normal,
                 pco.price_card,
+                COALESCE(pco.stock, 1) as stock,
                 CASE
                     WHEN ? != '' AND LOWER(p.brand) LIKE ? THEN 0
                     WHEN ? != '' AND LOWER(p.model) LIKE ? THEN 1
