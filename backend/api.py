@@ -10,6 +10,7 @@ import os
 import mimetypes
 import re
 import unicodedata
+from datetime import datetime
 from collections import defaultdict
 
 # Register WebP mime type for consistent serving headers across operating systems
