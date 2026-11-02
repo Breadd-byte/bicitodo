@@ -251,6 +251,9 @@ async def get_productos(
         where_params = []
         # Do not expose offers quarantined by the catalog validator.
         where_clauses.append("COALESCE(pco.stock, 1) = 1")
+        # Sanity protection: exclude test items, 1 peso or invalid low prices
+        where_clauses.append("pco.price_normal >= 500")
+        where_clauses.append("NOT (p.category = 'bicicletas' AND pco.price_normal < 20000)")
 
         if producto_id is not None:
             where_clauses.append("p.id = ?")
@@ -410,7 +413,7 @@ async def get_productos(
                 sp.stock,
                 ROW_NUMBER() OVER (PARTITION BY sp.product_id ORDER BY sp.price_normal ASC) as price_rn
             FROM store_products sp
-            WHERE COALESCE(sp.stock, 1) = 1
+            WHERE COALESCE(sp.stock, 1) = 1 AND sp.price_normal >= 500
         ),
         RankedProducts AS (
             SELECT 
@@ -445,7 +448,7 @@ async def get_productos(
                 sp.stock,
                 ROW_NUMBER() OVER (PARTITION BY sp.product_id ORDER BY sp.price_normal ASC) as price_rn
             FROM store_products sp
-            WHERE COALESCE(sp.stock, 1) = 1
+            WHERE COALESCE(sp.stock, 1) = 1 AND sp.price_normal >= 500
         ),
         RankedProducts AS (
             SELECT 
@@ -515,7 +518,10 @@ async def get_productos(
             s.id as store_id
         FROM store_products sp
         JOIN stores s ON sp.store_id = s.id
-        WHERE sp.product_id IN ({placeholders}) AND COALESCE(sp.stock, 1) = 1
+        WHERE sp.product_id IN ({placeholders}) 
+          AND COALESCE(sp.stock, 1) = 1
+          AND sp.price_normal >= 500
+          AND NOT (EXISTS (SELECT 1 FROM products p_sub WHERE p_sub.id = sp.product_id AND p_sub.category = 'bicicletas') AND sp.price_normal < 20000)
         ORDER BY sp.price_normal ASC;
         """
         cursor.execute(offers_query, product_ids)

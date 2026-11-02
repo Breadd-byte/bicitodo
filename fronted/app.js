@@ -969,7 +969,15 @@ const BLOCKED_SYNTHETIC_MODELS = new Set([
 ]);
 
 function isBlockedSyntheticProduct(product) {
-    return BLOCKED_SYNTHETIC_MODELS.has(product?.model || '');
+    if (!product) return true;
+    if (BLOCKED_SYNTHETIC_MODELS.has(product.model || '')) return true;
+    const prices = (product.offers || []).map(o => o.price || 0).filter(p => p > 0);
+    if (prices.length === 0) return true;
+    const bestPrice = Math.min(...prices);
+    // Discard dummy placeholder items (e.g. 1 peso) or bicycles with prices < 20.000 CLP (e.g. unconverted USD)
+    if (bestPrice < 500) return true;
+    if (product.category === 'bicicletas' && bestPrice < 20000) return true;
+    return false;
 }
 
 function getStoreDot(storeKey) {

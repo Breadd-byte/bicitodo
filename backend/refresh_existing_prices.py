@@ -57,15 +57,20 @@ def clean_price(value):
     if value is None:
         return None
     if isinstance(value, (int, float)):
-        return int(value) if value > 0 else None
+        return int(value) if value >= 500 else None
 
     text = str(value).strip().replace("\xa0", " ")
     if not text:
         return None
 
+    # Discard non-price text like '1 minuto', '3 minutos', etc.
+    if re.search(r"\b(?:minuto|hora|dia|reading|time|segundo)\b", text, re.IGNORECASE):
+        return None
+
     numeric = text.replace(" ", "")
     if re.fullmatch(r"\d+(?:\.\d{1,2})?", numeric):
-        return int(float(numeric))
+        p = int(float(numeric))
+        return p if p >= 500 else None
 
     if "," in text and re.search(r",\d{1,2}\b", text):
         text = text.rsplit(",", 1)[0]
@@ -74,7 +79,7 @@ def clean_price(value):
     if not nums:
         return None
     price = int(nums)
-    return price if price > 0 else None
+    return price if price >= 500 else None
 
 
 def normalize_url(url):
@@ -223,7 +228,6 @@ def price_from_meta(soup):
     selectors = [
         'meta[property="product:price:amount"]',
         'meta[property="og:price:amount"]',
-        'meta[name="twitter:data1"]',
         'meta[itemprop="price"]',
     ]
     for selector in selectors:
@@ -312,7 +316,25 @@ def fetch_page_price(offer):
     if not price:
         return {**offer, "status": "failed", "error": "price not found"}
 
-    old_price = old_price_from_html(soup, price)
+    # Handle Canyon / International USD pricing
+    is_canyon = "canyon" in str(offer.get("store_name", "")).lower() or "canyon.com" in str(offer.get("url", "")).lower()
+    is_bike = str(offer.get("category", "")).lower() == "bicicletas"
+
+    if is_canyon and price and price < 20000:
+        price = int(price * 950)
+        old_price = old_price_from_html(soup, price)
+        if old_price and old_price < 20000:
+            old_price = int(old_price * 950)
+    else:
+        old_price = old_price_from_html(soup, price)
+
+    # Sanity check for bicycles: no real bicycle costs < 20.000 CLP
+    if is_bike and price and price < 20000:
+        return {**offer, "status": "failed", "error": f"suspicious bike price: {price}"}
+
+    if price and price < 500:
+        return {**offer, "status": "failed", "error": f"price too low: {price}"}
+
     return {**offer, "status": "ok", "price": price, "old_price": old_price}
 
 
