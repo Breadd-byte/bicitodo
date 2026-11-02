@@ -47,11 +47,10 @@ def sync():
     # 1. Map offers by product_id (only in-stock offers)
     offers_by_product = defaultdict(list)
     cur.execute("""
-        SELECT sp.product_id, sp.price_normal, sp.price_card, sp.url, sp.image_url, s.name as store_name
+        SELECT sp.product_id, sp.price_normal, sp.price_card, sp.url, sp.image_url, sp.stock, s.name as store_name
         FROM store_products sp
         JOIN stores s ON s.id = sp.store_id
-        WHERE COALESCE(sp.stock, 1) = 1
-        ORDER BY sp.price_normal ASC
+        ORDER BY COALESCE(sp.stock, 1) DESC, sp.price_normal ASC
     """)
     for row in cur.fetchall():
         offers_by_product[row["product_id"]].append({
@@ -60,7 +59,8 @@ def sync():
             "price": row["price_normal"],
             "oldPrice": row["price_card"],
             "url": row["url"],
-            "imageUrl": row["image_url"] or ""
+            "imageUrl": row["image_url"] or "",
+            "stock": 1 if row["stock"] is None else int(row["stock"])
         })
 
     # 2. Map history by product_id
@@ -122,6 +122,7 @@ def sync():
             "history": history,
             "fullSpecs": full_specs,
             "offers": offers,
+            "hasStock": any(o.get("stock", 1) == 1 for o in offers),
             "isInternational": bool(p["is_international"]),
             "rating": p["rating"] or 4.5,
             "sales_count": p["sales_count"] or 100,

@@ -408,7 +408,7 @@ async def get_productos(
             where_sql = "WHERE " + " AND ".join(where_clauses)
 
         # Ordenamiento dinámico (priorizando bicicletas y coincidencia exacta de marca/modelo al buscar)
-        order_sql = "ORDER BY CASE WHEN category = 'bicicletas' THEN 0 WHEN category = 'accesorios' THEN 1 ELSE 2 END, brand_match_rank ASC, rn ASC, store_id ASC"
+        order_sql = "ORDER BY COALESCE(pco.stock, 1) DESC, CASE WHEN category = 'bicicletas' THEN 0 WHEN category = 'accesorios' THEN 1 ELSE 2 END, brand_match_rank ASC, rn ASC, store_id ASC"
         if sort_by == "price-asc":
             order_sql = "ORDER BY price_normal ASC"
         elif sort_by == "price-desc":
@@ -431,9 +431,9 @@ async def get_productos(
                 sp.price_normal,
                 sp.price_card,
                 sp.stock,
-                ROW_NUMBER() OVER (PARTITION BY sp.product_id ORDER BY sp.price_normal ASC) as price_rn
+                ROW_NUMBER() OVER (PARTITION BY sp.product_id ORDER BY COALESCE(sp.stock, 1) DESC, sp.price_normal ASC) as price_rn
             FROM store_products sp
-            WHERE COALESCE(sp.stock, 1) = 1 AND sp.price_normal >= 500
+            WHERE sp.price_normal >= 500
         ),
         RankedProducts AS (
             SELECT 
@@ -466,9 +466,9 @@ async def get_productos(
                 sp.price_normal,
                 sp.price_card,
                 sp.stock,
-                ROW_NUMBER() OVER (PARTITION BY sp.product_id ORDER BY sp.price_normal ASC) as price_rn
+                ROW_NUMBER() OVER (PARTITION BY sp.product_id ORDER BY COALESCE(sp.stock, 1) DESC, sp.price_normal ASC) as price_rn
             FROM store_products sp
-            WHERE COALESCE(sp.stock, 1) = 1 AND sp.price_normal >= 500
+            WHERE sp.price_normal >= 500
         ),
         RankedProducts AS (
             SELECT 
@@ -533,16 +533,16 @@ async def get_productos(
             sp.price_card,
             sp.url,
             sp.image_url,
+            sp.stock,
             sp.last_updated,
             s.name as store_name,
             s.id as store_id
         FROM store_products sp
         JOIN stores s ON sp.store_id = s.id
         WHERE sp.product_id IN ({placeholders}) 
-          AND COALESCE(sp.stock, 1) = 1
           AND sp.price_normal >= 500
           AND NOT (EXISTS (SELECT 1 FROM products p_sub WHERE p_sub.id = sp.product_id AND p_sub.category = 'bicicletas') AND sp.price_normal < 20000)
-        ORDER BY sp.price_normal ASC;
+        ORDER BY COALESCE(sp.stock, 1) DESC, sp.price_normal ASC;
         """
         cursor.execute(offers_query, product_ids)
         offers_rows = cursor.fetchall()
@@ -557,6 +557,7 @@ async def get_productos(
                 "oldPrice": o["price_card"],
                 "url": o["url"],
                 "imageUrl": o["image_url"],
+                "stock": 1 if o["stock"] is None else int(o["stock"]),
                 "lastUpdated": o["last_updated"],
                 "history": []
             })
@@ -624,6 +625,8 @@ async def get_productos(
                 "history": p_history,
                 "fullSpecs": full_specs,
                 "offers": p_offers,
+                "has_stock": any(o.get("stock", 1) == 1 for o in p_offers),
+                "hasStock": any(o.get("stock", 1) == 1 for o in p_offers),
                 "isInternational": bool(row["is_international"]),
                 "rating": row["rating"] or 4.5,
                 "sales_count": row["sales_count"] or 100,

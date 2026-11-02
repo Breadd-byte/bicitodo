@@ -2069,23 +2069,58 @@ openProductDetail = window.openProductDetail = function(productId) {
         </div>
     `).join('');
 
+    const hasAnyStock = product.offers.some(o => o.stock !== 0);
+
+    const stockBannerHtml = hasAnyStock ? `
+        <div class="modal-stock-banner in-stock">
+            <i class="fa-solid fa-circle-check"></i>
+            <div>
+                <strong>En Stock Verificado:</strong>
+                <span>Disponible para compra inmediata en tiendas asociadas.</span>
+            </div>
+        </div>
+    ` : `
+        <div class="modal-stock-banner out-of-stock">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <div>
+                <strong>Aviso de Stock / Agotado:</strong>
+                <span>Este producto figura actualmente sin existencias en las tiendas monitoreadas. Al ingresar, la tienda podría redirigirte o sugerirte modelos alternativos.</span>
+            </div>
+        </div>
+    `;
+
     const offersHtml = [...product.offers]
-        .sort((a, b) => a.price - b.price)
+        .sort((a, b) => {
+            const sA = (a.stock !== 0) ? 1 : 0;
+            const sB = (b.stock !== 0) ? 1 : 0;
+            if (sA !== sB) return sB - sA;
+            return a.price - b.price;
+        })
         .map((offer, i) => {
-            // Ir DIRECTAMENTE al producto en la tienda
             const storeUrl = getProductUrl(offer);
+            const inStock = offer.stock !== 0;
+            const stockTag = inStock 
+                ? '<span class="stock-tag in-stock"><i class="fa-solid fa-check"></i> En Stock</span>'
+                : '<span class="stock-tag out-of-stock"><i class="fa-solid fa-ban"></i> Sin Stock</span>';
+            const btnClass = inStock ? 'btn-goto' : 'btn-goto btn-goto-nostock';
+            const btnText = inStock 
+                ? 'Ver en tienda <i class="fa-solid fa-arrow-up-right-from-square"></i>'
+                : 'Agotado en tienda <i class="fa-solid fa-arrow-up-right-from-square"></i>';
+
             return `
-        <a href="${storeUrl}" target="_blank" rel="noopener" class="modal-offer-row ${i === 0 ? 'best' : ''}">
-            ${i === 0 ? '<span class="best-badge">🏆 Mejor Precio</span>' : ''}
+        <a href="${storeUrl}" target="_blank" rel="noopener" class="modal-offer-row ${i === 0 && inStock ? 'best' : ''} ${!inStock ? 'out-of-stock' : ''}">
+            ${i === 0 && inStock ? '<span class="best-badge">🏆 Mejor Precio</span>' : ''}
             <span class="modal-store-name" style="display: flex; align-items: center; flex-wrap: wrap;">
                 ${getStoreDot(offer.storeKey)} ${offer.store}
+                ${stockTag}
                 ${renderStoreRating(offer.storeKey)}
             </span>
             <div class="modal-price-col">
                 <span class="modal-price-val">${formatCLP(offer.price)}</span>
                 ${offer.oldPrice ? `<span class="modal-price-old">${formatCLP(offer.oldPrice)}</span>` : ''}
+                ${!inStock ? '<span class="modal-stock-sub">Sin existencias</span>' : ''}
             </div>
-            <span class="btn-goto">Ver en tienda <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+            <span class="${btnClass}">${btnText}</span>
         </a>`;
         }).join('');
 
@@ -2231,6 +2266,7 @@ openProductDetail = window.openProductDetail = function(productId) {
                 </div>
 
                 <div id="tab-precios" class="tab-panel active">
+                    ${stockBannerHtml}
                     <div class="modal-offers-list">${offersHtml}</div>
                     ${alertHtml}
                 </div>
@@ -3127,9 +3163,15 @@ async function render(forceFetch = true) {
                 ? `<span class="card-badge card-badge-hist-low" title="${escapeHtml(histStatus.detail)}"><i class="fa-solid fa-arrow-trend-down"></i> Mínimo histórico</span>`
                 : '';
 
+            const hasStock = product.has_stock !== false && product.hasStock !== false && sortedOffers.some(o => o.stock !== 0);
+            const stockBadgeHtml = !hasStock
+                ? `<span class="card-badge card-badge-nostock"><i class="fa-solid fa-clock-rotate-left"></i> Sin stock</span>`
+                : '';
+
             const actionLabel = isIntlProduct
                 ? 'Ver en AliExpress <i class="fa-solid fa-arrow-up-right-from-square"></i>'
-                : (sortedOffers.length > 1 ? `Comparar (${sortedOffers.length})` : 'Ver oferta');
+                : (!hasStock ? 'Sin stock <i class="fa-solid fa-arrow-up-right-from-square"></i>' : (sortedOffers.length > 1 ? `Comparar (${sortedOffers.length})` : 'Ver oferta'));
+            const btnOfertaClass = !hasStock ? 'btn-ver-ofertas btn-no-stock' : 'btn-ver-ofertas';
 
             card.innerHTML = `
                 <div class="product-img">
@@ -3137,6 +3179,7 @@ async function render(forceFetch = true) {
                         ${cyberBadgeHtml}
                         ${histBadgeHtml}
                         ${intlBadgeHtml}
+                        ${stockBadgeHtml}
                     </div>
                     <div class="card-actions-top-right">
                         <button type="button" class="btn-compare-toggle ${isComparing ? 'active' : ''}" onclick="toggleCompare(${product.id}, event)" aria-label="${isComparing ? 'Quitar del comparador' : 'Comparar modelo'}" title="${isComparing ? 'Quitar del comparador' : 'Comparar modelo'}">
@@ -3168,7 +3211,7 @@ async function render(forceFetch = true) {
                             ${getStoreDot(bestOffer.storeKey)}
                             <span>${escapeHtml(storeSummaryText)}</span>
                         </span>
-                        <button type="button" class="btn-ver-ofertas" onclick="openProductAction(${product.id}, event)">
+                        <button type="button" class="${btnOfertaClass}" onclick="openProductAction(${product.id}, event)">
                             ${actionLabel}
                         </button>
                     </div>
