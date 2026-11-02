@@ -22,6 +22,7 @@
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1456280662997557" crossorigin="anonymous"></script>
     <style>
+        html, body { background-color: #080B12; color: #F9FAFB; margin: 0; padding: 0; }
         .legal-page-container {
             max-width: 900px;
             margin: 0 auto;
@@ -100,16 +101,26 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
+        <nav class="navbar" id="main-navbar">
         <div class="nav-container">
-            <a href="/" class="logo">
-                <img src="assets/logo.png" alt="BiciTodo Logo" class="logo-img" width="30" height="30">
+            <a href="/" class="logo" style="text-decoration:none;">
+                <img src="/assets/logo.png" alt="BiciTodo Logo" class="logo-img" width="32" height="32">
                 Bici<span>Todo</span>
             </a>
+
+            <div class="nav-center-links">
+                <a href="/#catalog" class="nav-link"><i class="fa-solid fa-compass"></i> Explorar</a>
+                <a href="/#catalog" class="nav-link" onclick="window.location.href='/?tab=deals#catalog'"><i class="fa-solid fa-tags"></i> Ofertas</a>
+                <a href="/bikefit.html" class="nav-link "><i class="fa-solid fa-ruler-combined"></i> BikeFit</a>
+                <a href="/blog/" class="nav-link "><i class="fa-solid fa-book-open"></i> Guías & Blog</a>
+                <a href="/sobre-nosotros.html" class="nav-link "><i class="fa-solid fa-users"></i> Nosotros</a>
+                <a href="/contacto.html" class="nav-link "><i class="fa-solid fa-envelope"></i> Contacto</a>
+            </div>
+
             <div class="nav-actions">
-                <a href="/" class="nav-link"><i class="fa-solid fa-house"></i> Inicio</a>
-                <a href="/blog/" class="nav-link"><i class="fa-solid fa-book-open"></i> Guías & Blog</a>
-                <a href="/contacto.html" class="nav-link"><i class="fa-solid fa-envelope"></i> Contacto</a>
+                <a href="/#catalog" class="btn-navbar-cta">
+                    <i class="fa-solid fa-bicycle"></i> Ver Catálogo
+                </a>
             </div>
         </div>
     </nav>

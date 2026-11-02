@@ -12,9 +12,8 @@
     <link rel="stylesheet" href="style.css?v=20261102">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .contact-container {
-            min-height: 80vh;
-            padding: 130px 1.5rem 5rem;
+        html, body { background-color: #080B12; color: #F9FAFB; margin: 0; padding: 0; }
+        .contact-container { min-height: 80vh; padding: 3rem 1.5rem 5rem;
             max-width: 1000px;
             margin: 0 auto;
         }
@@ -195,18 +194,29 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <a href="/" class="logo">
-            <span class="logo-accent">Bici</span>Todo<span class="logo-dot">.cl</span>
-        </a>
-        <nav class="nav-links">
-            <a href="/"><i class="fas fa-home"></i> Comparador</a>
-            <a href="/bikefit.html"><i class="fas fa-ruler-combined"></i> BikeFit</a>
-            <a href="/blog/"><i class="fas fa-book-open"></i> Guías & Blog</a>
-            <a href="/sobre-nosotros.html"><i class="fas fa-users"></i> Nosotros</a>
-            <a href="/contacto.html" class="active"><i class="fas fa-envelope"></i> Contacto</a>
-        </nav>
-    </header>
+        <nav class="navbar" id="main-navbar">
+        <div class="nav-container">
+            <a href="/" class="logo" style="text-decoration:none;">
+                <img src="/assets/logo.png" alt="BiciTodo Logo" class="logo-img" width="32" height="32">
+                Bici<span>Todo</span>
+            </a>
+
+            <div class="nav-center-links">
+                <a href="/#catalog" class="nav-link"><i class="fa-solid fa-compass"></i> Explorar</a>
+                <a href="/#catalog" class="nav-link" onclick="window.location.href='/?tab=deals#catalog'"><i class="fa-solid fa-tags"></i> Ofertas</a>
+                <a href="/bikefit.html" class="nav-link "><i class="fa-solid fa-ruler-combined"></i> BikeFit</a>
+                <a href="/blog/" class="nav-link "><i class="fa-solid fa-book-open"></i> Guías & Blog</a>
+                <a href="/sobre-nosotros.html" class="nav-link "><i class="fa-solid fa-users"></i> Nosotros</a>
+                <a href="/contacto.html" class="nav-link active"><i class="fa-solid fa-envelope"></i> Contacto</a>
+            </div>
+
+            <div class="nav-actions">
+                <a href="/#catalog" class="btn-navbar-cta">
+                    <i class="fa-solid fa-bicycle"></i> Ver Catálogo
+                </a>
+            </div>
+        </div>
+    </nav>
 
     <main class="contact-container">
         <div class="contact-hero">
