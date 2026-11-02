@@ -880,22 +880,87 @@ function applyInitialModeFromUrl() {
     const mode = (params.get('mode') || '').toLowerCase();
     const hash = (window.location.hash || '').toLowerCase();
     const wantsInternational = mode === 'international' || mode === 'internacional' || hash === '#internacional';
-    if (!wantsInternational) return;
 
-    state.isInternationalMode = true;
-    state.category = params.get('categoria') === 'repuestos' ? 'repuestos' : 'accesorios';
-    state.filters.aliexpressQuickFilter = params.get('quick_filter') || 'all';
-    state.currentPage = 1;
+    if (wantsInternational) {
+        state.isInternationalMode = true;
+        state.category = (params.get('categoria') || params.get('category')) === 'repuestos' ? 'repuestos' : 'accesorios';
+        state.filters.aliexpressQuickFilter = params.get('quick_filter') || 'all';
+        state.currentPage = 1;
 
-    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-    const catPill = document.querySelector(`.pill[onclick="setCategory('${state.category}')"]`);
-    if (catPill) catPill.classList.add('active');
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        const catPill = document.querySelector(`.pill[onclick="setCategory('${state.category}')"]`);
+        if (catPill) catPill.classList.add('active');
 
-    document.querySelectorAll('.quick-pill').forEach(p => {
-        p.classList.toggle('active', p.dataset.filter === state.filters.aliexpressQuickFilter);
-    });
+        document.querySelectorAll('.quick-pill').forEach(p => {
+            p.classList.toggle('active', p.dataset.filter === state.filters.aliexpressQuickFilter);
+        });
 
-    syncCatalogUiState();
+        syncCatalogUiState();
+        return;
+    }
+
+    // 1. Manejo dinámico de Categoría desde URL (ej: ?categoria=repuestos o ?category=componentes)
+    const rawCat = (params.get('categoria') || params.get('category') || '').toLowerCase().trim();
+    if (rawCat) {
+        if (['repuestos', 'componentes', 'repuesto', 'transmision', 'transmisiones'].includes(rawCat)) {
+            state.category = 'repuestos';
+        } else if (['accesorios', 'accesorio', 'equipamiento'].includes(rawCat)) {
+            state.category = 'accesorios';
+        } else if (['bicicletas', 'bicicleta', 'bicis', 'bici'].includes(rawCat)) {
+            state.category = 'bicicletas';
+        }
+        state.currentPage = 1;
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        const activePill = document.querySelector(`.pill[onclick="setCategory('${state.category}')"]`);
+        if (activePill) activePill.classList.add('active');
+
+        const titleMap = {
+            bicicletas: 'Catálogo de Bicicletas',
+            accesorios: 'Accesorios y Equipamiento',
+            repuestos: 'Componentes y Repuestos'
+        };
+        const secTitle = document.getElementById('section-title');
+        if (secTitle) secTitle.innerText = titleMap[state.category] || 'Catálogo';
+    }
+
+    // 2. Manejo dinámico de Búsqueda desde URL (ej: ?search=shimano o ?q=gravel)
+    const rawSearch = (params.get('search') || params.get('q') || params.get('busqueda') || '').trim();
+    if (rawSearch) {
+        state.filters.search = rawSearch.toLowerCase();
+        const searchInput = document.getElementById('main-search');
+        if (searchInput) searchInput.value = rawSearch;
+        state.currentPage = 1;
+    }
+
+    // 3. Manejo dinámico de Pestaña de Ofertas (ej: ?tab=deals)
+    const tab = (params.get('tab') || '').toLowerCase();
+    if (tab === 'deals' || tab === 'ofertas') {
+        state.filters.discountMin = 5;
+        state.sortBy = 'relevant';
+        const sortSelect = document.getElementById('sort-select');
+        if (sortSelect) sortSelect.value = 'relevant';
+        document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+        document.getElementById('nav-ofertas')?.classList.add('active');
+    }
+
+    // 4. Manejo de Tipo de Geometría / Disciplina (ej: ?tipo=gravel)
+    const rawType = (params.get('tipo') || params.get('type') || '').toLowerCase();
+    if (rawType) {
+        state.filters.types = [rawType];
+        document.querySelectorAll('#type-filter-list input').forEach(input => {
+            input.checked = (input.value.toLowerCase() === rawType);
+        });
+    }
+
+    // 5. Scroll automático hacia el catálogo si la URL contiene el ancla #catalog
+    if (hash === '#catalog' || hash === '#catalogo') {
+        setTimeout(() => {
+            const catalogEl = document.getElementById('catalog');
+            if (catalogEl) {
+                catalogEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 400);
+    }
 }
 
 const STORE_COLORS = {
