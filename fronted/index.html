@@ -470,10 +470,10 @@
             <span><strong id="compare-count">0</strong> productos seleccionados para comparar</span>
         </div>
         <div class="compare-bar-actions">
-            <button class="btn-compare-clear" id="compare-clear">
+            <button type="button" class="btn-compare-clear" id="compare-clear" onclick="clearCompare(event)">
                 <i class="fa-solid fa-xmark"></i> Limpiar
             </button>
-            <button class="btn-compare-go" id="compare-now">
+            <button type="button" class="btn-compare-go" id="compare-now" onclick="openCompareModal(event)">
                 Comparar ahora <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>
@@ -634,7 +634,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js" defer></script>
 
     <script src="config.js" defer></script>
-    <script src="app.js?v=stock_diff_20261102_1435" defer></script>
+    <script src="app.js?v=compare_fix_20261102_1450" defer></script>
 </body>
 
 </html>

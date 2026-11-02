@@ -1559,14 +1559,32 @@ clearFilters = window.clearFilters = function() {
 // =============================================
 // COMPARATOR
 // =============================================
+function updateCardCompareState(productId, isComparing) {
+    document.querySelectorAll('.product-card').forEach(card => {
+        const btn = card.querySelector(`.btn-compare-toggle[onclick*="toggleCompare(${productId}"]`);
+        if (btn) {
+            btn.classList.toggle('active', isComparing);
+            btn.setAttribute('aria-label', isComparing ? 'Quitar del comparador' : 'Comparar modelo');
+            btn.setAttribute('title', isComparing ? 'Quitar del comparador' : 'Comparar modelo');
+            const icon = btn.querySelector('i');
+            if (icon) {
+                icon.className = `fa-solid ${isComparing ? 'fa-check' : 'fa-scale-balanced'}`;
+            }
+            card.classList.toggle('comparing', isComparing);
+        }
+    });
+}
+
 toggleCompare = window.toggleCompare = function(productId, event) {
     if (event) {
         event.preventDefault();
         event.stopPropagation();
     }
     const idx = state.compare.indexOf(productId);
+    let isNowComparing = false;
     if (idx > -1) {
         state.compare.splice(idx, 1);
+        isNowComparing = false;
         showToast(`Producto quitado del comparador (${state.compare.length}/3).`);
     } else {
         if (state.compare.length >= 3) {
@@ -1574,6 +1592,7 @@ toggleCompare = window.toggleCompare = function(productId, event) {
             return;
         }
         state.compare.push(productId);
+        isNowComparing = true;
         if (state.compare.length === 1) {
             showToast('Agregado al comparador (1/3). Selecciona al menos 1 más para comparar.');
         } else {
@@ -1581,7 +1600,7 @@ toggleCompare = window.toggleCompare = function(productId, event) {
         }
     }
     updateCompareBar();
-    render(false);
+    updateCardCompareState(productId, isNowComparing);
 };
 
 function updateCompareBar() {
@@ -1599,13 +1618,32 @@ function updateCompareBar() {
     }
 }
 
-clearCompare = window.clearCompare = function() {
+clearCompare = window.clearCompare = function(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
     state.compare = [];
     updateCompareBar();
-    render(false);
+    document.querySelectorAll('.product-card.comparing').forEach(card => {
+        card.classList.remove('comparing');
+        const btn = card.querySelector('.btn-compare-toggle');
+        if (btn) {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-label', 'Comparar modelo');
+            btn.setAttribute('title', 'Comparar modelo');
+            const icon = btn.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-scale-balanced';
+        }
+    });
+    showToast('Comparador vaciado.');
 };
 
-openCompareModal = window.openCompareModal = function() {
+openCompareModal = window.openCompareModal = function(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
     const products = state.compare.map(id => findProductById(id)).filter(Boolean);
     if (products.length < 2) {
         showToast('Selecciona al menos 2 productos usando el icono de balanza en cada tarjeta.');
